@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+  <session-factory>
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/aps</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password"></property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    
+    
+    <!--prikazi sql-->
+    <property name="show_sql">true</property> 
+    
+    <!--automatski kreiraj tabelu ako nema tj. kad je create on kreira uvek novu tabelu, 
+        a prethodno brise postojecu. Moze da se ubaci update, sto mislim da je default
+        i radi udate-ovanje tabele klasicno,...pa sam zato obrisao ovaj property-->
+    <!--<property name="hibernate.hbm2ddl.auto">create-update</property>--> 
+    <!--<property name="hibernate.id.new_generator_mappings">true</property>-->
+     
+     
+     
+    <!--mapiranja klasa-->
+    <mapping class="aps.dto.User"/>
+    <mapping class="aps.dto.Document"/>
+    <mapping class="aps.dto.DocumentVersion"/>
+    <mapping class="aps.dto.WorksOn"/>
+    
+  </session-factory>
+</hibernate-configuration>
+
