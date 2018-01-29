@@ -11,8 +11,6 @@ public interface MessageServer extends Remote {
 	
 	void documentBroadcast(Document doc, Client cl, String message) throws RemoteException;
 	
-	void directMessage (Client cl, String message)throws RemoteException;
-	
 	boolean addClient (Client cl) throws RemoteException;
 	
 	boolean removeClient (Client cl) throws RemoteException;

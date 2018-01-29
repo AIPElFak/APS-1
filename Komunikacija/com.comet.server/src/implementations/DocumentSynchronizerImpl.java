@@ -20,14 +20,14 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 
 	@Override
 	public boolean addClient(Client cl) throws RemoteException {
-		if(clients.indexOf(cl) >= 0) return false;
+		if(clients.contains(cl)) return false;
 		clients.add(cl);
 		return true;
 	}
 
 	@Override
 	public boolean removeClient(Client cl) throws RemoteException {
-		if(clients.indexOf(cl) < 0) return false;
+		if(!clients.contains(cl)) return false;
 		clients.remove(cl);
 		return true;
 	}

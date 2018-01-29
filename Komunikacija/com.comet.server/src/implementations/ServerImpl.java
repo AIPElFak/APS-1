@@ -57,11 +57,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public void directMessage(Client cl, String message) throws RemoteException {
-		msgsrv.directMessage(cl, message);
-	}
-
-	@Override
 	public boolean login(Client cl, String username, String password) throws RemoteException {
 		if(auth.login(cl, username, password)) return true;
 		return false;

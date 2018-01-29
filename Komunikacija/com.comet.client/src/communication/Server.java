@@ -11,8 +11,6 @@ void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
 	void documentBroadcast(Document doc, Client cl, String message) throws RemoteException;
 	
-	void directMessage (Client cl, String message)throws RemoteException;
-	
 	boolean login (Client cl, String username, String password) throws RemoteException;
 	
 	boolean logout (Client cl) throws RemoteException;

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import components.Authenticator;
 import utilities.UserData;
-import utilities.UserDataImpl;
 import communication.Client;
 
 public class AuthenticatorImpl extends UnicastRemoteObject implements Authenticator {
@@ -19,16 +18,9 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		clients = new ArrayList<Client>();
 		users = new ArrayList<UserData>();
 		
-		UserData udMarko = new UserDataImpl();
-		udMarko.setUsername("Marko");
-		udMarko.setPassword("Sifra");
-		udMarko.setPrivilegies("Owner");
-		
-		UserData udSentic = new UserDataImpl();
-		udSentic.setUsername("Sentic");
-		udSentic.setPassword("Sifra123");
-		udSentic.setPrivilegies("Guest");
-		
+		UserData udMarko = new UserDataImpl("Marko", "Sifra", "Owner");		
+		UserData udSentic = new UserDataImpl("Sentic", "Sifra", "Guest");
+
 		users.add(udMarko);
 		users.add(udSentic);
 	}
@@ -73,14 +65,14 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 
 	@Override
 	public boolean addClient(Client cl) throws RemoteException {
-		if(clients.indexOf(cl) >= 0) return false;
+		if(clients.contains(cl)) return false;
 		clients.add(cl);
 		return true;
 	}
 
 	@Override
 	public boolean removeClient(Client cl) throws RemoteException {
-		if(clients.indexOf(cl) < 0) return false;
+		if(!clients.contains(cl)) return false;
 		clients.remove(cl);
 		return true;
 	}

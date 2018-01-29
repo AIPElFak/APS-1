@@ -32,10 +32,6 @@ public class MessageServerImpl extends UnicastRemoteObject implements MessageSer
 		
 	}
 
-	public void directMessage(Client cl, String message) throws RemoteException {
-		
-	}
-
 	public boolean addClient(Client cl) throws RemoteException {
 		if(clients.contains(cl)) return false;
 		clients.add(cl);

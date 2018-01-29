@@ -4,7 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import communication.Client;
 import communication.Server;
-import utilities.UserData;
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -20,7 +19,6 @@ import java.awt.event.MouseEvent;
 import java.rmi.RemoteException;
 
 import javax.swing.JPasswordField;
-import java.awt.Toolkit;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
@@ -28,12 +26,14 @@ import java.awt.event.ActionEvent;
 
 public class LoginFrame extends JFrame {
 
-	private JPanel contentPane, inputsHolder;
+	private JPanel contentPane, inputsHolder, signUpInputs;
 	private JTextField txtUsername;
 	private JPasswordField pfPassword;
 	
 	private Client client;
 	private Server server;
+	private JTextField txtUsernameSignUp, txtEmail;
+	private JPasswordField pfPasswordSignUp;
 
 	public LoginFrame() {
 		setIconImage(new ImageIcon(getClass().getResource("../resources/cometIconMin.png")).getImage());
@@ -52,23 +52,23 @@ public class LoginFrame extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setForeground(new Color(245, 245, 245));
-		separator_2.setBackground(new Color(248, 248, 255));
-		separator_2.setBounds(68, 463, 362, 2);
-		panel.add(separator_2);
+		JSeparator logoBotLowerSeparator = new JSeparator();
+		logoBotLowerSeparator.setForeground(new Color(245, 245, 245));
+		logoBotLowerSeparator.setBackground(new Color(248, 248, 255));
+		logoBotLowerSeparator.setBounds(68, 463, 362, 2);
+		panel.add(logoBotLowerSeparator);
 		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setForeground(new Color(245, 245, 245));
-		separator_4.setBackground(new Color(248, 248, 255));
-		separator_4.setBounds(25, 427, 448, 2);
-		panel.add(separator_4);
+		JSeparator logoBotSeparator = new JSeparator();
+		logoBotSeparator.setForeground(new Color(245, 245, 245));
+		logoBotSeparator.setBackground(new Color(248, 248, 255));
+		logoBotSeparator.setBounds(25, 427, 448, 2);
+		panel.add(logoBotSeparator);
 		
-		JLabel label = new JLabel("");
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setIcon(new ImageIcon(getClass().getResource("../resources/logo.png")));
-		label.setBounds(10, 158, 477, 193);
-		panel.add(label);
+		JLabel logo = new JLabel("");
+		logo.setHorizontalAlignment(SwingConstants.CENTER);
+		logo.setIcon(new ImageIcon(getClass().getResource("../resources/logo.png")));
+		logo.setBounds(10, 158, 477, 193);
+		panel.add(logo);
 		
 		JLabel lblTogetherYouCan = new JLabel("Together we can do more! ");
 		lblTogetherYouCan.setHorizontalAlignment(SwingConstants.CENTER);
@@ -77,15 +77,15 @@ public class LoginFrame extends JFrame {
 		lblTogetherYouCan.setBounds(96, 30, 300, 25);
 		panel.add(lblTogetherYouCan);
 		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setForeground(new Color(245, 245, 245));
-		separator_3.setBackground(new Color(248, 248, 255));
-		separator_3.setBounds(25, 82, 448, 2);
-		panel.add(separator_3);
+		JSeparator logoTopSeparator = new JSeparator();
+		logoTopSeparator.setForeground(new Color(245, 245, 245));
+		logoTopSeparator.setBackground(new Color(248, 248, 255));
+		logoTopSeparator.setBounds(25, 82, 448, 2);
+		panel.add(logoTopSeparator);
 		
 		JPanel loginInputs = new JPanel();
 		loginInputs.addMouseListener(new MouseAdapter() {
-			@Override
+			
 			public void mouseClicked(MouseEvent e) {
 				loginInputs.grabFocus();
 			}
@@ -101,24 +101,25 @@ public class LoginFrame extends JFrame {
 		singInOutHolder.setLayout(new GridLayout(1, 2));
 		
 		JButton btnSignIn = new JButton("Sign in");
+		btnSignIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				inputsHolder.setVisible(true);
+				signUpInputs.setVisible(false);
+			}
+		});
 		btnSignIn.addMouseListener(new MouseAdapter() {
-			@Override
 			public void mouseEntered(MouseEvent arg0) {
 				btnSignIn.setBackground(new Color(32, 32, 32));
 			}
-			@Override
 			public void mouseExited(MouseEvent e) {
 				btnSignIn.setBackground(new Color(52, 52, 52));
 			}
-			@Override
 			public void mousePressed(MouseEvent e) {
-				btnSignIn.setBackground(new Color(32, 32, 32));
+				btnSignIn.setBackground(new Color(12, 12, 12));
 			}
-			@Override
 			public void mouseReleased(MouseEvent e) {
 				btnSignIn.setBackground(new Color(52, 52, 52));
 			}
-			@Override
 			public void mouseClicked(MouseEvent e) {
 				
 			}
@@ -128,26 +129,33 @@ public class LoginFrame extends JFrame {
 		btnSignIn.setFont(new Font("Courier New", Font.PLAIN, 20));
 		btnSignIn.setFocusPainted(false);
 		btnSignIn.setBorderPainted(false);
+		btnSignIn.setContentAreaFilled(false);
+		btnSignIn.setOpaque(true);
 		btnSignIn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		singInOutHolder.add(btnSignIn);
 		
 		JButton btnSignUp = new JButton("Sign up");
+		btnSignUp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				inputsHolder.setVisible(false);
+				signUpInputs.setVisible(true);
+			}
+		});
 		btnSignUp.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
+			public void mouseEntered(MouseEvent arg0) {
 				btnSignUp.setBackground(new Color(32, 32, 32));
 			}
-			@Override
 			public void mouseExited(MouseEvent e) {
 				btnSignUp.setBackground(new Color(52, 52, 52));
 			}
-			@Override
 			public void mousePressed(MouseEvent e) {
-				btnSignUp.setBackground(new Color(32, 32, 32));
+				btnSignUp.setBackground(new Color(12, 12, 12));
 			}
-			@Override
 			public void mouseReleased(MouseEvent e) {
 				btnSignUp.setBackground(new Color(52, 52, 52));
+			}
+			public void mouseClicked(MouseEvent e) {
+				
 			}
 		});
 		btnSignUp.setBackground(new Color(52, 52, 52));
@@ -155,34 +163,53 @@ public class LoginFrame extends JFrame {
 		btnSignUp.setFont(new Font("Courier New", Font.PLAIN, 20));
 		btnSignUp.setFocusPainted(false);
 		btnSignUp.setBorderPainted(false);
+		btnSignUp.setContentAreaFilled(false);
+		btnSignUp.setOpaque(true);
 		btnSignUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		singInOutHolder.add(btnSignUp);
 		
-		inputsHolder = new JPanel();
-		inputsHolder.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				inputsHolder.grabFocus();
+		JButton btnContinueOffline = new JButton("or continue offline...");
+		btnContinueOffline.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent arg0) {
+				btnContinueOffline.setBackground(new Color(32, 32, 32));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnContinueOffline.setBackground(new Color(52, 52, 52));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnContinueOffline.setBackground(new Color(12, 12, 12));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnContinueOffline.setBackground(new Color(52, 52, 52));
+			}
+			public void mouseClicked(MouseEvent e) {
+				
 			}
 		});
+		btnContinueOffline.setForeground(Color.LIGHT_GRAY);
+		btnContinueOffline.setFont(new Font("Courier New", Font.PLAIN, 16));
+		btnContinueOffline.setFocusPainted(false);
+		btnContinueOffline.setBorderPainted(false);
+		btnContinueOffline.setContentAreaFilled(false);
+		btnContinueOffline.setOpaque(true);
+		btnContinueOffline.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnContinueOffline.setBackground(new Color(52, 52, 52));
+		btnContinueOffline.setBounds(39, 423, 425, 47);
+		loginInputs.add(btnContinueOffline);
+		
+		inputsHolder = new JPanel();
 		inputsHolder.setBackground(Color.DARK_GRAY);
 		inputsHolder.setBounds(10, 110, 477, 296);
-		loginInputs.add(inputsHolder);
 		inputsHolder.setLayout(null);
+		loginInputs.add(inputsHolder);
 		
 		txtUsername = new JTextField();
 		txtUsername.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				if(txtUsername.getText().equals("")) {
-					txtUsername.setText("Enter your username");
-				}
-			}
-		});
-		txtUsername.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void focusGained(FocusEvent e) {
 				txtUsername.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				if(txtUsername.getText().equals("")) txtUsername.setText("Enter your username");
 			}
 		});
 		txtUsername.setFont(new Font("Courier New", Font.PLAIN, 13));
@@ -195,17 +222,17 @@ public class LoginFrame extends JFrame {
 		inputsHolder.add(txtUsername);
 		txtUsername.setColumns(10);
 		
-		JSeparator separator = new JSeparator();
-		separator.setForeground(Color.LIGHT_GRAY);
-		separator.setBackground(Color.LIGHT_GRAY);
-		separator.setBounds(31, 70, 416, 2);
-		inputsHolder.add(separator);
+		JSeparator logInUsernameSeparator = new JSeparator();
+		logInUsernameSeparator.setForeground(Color.LIGHT_GRAY);
+		logInUsernameSeparator.setBackground(Color.LIGHT_GRAY);
+		logInUsernameSeparator.setBounds(31, 70, 416, 2);
+		inputsHolder.add(logInUsernameSeparator);
 		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setForeground(Color.LIGHT_GRAY);
-		separator_1.setBackground(Color.LIGHT_GRAY);
-		separator_1.setBounds(31, 162, 416, 2);
-		inputsHolder.add(separator_1);
+		JSeparator logInPasswordSeparator = new JSeparator();
+		logInPasswordSeparator.setForeground(Color.LIGHT_GRAY);
+		logInPasswordSeparator.setBackground(Color.LIGHT_GRAY);
+		logInPasswordSeparator.setBounds(31, 162, 416, 2);
+		inputsHolder.add(logInPasswordSeparator);
 		
 		JLabel lblUsername = new JLabel("USERNAME:");
 		lblUsername.setForeground(Color.LIGHT_GRAY);
@@ -226,24 +253,18 @@ public class LoginFrame extends JFrame {
 		inputsHolder.add(lblSignIn);
 		
 		pfPassword = new JPasswordField();
-		pfPassword.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		pfPassword.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
 				pfPassword.setText("");
 			}
-		});
-		pfPassword.addFocusListener(new FocusAdapter() {
-			@Override
 			public void focusLost(FocusEvent e) {
-				if(pfPassword.getText().equals("")) {
-					pfPassword.setText("markojelep");
-				}
+				if(pfPassword.getText().equals("")) pfPassword.setText("password");
 			}
 		});
 		pfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		pfPassword.setForeground(Color.GRAY);
 		pfPassword.setBackground(Color.DARK_GRAY);
-		pfPassword.setText("markojelep");
+		pfPassword.setText("password");
 		pfPassword.setBorder(null);
 		pfPassword.setCaretColor(Color.LIGHT_GRAY);
 		pfPassword.setBounds(31, 135, 416, 20);
@@ -267,9 +288,20 @@ public class LoginFrame extends JFrame {
 		inputsHolder.add(btnLoginFb);
 		
 		JButton btnLogIn = new JButton("Log in");
-		btnLogIn.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent arg0) {
+		btnLogIn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent arg0) {
+				btnLogIn.setBackground(new Color(32, 32, 32));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnLogIn.setBackground(new Color(52, 52, 52));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnLogIn.setBackground(new Color(12, 12, 12));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnLogIn.setBackground(new Color(52, 52, 52));
+			}
+			public void mouseClicked(MouseEvent e) {
 				try {
 					if(server.login(client, txtUsername.getText(), pfPassword.getText())) {
 						server.logActivity("Logged client: " + client.getUserData().getUsername());
@@ -277,9 +309,9 @@ public class LoginFrame extends JFrame {
 						client.hideLogin();
 					}
 				} 
-				catch (RemoteException e) {
+				catch (RemoteException ex) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					ex.printStackTrace();
 				}
 			}
 		});
@@ -287,27 +319,137 @@ public class LoginFrame extends JFrame {
 		btnLogIn.setFont(new Font("Courier New", Font.PLAIN, 20));
 		btnLogIn.setFocusPainted(false);
 		btnLogIn.setBorderPainted(false);
+		btnLogIn.setContentAreaFilled(false);
+		btnLogIn.setOpaque(true);
 		btnLogIn.setBackground(new Color(52, 52, 52));
 		btnLogIn.setBounds(31, 212, 253, 47);
 		inputsHolder.add(btnLogIn);
 		
-		JButton btnContinueOffline = new JButton("or continue offline...");
-		btnContinueOffline.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnContinueOffline.setBackground(new Color(32, 32, 32));
+		signUpInputs = new JPanel();
+		signUpInputs.setBackground(Color.DARK_GRAY);
+		signUpInputs.setBounds(10, 110, 477, 296);
+		signUpInputs.setLayout(null);
+		signUpInputs.setVisible(false);
+		loginInputs.add(signUpInputs);
+		
+		txtUsernameSignUp = new JTextField();
+		txtUsernameSignUp.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent arg0) {
+				txtUsernameSignUp.setText("");
 			}
-			public void mouseExited(MouseEvent e) {
-				btnContinueOffline.setBackground(new Color(52, 52, 52));
+			public void focusLost(FocusEvent e) {
+				txtUsernameSignUp.setText("Enter your username");
 			}
 		});
-		btnContinueOffline.setForeground(Color.LIGHT_GRAY);
-		btnContinueOffline.setFont(new Font("Courier New", Font.PLAIN, 16));
-		btnContinueOffline.setFocusPainted(false);
-		btnContinueOffline.setBorderPainted(false);
-		btnContinueOffline.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnContinueOffline.setBackground(new Color(52, 52, 52));
-		btnContinueOffline.setBounds(39, 423, 425, 47);
-		loginInputs.add(btnContinueOffline);
+		txtUsernameSignUp.setText("Enter your username");
+		txtUsernameSignUp.setForeground(Color.GRAY);
+		txtUsernameSignUp.setFont(new Font("Courier New", Font.PLAIN, 13));
+		txtUsernameSignUp.setColumns(10);
+		txtUsernameSignUp.setCaretColor(Color.LIGHT_GRAY);
+		txtUsernameSignUp.setBorder(null);
+		txtUsernameSignUp.setBackground(Color.DARK_GRAY);
+		txtUsernameSignUp.setBounds(31, 45, 183, 14);
+		signUpInputs.add(txtUsernameSignUp);
+		
+		JSeparator signUpUsernameSeparator = new JSeparator();
+		signUpUsernameSeparator.setForeground(Color.LIGHT_GRAY);
+		signUpUsernameSeparator.setBackground(Color.LIGHT_GRAY);
+		signUpUsernameSeparator.setBounds(31, 70, 172, 2);
+		signUpInputs.add(signUpUsernameSeparator);
+		
+		JSeparator signUpEmailSeparator = new JSeparator();
+		signUpEmailSeparator.setForeground(Color.LIGHT_GRAY);
+		signUpEmailSeparator.setBackground(Color.LIGHT_GRAY);
+		signUpEmailSeparator.setBounds(31, 162, 416, 2);
+		signUpInputs.add(signUpEmailSeparator);
+		
+		JLabel lblUsernameSignIn = new JLabel("USERNAME:");
+		lblUsernameSignIn.setForeground(Color.LIGHT_GRAY);
+		lblUsernameSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblUsernameSignIn.setBounds(31, 22, 183, 21);
+		signUpInputs.add(lblUsernameSignIn);
+		
+		JLabel lblEmail = new JLabel("EMAIL:");
+		lblEmail.setForeground(Color.LIGHT_GRAY);
+		lblEmail.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblEmail.setBounds(31, 114, 99, 21);
+		signUpInputs.add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				txtEmail.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				txtEmail.setText("password");
+			}
+		});
+		txtEmail.setText("Enter your email");
+		txtEmail.setForeground(Color.GRAY);
+		txtEmail.setFont(new Font("Courier New", Font.PLAIN, 13));
+		txtEmail.setCaretColor(Color.LIGHT_GRAY);
+		txtEmail.setBorder(null);
+		txtEmail.setBackground(Color.DARK_GRAY);
+		txtEmail.setBounds(31, 135, 416, 20);
+		signUpInputs.add(txtEmail);
+		
+		JButton btnCreateAccount = new JButton("Create account");
+		btnCreateAccount.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent arg0) {
+				btnCreateAccount.setBackground(new Color(32, 32, 32));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnCreateAccount.setBackground(new Color(52, 52, 52));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnCreateAccount.setBackground(new Color(12, 12, 12));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnCreateAccount.setBackground(new Color(52, 52, 52));
+			}
+			public void mouseClicked(MouseEvent e) {
+				
+			}
+		});
+		btnCreateAccount.setForeground(Color.LIGHT_GRAY);
+		btnCreateAccount.setFont(new Font("Courier New", Font.PLAIN, 20));
+		btnCreateAccount.setFocusPainted(false);
+		btnCreateAccount.setBorderPainted(false);
+		btnCreateAccount.setContentAreaFilled(false);
+		btnCreateAccount.setOpaque(true);
+		btnCreateAccount.setBackground(new Color(52, 52, 52));
+		btnCreateAccount.setBounds(117, 212, 253, 47);
+		signUpInputs.add(btnCreateAccount);
+		
+		JSeparator signUpPasswordSeparator = new JSeparator();
+		signUpPasswordSeparator.setForeground(Color.LIGHT_GRAY);
+		signUpPasswordSeparator.setBackground(Color.LIGHT_GRAY);
+		signUpPasswordSeparator.setBounds(270, 70, 172, 2);
+		signUpInputs.add(signUpPasswordSeparator);
+		
+		JLabel lblPasswordSignIn = new JLabel("PASSWORD:");
+		lblPasswordSignIn.setForeground(Color.LIGHT_GRAY);
+		lblPasswordSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblPasswordSignIn.setBounds(270, 22, 183, 21);
+		signUpInputs.add(lblPasswordSignIn);
+		
+		pfPasswordSignUp = new JPasswordField();
+		pfPasswordSignUp.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				pfPasswordSignUp.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				pfPasswordSignUp.setText("password");
+			}
+		});
+		pfPasswordSignUp.setText("password");
+		pfPasswordSignUp.setForeground(Color.GRAY);
+		pfPasswordSignUp.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		pfPasswordSignUp.setCaretColor(Color.LIGHT_GRAY);
+		pfPasswordSignUp.setBorder(null);
+		pfPasswordSignUp.setBackground(Color.DARK_GRAY);
+		pfPasswordSignUp.setBounds(269, 45, 183, 20);
+		signUpInputs.add(pfPasswordSignUp);
 	
 	}
 	

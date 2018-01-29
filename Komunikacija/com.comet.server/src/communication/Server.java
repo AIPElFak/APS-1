@@ -14,8 +14,6 @@ public interface Server extends Remote {
 	
 	void documentBroadcast(Document doc, Client cl, String message) throws RemoteException;
 	
-	void directMessage (Client cl, String message)throws RemoteException;
-	
 	boolean login (Client cl, String username, String password) throws RemoteException;
 	
 	boolean logout (Client cl) throws RemoteException;
