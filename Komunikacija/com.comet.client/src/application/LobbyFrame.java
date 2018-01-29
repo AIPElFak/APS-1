@@ -9,6 +9,7 @@ import communication.Client;
 import communication.Server;
 import view.View;
 import javax.swing.JList;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import javax.swing.JSeparator;
@@ -22,6 +23,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class LobbyFrame extends JFrame implements View {
 
@@ -33,10 +36,12 @@ public class LobbyFrame extends JFrame implements View {
 	private Server server;
 	
 	public LobbyFrame() {
+		setTitle("Comet");
 		initialize();
 	}
 	
 	private void initialize() {
+		setIconImage(new ImageIcon(getClass().getResource("../resources/cometIconMin.png")).getImage());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		contentPane = new JPanel();
@@ -52,14 +57,14 @@ public class LobbyFrame extends JFrame implements View {
 		contentPane.add(messagePane);
 		messagePane.setLayout(null);
 		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(10, 503, 216, 2);
-		messagePane.add(separator_3);
+		JSeparator botChatSeparator = new JSeparator();
+		botChatSeparator.setBounds(10, 503, 216, 2);
+		messagePane.add(botChatSeparator);
 		
 		textArea = new JTextArea();
 		textArea.setColumns(10);
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		textArea.setBackground(new Color(190, 190, 190));
+		textArea.setBackground(new Color(100, 100, 100));
 		textArea.setForeground(new Color(230, 230, 250));
 		textArea.setBounds(10, 85, 216, 231);
 		textArea.setLineWrap(true);
@@ -69,13 +74,28 @@ public class LobbyFrame extends JFrame implements View {
 		
 		JScrollPane textAreaScroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		textAreaScroll.setBounds(10, 85, 216, 364);
+		textAreaScroll.setBorder(null);
 		messagePane.add(textAreaScroll);
 		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(10, 11, 216, 2);
-		messagePane.add(separator_1);
+		JSeparator topChatUpperSeparator = new JSeparator();
+		topChatUpperSeparator.setBounds(10, 11, 216, 2);
+		messagePane.add(topChatUpperSeparator);
 		
 		JButton btnSend = new JButton("Send");
+		btnSend.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnSend.setBackground(new Color(102, 102, 102));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnSend.setBackground(new Color(92, 92, 92));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnSend.setBackground(new Color(112, 112, 112));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnSend.setBackground(new Color(92, 92, 92));
+			}
+		});
 		btnSend.addActionListener(new ActionHandler());
 		btnSend.addKeyListener(new KeyHandler());
 		btnSend.setFont(new Font("Courier New", Font.PLAIN, 18));
@@ -99,70 +119,99 @@ public class LobbyFrame extends JFrame implements View {
 		textField.setHorizontalAlignment(SwingConstants.CENTER);
 		textField.setFont(new Font("Courier New", Font.PLAIN, 13));
 		textField.setBounds(10, 460, 216, 32);
-		textField.setBackground(new Color(160, 160, 160));
+		textField.setBackground(new Color(110, 110, 110));
 		messagePane.add(textField);
 		textField.setColumns(10);
 		
-		JSeparator separator_5 = new JSeparator();
-		separator_5.setBounds(10, 62, 216, 2);
-		messagePane.add(separator_5);
+		JSeparator topChatLowerSeparator = new JSeparator();
+		topChatLowerSeparator.setBounds(10, 62, 216, 2);
+		messagePane.add(topChatLowerSeparator);
 		
 		JPanel documentPane = new JPanel();
 		documentPane.setBounds(0, 0, 559, 600);
-		documentPane.setBackground(new Color(0, 171, 169));
+		documentPane.setBackground(new Color(21, 126, 251));
 		contentPane.add(documentPane);
 		documentPane.setLayout(null);
 		
 		JLabel lblAlreadyOpenDocuments = new JLabel("Available documents");
 		lblAlreadyOpenDocuments.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblAlreadyOpenDocuments.setBounds(164, 24, 219, 27);
+		lblAlreadyOpenDocuments.setBounds(183, 24, 219, 27);
 		lblAlreadyOpenDocuments.setForeground(new Color(244, 244, 255));
 		documentPane.add(lblAlreadyOpenDocuments);
 		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 11, 539, 2);
-		documentPane.add(separator);
+		JSeparator topDocUpperSeparator = new JSeparator();
+		topDocUpperSeparator.setBounds(10, 11, 539, 2);
+		documentPane.add(topDocUpperSeparator);
 		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(10, 62, 539, 2);
-		documentPane.add(separator_4);
+		JSeparator topDocLowerSeparator = new JSeparator();
+		topDocLowerSeparator.setBounds(10, 62, 539, 2);
+		documentPane.add(topDocLowerSeparator);
 		
-		JPanel panel = new JPanel();
-		panel.setBorder(null);
-		panel.setBounds(10, 516, 539, 46);
-		documentPane.add(panel);
-		panel.setOpaque(false);
-		panel.setLayout(new GridLayout(1, 2));
+		JPanel docButtonsHolder = new JPanel();
+		docButtonsHolder.setBorder(null);
+		docButtonsHolder.setBounds(10, 516, 539, 46);
+		documentPane.add(docButtonsHolder);
+		docButtonsHolder.setOpaque(false);
+		docButtonsHolder.setLayout(new GridLayout(1, 2));
 		
 		JButton btnCreateDocument = new JButton("Create Document");
+		btnCreateDocument.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnCreateDocument.setBackground(new Color(1, 86, 171));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnCreateDocument.setBackground(new Color(1, 96, 181));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnCreateDocument.setBackground(new Color(1, 76, 161));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnCreateDocument.setBackground(new Color(1, 96, 181));
+			}
+		});
 		btnCreateDocument.setFont(new Font("Courier New", Font.PLAIN, 18));
-		btnCreateDocument.setBackground(new Color(0, 131, 129));
+		btnCreateDocument.setBackground(new Color(1, 96, 181));
 		btnCreateDocument.setBorderPainted(false);
 		btnCreateDocument.setFocusPainted(false);
 		btnCreateDocument.setContentAreaFilled(false);
 		btnCreateDocument.setOpaque(true);
 		btnCreateDocument.setForeground(new Color(244, 244, 255));
-		panel.add(btnCreateDocument);
+		docButtonsHolder.add(btnCreateDocument);
 		
 		JButton btnOpenDocument = new JButton("Open Document");
+		btnOpenDocument.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnOpenDocument.setBackground(new Color(1, 86, 171));
+			}
+			public void mouseExited(MouseEvent e) {
+				btnOpenDocument.setBackground(new Color(1, 96, 181));
+			}
+			public void mousePressed(MouseEvent e) {
+				btnOpenDocument.setBackground(new Color(1, 76, 161));
+			}
+			public void mouseReleased(MouseEvent e) {
+				btnOpenDocument.setBackground(new Color(1, 96, 181));
+			}
+		});
 		btnOpenDocument.setFont(new Font("Courier New", Font.PLAIN, 18));
-		btnOpenDocument.setBackground(new Color(0, 131, 129));
+		btnOpenDocument.setBackground(new Color(1, 96, 181));
 		btnOpenDocument.setBorderPainted(false);
 		btnOpenDocument.setFocusPainted(false);
 		btnOpenDocument.setContentAreaFilled(false);
 		btnOpenDocument.setOpaque(true);
 		btnOpenDocument.setForeground(new Color(244, 244, 255));
-		panel.add(btnOpenDocument);
+		docButtonsHolder.add(btnOpenDocument);
 		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(10, 503, 539, 2);
-		documentPane.add(separator_2);
+		JSeparator botDocSeparator = new JSeparator();
+		botDocSeparator.setBounds(10, 503, 539, 2);
+		documentPane.add(botDocSeparator);
 		
 		JList list = new JList();
 		list.setBounds(10, 86, 539, 406);
 		list.setBackground(new Color(175, 238, 238));
 		
 		JScrollPane listBoxScroll = new JScrollPane(list, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		listBoxScroll.setBorder(null);
 		listBoxScroll.setBounds(10, 85, 539, 403);
 		documentPane.add(listBoxScroll);
 	}

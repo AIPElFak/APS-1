@@ -58,32 +58,27 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
 	@Override
 	public boolean login(Client cl, String username, String password) throws RemoteException {
-		if(auth.login(cl, username, password)) return true;
-		return false;
+		return auth.login(cl, username, password);
 	}
 
 	@Override
 	public boolean logout(Client cl) throws RemoteException {
-		if(auth.logout(cl)) return true;
-		return false;
+		return auth.logout(cl);
 	}
 
 	@Override
 	public boolean signin(Client cl) throws RemoteException {
-		if(auth.signin(cl)) return true;
-		return false;
+		return auth.signin(cl);
 	}
 
 	@Override
 	public boolean deleteAccount(Client cl) throws RemoteException {
-		if(auth.deleteAccount(cl)) return true;
-		return false;
+		return auth.deleteAccount(cl);
 	}
 
 	@Override
 	public boolean modifyUserData(Client cl) throws RemoteException {
-		if(auth.modifyUserData(cl)) return true;
-		return false;
+		return auth.modifyUserData(cl);
 	}
 
 }

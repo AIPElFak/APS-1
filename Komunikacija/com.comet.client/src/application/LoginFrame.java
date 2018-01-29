@@ -23,6 +23,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.border.MatteBorder;
 
 public class LoginFrame extends JFrame {
 
@@ -37,7 +38,7 @@ public class LoginFrame extends JFrame {
 
 	public LoginFrame() {
 		setIconImage(new ImageIcon(getClass().getResource("../resources/cometIconMin.png")).getImage());
-		setTitle("COMET");
+		setTitle("Comet");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 525);
@@ -48,7 +49,7 @@ public class LoginFrame extends JFrame {
 		contentPane.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(0, 171, 169));
+		panel.setBackground(new Color(21, 126, 251));
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
@@ -187,7 +188,7 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		btnContinueOffline.setForeground(Color.LIGHT_GRAY);
-		btnContinueOffline.setFont(new Font("Courier New", Font.PLAIN, 16));
+		btnContinueOffline.setFont(new Font("Courier New", Font.PLAIN, 18));
 		btnContinueOffline.setFocusPainted(false);
 		btnContinueOffline.setBorderPainted(false);
 		btnContinueOffline.setContentAreaFilled(false);
@@ -237,13 +238,13 @@ public class LoginFrame extends JFrame {
 		JLabel lblUsername = new JLabel("USERNAME:");
 		lblUsername.setForeground(Color.LIGHT_GRAY);
 		lblUsername.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblUsername.setBounds(31, 22, 99, 21);
+		lblUsername.setBounds(31, 22, 143, 21);
 		inputsHolder.add(lblUsername);
 		
 		JLabel lblPassword = new JLabel("PASSWORD:");
 		lblPassword.setForeground(Color.LIGHT_GRAY);
 		lblPassword.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblPassword.setBounds(31, 114, 99, 21);
+		lblPassword.setBounds(31, 114, 143, 21);
 		inputsHolder.add(lblPassword);
 		
 		JLabel lblSignIn = new JLabel("Sign in with:");
@@ -338,7 +339,7 @@ public class LoginFrame extends JFrame {
 				txtUsernameSignUp.setText("");
 			}
 			public void focusLost(FocusEvent e) {
-				txtUsernameSignUp.setText("Enter your username");
+				if(txtUsernameSignUp.getText().equals("")) txtUsernameSignUp.setText("Enter your username");
 			}
 		});
 		txtUsernameSignUp.setText("Enter your username");
@@ -381,7 +382,7 @@ public class LoginFrame extends JFrame {
 				txtEmail.setText("");
 			}
 			public void focusLost(FocusEvent e) {
-				txtEmail.setText("password");
+				if(txtEmail.getText().equals("")) txtEmail.setText("password");
 			}
 		});
 		txtEmail.setText("Enter your email");
@@ -439,7 +440,7 @@ public class LoginFrame extends JFrame {
 				pfPasswordSignUp.setText("");
 			}
 			public void focusLost(FocusEvent e) {
-				pfPasswordSignUp.setText("password");
+				if(pfPasswordSignUp.getText().equals("")) pfPasswordSignUp.setText("password");
 			}
 		});
 		pfPasswordSignUp.setText("password");
