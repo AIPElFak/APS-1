@@ -4,6 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import communication.Client;
 import communication.Server;
+import guicomponents.ButtonColorChanger;
+import guicomponents.CometFlatButton;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import javax.swing.JLabel;
@@ -37,7 +40,9 @@ public class LoginFrame extends JFrame {
 	private JPasswordField pfPasswordSignUp;
 
 	public LoginFrame() {
-		setIconImage(new ImageIcon(getClass().getResource("../resources/cometIconMin.png")).getImage());
+		
+		setIconImage(new ImageIcon(getClass()
+				.getResource("../resources/cometIconMin.png")).getImage());
 		setTitle("Comet");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,6 +57,12 @@ public class LoginFrame extends JFrame {
 		panel.setBackground(new Color(21, 126, 251));
 		contentPane.add(panel);
 		panel.setLayout(null);
+		
+		MouseAdapter buttonColorChanger = new ButtonColorChanger(
+			new Color(52, 52, 52),
+			new Color(32, 32, 32),
+			new Color(12, 12, 12)
+		);
 		
 		JSeparator logoBotLowerSeparator = new JSeparator();
 		logoBotLowerSeparator.setForeground(new Color(245, 245, 245));
@@ -86,7 +97,6 @@ public class LoginFrame extends JFrame {
 		
 		JPanel loginInputs = new JPanel();
 		loginInputs.addMouseListener(new MouseAdapter() {
-			
 			public void mouseClicked(MouseEvent e) {
 				loginInputs.grabFocus();
 			}
@@ -101,100 +111,31 @@ public class LoginFrame extends JFrame {
 		loginInputs.add(singInOutHolder);
 		singInOutHolder.setLayout(new GridLayout(1, 2));
 		
-		JButton btnSignIn = new JButton("Sign in");
+		JButton btnSignIn = new CometFlatButton("Sign in", new Color(52, 52, 52), Color.LIGHT_GRAY);
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				inputsHolder.setVisible(true);
 				signUpInputs.setVisible(false);
 			}
 		});
-		btnSignIn.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnSignIn.setBackground(new Color(32, 32, 32));
-			}
-			public void mouseExited(MouseEvent e) {
-				btnSignIn.setBackground(new Color(52, 52, 52));
-			}
-			public void mousePressed(MouseEvent e) {
-				btnSignIn.setBackground(new Color(12, 12, 12));
-			}
-			public void mouseReleased(MouseEvent e) {
-				btnSignIn.setBackground(new Color(52, 52, 52));
-			}
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-		});
-		btnSignIn.setBackground(new Color(52, 52, 52));
-		btnSignIn.setForeground(Color.LIGHT_GRAY);
-		btnSignIn.setFont(new Font("Courier New", Font.PLAIN, 20));
-		btnSignIn.setFocusPainted(false);
-		btnSignIn.setBorderPainted(false);
-		btnSignIn.setContentAreaFilled(false);
-		btnSignIn.setOpaque(true);
+		btnSignIn.addMouseListener(buttonColorChanger);
 		btnSignIn.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		singInOutHolder.add(btnSignIn);
 		
-		JButton btnSignUp = new JButton("Sign up");
+		JButton btnSignUp = new CometFlatButton("Sign up", new Color(52, 52, 52), Color.LIGHT_GRAY);
 		btnSignUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				inputsHolder.setVisible(false);
 				signUpInputs.setVisible(true);
 			}
 		});
-		btnSignUp.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnSignUp.setBackground(new Color(32, 32, 32));
-			}
-			public void mouseExited(MouseEvent e) {
-				btnSignUp.setBackground(new Color(52, 52, 52));
-			}
-			public void mousePressed(MouseEvent e) {
-				btnSignUp.setBackground(new Color(12, 12, 12));
-			}
-			public void mouseReleased(MouseEvent e) {
-				btnSignUp.setBackground(new Color(52, 52, 52));
-			}
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-		});
-		btnSignUp.setBackground(new Color(52, 52, 52));
-		btnSignUp.setForeground(Color.LIGHT_GRAY);
-		btnSignUp.setFont(new Font("Courier New", Font.PLAIN, 20));
-		btnSignUp.setFocusPainted(false);
-		btnSignUp.setBorderPainted(false);
-		btnSignUp.setContentAreaFilled(false);
-		btnSignUp.setOpaque(true);
+		btnSignUp.addMouseListener(buttonColorChanger);
 		btnSignUp.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		singInOutHolder.add(btnSignUp);
 		
-		JButton btnContinueOffline = new JButton("or continue offline...");
-		btnContinueOffline.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnContinueOffline.setBackground(new Color(32, 32, 32));
-			}
-			public void mouseExited(MouseEvent e) {
-				btnContinueOffline.setBackground(new Color(52, 52, 52));
-			}
-			public void mousePressed(MouseEvent e) {
-				btnContinueOffline.setBackground(new Color(12, 12, 12));
-			}
-			public void mouseReleased(MouseEvent e) {
-				btnContinueOffline.setBackground(new Color(52, 52, 52));
-			}
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-		});
-		btnContinueOffline.setForeground(Color.LIGHT_GRAY);
-		btnContinueOffline.setFont(new Font("Courier New", Font.PLAIN, 18));
-		btnContinueOffline.setFocusPainted(false);
-		btnContinueOffline.setBorderPainted(false);
-		btnContinueOffline.setContentAreaFilled(false);
-		btnContinueOffline.setOpaque(true);
+		JButton btnContinueOffline = new CometFlatButton("or continue offline...", new Color(52, 52, 52), Color.LIGHT_GRAY);
+		btnContinueOffline.addMouseListener(buttonColorChanger);
 		btnContinueOffline.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnContinueOffline.setBackground(new Color(52, 52, 52));
 		btnContinueOffline.setBounds(39, 423, 425, 47);
 		loginInputs.add(btnContinueOffline);
 		
@@ -288,21 +229,10 @@ public class LoginFrame extends JFrame {
 		btnLoginFb.setBounds(322, 212, 46, 47);
 		inputsHolder.add(btnLoginFb);
 		
-		JButton btnLogIn = new JButton("Log in");
-		btnLogIn.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnLogIn.setBackground(new Color(32, 32, 32));
-			}
-			public void mouseExited(MouseEvent e) {
-				btnLogIn.setBackground(new Color(52, 52, 52));
-			}
-			public void mousePressed(MouseEvent e) {
-				btnLogIn.setBackground(new Color(12, 12, 12));
-			}
-			public void mouseReleased(MouseEvent e) {
-				btnLogIn.setBackground(new Color(52, 52, 52));
-			}
-			public void mouseClicked(MouseEvent e) {
+		JButton btnLogIn = new CometFlatButton("Log in", new Color(52, 52, 52), Color.LIGHT_GRAY);
+		btnLogIn.addMouseListener(buttonColorChanger);
+		btnLogIn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
 				try {
 					if(server.login(client, txtUsername.getText(), pfPassword.getText())) {
 						server.logActivity("Logged client: " + client.getUserData().getUsername());
@@ -316,13 +246,6 @@ public class LoginFrame extends JFrame {
 				}
 			}
 		});
-		btnLogIn.setForeground(Color.LIGHT_GRAY);
-		btnLogIn.setFont(new Font("Courier New", Font.PLAIN, 20));
-		btnLogIn.setFocusPainted(false);
-		btnLogIn.setBorderPainted(false);
-		btnLogIn.setContentAreaFilled(false);
-		btnLogIn.setOpaque(true);
-		btnLogIn.setBackground(new Color(52, 52, 52));
 		btnLogIn.setBounds(31, 212, 253, 47);
 		inputsHolder.add(btnLogIn);
 		
@@ -394,31 +317,8 @@ public class LoginFrame extends JFrame {
 		txtEmail.setBounds(31, 135, 416, 20);
 		signUpInputs.add(txtEmail);
 		
-		JButton btnCreateAccount = new JButton("Create account");
-		btnCreateAccount.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent arg0) {
-				btnCreateAccount.setBackground(new Color(32, 32, 32));
-			}
-			public void mouseExited(MouseEvent e) {
-				btnCreateAccount.setBackground(new Color(52, 52, 52));
-			}
-			public void mousePressed(MouseEvent e) {
-				btnCreateAccount.setBackground(new Color(12, 12, 12));
-			}
-			public void mouseReleased(MouseEvent e) {
-				btnCreateAccount.setBackground(new Color(52, 52, 52));
-			}
-			public void mouseClicked(MouseEvent e) {
-				
-			}
-		});
-		btnCreateAccount.setForeground(Color.LIGHT_GRAY);
-		btnCreateAccount.setFont(new Font("Courier New", Font.PLAIN, 20));
-		btnCreateAccount.setFocusPainted(false);
-		btnCreateAccount.setBorderPainted(false);
-		btnCreateAccount.setContentAreaFilled(false);
-		btnCreateAccount.setOpaque(true);
-		btnCreateAccount.setBackground(new Color(52, 52, 52));
+		JButton btnCreateAccount = new CometFlatButton("Create account", new Color(52, 52, 52), Color.LIGHT_GRAY);
+		btnCreateAccount.addMouseListener(buttonColorChanger);
 		btnCreateAccount.setBounds(117, 212, 253, 47);
 		signUpInputs.add(btnCreateAccount);
 		

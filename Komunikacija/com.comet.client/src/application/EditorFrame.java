@@ -11,6 +11,8 @@ import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
 import javax.swing.text.StyledEditorKit;
 
+import guicomponents.ButtonColorChanger;
+import guicomponents.CometFlatButton;
 import guicomponents.TextLineNumber;
 
 import javax.swing.JMenuBar;
@@ -22,6 +24,8 @@ import javax.swing.JToolBar;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -59,7 +63,15 @@ public class EditorFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public EditorFrame() {
-		setTitle("Comet");setIconImage(new ImageIcon(getClass().getResource("../resources/cometIconMin.png")).getImage());
+		setTitle("Comet");
+		setIconImage(new ImageIcon(getClass()
+				.getResource("../resources/cometIconMin.png")).getImage());
+		
+		ButtonColorChanger toolBarColorChanger = new ButtonColorChanger(
+			new Color(60, 60, 60),
+			new Color(60, 60, 60),
+			new Color(60, 60, 60)
+		);
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 700);
@@ -94,64 +106,80 @@ public class EditorFrame extends JFrame {
 		panel.setLayout(new BorderLayout(0, 0));
 		
 		JToolBar toolbar = new JToolBar();
-		toolbar.setBorder(new EmptyBorder(8, 8, 8, 8));
+		toolbar.setBorder(null);
 		toolbar.setOrientation(JToolBar.VERTICAL);
 		toolbar.setBackground(new Color(60, 60, 60));
 		toolbar.setForeground(new Color(230, 230, 250));
 		toolbar.setFloatable(false);
 		panel.add(toolbar, BorderLayout.WEST);
 		
-		JLabel New = new JLabel("");
-		New.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/documentEdit.png"))
+		JButton New = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		New.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/documentEdit.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		New.setToolTipText("Create a new doucment");
+		New.addMouseListener(toolBarColorChanger);
 		toolbar.add(New);
 		
-		JLabel Open = new JLabel("");
-		Open.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/open.png"))
+		JButton Open = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		Open.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/open.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		Open.setToolTipText("Open a new doucment");
+		Open.addMouseListener(toolBarColorChanger);
 		toolbar.add(Open);
 		
 		JLabel topLabelSeparator = new JLabel(" ");
 		toolbar.add(topLabelSeparator);
 		
-		JLabel label_1 = new JLabel(" ");
-		toolbar.add(label_1);
+		toolbar.addSeparator();
+		toolbar.addSeparator();
 		
-		JLabel label_3 = new JLabel(" ");
-		toolbar.add(label_3);
-		
-		JLabel Paste = new JLabel("");
-		Paste.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/paste.png"))
+		JButton Paste = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		Paste.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/paste.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		Paste.setToolTipText("Paste");
+		Paste.addMouseListener(toolBarColorChanger);
 		toolbar.add(Paste);
 		
-		JLabel Find = new JLabel("");
-		Find.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/search.png"))
+		JButton Find = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		Find.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/search.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		Find.setToolTipText("Find");
+		Find.addMouseListener(toolBarColorChanger);
 		toolbar.add(Find);
 		
-		JLabel Copy = new JLabel("");
-		Copy.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/copy.png"))
+		JButton Copy = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		Copy.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/copy.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		Copy.setToolTipText("Copy");
+		Copy.addMouseListener(toolBarColorChanger);
 		toolbar.add(Copy);
 		
-		JLabel label = new JLabel(" ");
-		toolbar.add(label);
+		toolbar.addSeparator();
+		toolbar.addSeparator();
+		toolbar.addSeparator();
+		toolbar.addSeparator();
+		toolbar.addSeparator();
+		toolbar.addSeparator();
 		
-		JLabel label_2 = new JLabel(" ");
-		toolbar.add(label_2);
-		
-		JLabel label_4 = new JLabel(" ");
-		toolbar.add(label_4);
-		
-		JLabel SaveVersion = new JLabel("");
-		SaveVersion.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/cloudUpload.png"))
+		JButton SaveVersion = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		SaveVersion.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/cloudUpload.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		SaveVersion.setToolTipText("Save version of a document in a cloud");
+		SaveVersion.addMouseListener(toolBarColorChanger);
 		toolbar.add(SaveVersion);
 		
-		JLabel PullVersion = new JLabel("");
-		PullVersion.setIcon(new ImageIcon(new ImageIcon(getClass().getResource("../resources/cloudDownload.png"))
+		JButton PullVersion = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		PullVersion.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/cloudDownload.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
+		PullVersion.setToolTipText("Pull version of a document from cloud");
+		PullVersion.addMouseListener(toolBarColorChanger);
 		toolbar.add(PullVersion);
 		
 		JPanel leftSeparator = new JPanel();
@@ -173,8 +201,12 @@ public class EditorFrame extends JFrame {
 		editorHolder.setLayout(new BorderLayout(0, 0));
 		
 		JTextPane textPane = new JTextPane();
+		textPane.setForeground(Color.WHITE);
+		textPane.setFont(new Font("Courier New", Font.PLAIN, 14));
+		textPane.setSelectionColor(Color.WHITE);
+		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
-		//TextLineNumber tln = new TextLineNumber(textPane);
+		TextLineNumber tln = new TextLineNumber(textPane);
 		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
@@ -221,10 +253,13 @@ public class EditorFrame extends JFrame {
 		separator.setBounds(0, 0, 143, 2);
 		panel_3.add(separator);
 		
-		JPanel panel_4 = new JPanel();
-		JScrollPane collaboratorsHolder = new JScrollPane(panel_4, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JPanel collaboartorsPanel = new JPanel();
+		JScrollPane collaboratorsHolder = new JScrollPane(
+			collaboartorsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+		);
 		collaboratorsHolder.setBorder(null);
-		panel_4.setBackground(new Color(85, 85, 85));
+		collaboartorsPanel.setBackground(new Color(85, 85, 85));
 		collaboratorsHolder.setBounds(0, 13, 143, 213);
 		panel_3.add(collaboratorsHolder);
 		
@@ -244,7 +279,10 @@ public class EditorFrame extends JFrame {
 		panel_3.add(separator_2);
 		
 		JTextArea textArea = new JTextArea();
-		JScrollPane chatHolder = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane chatHolder = new JScrollPane(
+			textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+		);
 		chatHolder.setBounds(0, 279, 143, 202);
 		chatHolder.setBorder(null);
 		textArea.setBackground(new Color(100, 100, 100));
@@ -259,15 +297,17 @@ public class EditorFrame extends JFrame {
 		panel_3.add(textField);
 		textField.setColumns(10);
 		
-		JButton btnSend = new JButton("Send");
-		btnSend.setFont(new Font("Courier New", Font.PLAIN, 13));
-		btnSend.setForeground(new Color(230, 230, 250));
-		btnSend.setBorderPainted(false);
-		btnSend.setContentAreaFilled(false);
-		btnSend.setFocusPainted(false);
-		btnSend.setOpaque(true);
+		JButton btnSend = new CometFlatButton(
+			"Send",
+			new Color(92, 92, 92),
+			new Color(230, 230, 250)
+		);
 		btnSend.setBounds(0, 539, 143, 34);
-		btnSend.setBackground(new Color(40, 40, 40));
+		btnSend.addMouseListener(new ButtonColorChanger(
+			new Color(92, 92, 92),
+			new Color(102, 102, 102),
+			new Color(112, 112, 112))
+		);
 		panel_3.add(btnSend);
 		
 		setLocationRelativeTo(null);

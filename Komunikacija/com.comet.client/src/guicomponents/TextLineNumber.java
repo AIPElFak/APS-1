@@ -72,8 +72,8 @@ public class TextLineNumber extends JPanel
 	{
 		this.component = component;
 
-		setFont( component.getFont() );
-
+		setFont( new Font("Courier New", Font.BOLD, 14) );
+	
 		setBorderGap( 5 );
 		setCurrentLineForeground( Color.RED );
 		setDigitAlignment( RIGHT );
@@ -282,10 +282,7 @@ public class TextLineNumber extends JPanel
 		int caretPosition = component.getCaretPosition();
 		Element root = component.getDocument().getDefaultRootElement();
 
-		if (root.getElementIndex( rowStartOffset ) == root.getElementIndex(caretPosition))
-			return true;
-		else
-			return false;
+		return root.getElementIndex( rowStartOffset ) == root.getElementIndex(caretPosition);
 	}
 
 	/*
