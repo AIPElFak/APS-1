@@ -8,7 +8,6 @@ import javax.swing.JButton;
 public class CometFlatButton extends JButton {
 	
 	public CometFlatButton(String text, Color bgColor, Color fgColor) {
-		
 		setFont(new Font("Courier New", Font.PLAIN, 15));
 		setText(text);
 		setForeground(fgColor);
@@ -17,7 +16,5 @@ public class CometFlatButton extends JButton {
 		setFocusPainted(false);
 		setOpaque(true);
 		setBackground(bgColor);
-		
 	}
-	
 }

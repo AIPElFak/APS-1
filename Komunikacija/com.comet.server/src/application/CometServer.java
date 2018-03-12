@@ -8,7 +8,10 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 import communication.Server;
-import implementations.ServerImpl;
+import communication.ServerImpl;
+import components.AuthenticatorImpl;
+import components.DocumentSynchronizerImpl;
+import components.MessageServerImpl;
 
 public class CometServer {
 	
@@ -18,6 +21,9 @@ public class CometServer {
 	private CometServer(String host, String port, String name) {
 		try {
 			LocateRegistry.createRegistry(Integer.parseInt(port));
+			Naming.rebind("rmi://" + host + ":" + port +"/Authenticator", new AuthenticatorImpl());
+			Naming.rebind("rmi://" + host + ":" + port +"/DocumentSynchronizer", new DocumentSynchronizerImpl());
+			Naming.rebind("rmi://" + host + ":" + port +"/MessageServer", new MessageServerImpl());
 			server = new ServerImpl();
 			Naming.rebind("rmi://" + host + ":" + port +"/" + name, server);
 			this.host = host; this.port = port; this.name = name;
@@ -29,6 +35,9 @@ public class CometServer {
 		catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		catch (NotBoundException e) {
+			
 		}
 	}
 	

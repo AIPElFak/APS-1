@@ -3,20 +3,17 @@ package utilities;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class UserDataImpl extends UnicastRemoteObject implements UserData{
+import utilities.UserData;
+
+public class UserDataImpl extends UnicastRemoteObject implements UserData {
 
 	private String username, password, privilegies;
 	
-	public UserDataImpl() throws RemoteException {
+	public UserDataImpl(String username, String password, String privilegies) throws RemoteException {
 		super();
-		username = "";
-		password = "";
-		privilegies = "";
-	}
-
-	@Override
-	public void setUsername(String username) throws RemoteException {
 		this.username = username;
+		this.password = password;
+		this.privilegies = privilegies;
 	}
 
 	@Override
@@ -25,18 +22,8 @@ public class UserDataImpl extends UnicastRemoteObject implements UserData{
 	}
 
 	@Override
-	public void setPassword(String password) throws RemoteException {
-		this.password = password;
-	}
-
-	@Override
 	public String getPassword() throws RemoteException {
 		return password;
-	}
-
-	@Override
-	public void setPrivilegies(String privilegies) throws RemoteException {
-		this.privilegies = privilegies;
 	}
 
 	@Override

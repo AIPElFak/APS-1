@@ -207,7 +207,7 @@ public class EditorFrame extends JFrame {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		TextLineNumber tln = new TextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));

@@ -6,8 +6,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import communication.Client;
+import communication.ClientImpl;
 import communication.Server;
-import implementations.ClientImpl;
 
 public class CometClient {
 	

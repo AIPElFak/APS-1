@@ -19,4 +19,5 @@ public interface Authenticator extends Remote {
 	boolean addClient (Client cl) throws RemoteException;
 	
 	boolean removeClient (Client cl) throws RemoteException;
+
 }
