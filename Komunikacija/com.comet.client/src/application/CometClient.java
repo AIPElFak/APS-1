@@ -1,23 +1,35 @@
 package application;
 
+import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import communication.Client;
 import communication.ClientImpl;
 import communication.Server;
+import configuration.RmiConfiguration;
 
 public class CometClient {
 	
 	private Server server;
 	private Client client;
 	
-	private CometClient(String host, String port, String name) {
+	private CometClient() {
 		try {
+			JAXBContext jaxbContext = JAXBContext.newInstance(RmiConfiguration.class);
+			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+			URL url = getClass().getResource("../configuration/Configuration.xml");
+			RmiConfiguration cfg = (RmiConfiguration) 
+					jaxbUnmarshaller.unmarshal(new File(url.getPath()));
 			server = (Server) 
-					Naming.lookup("rmi://" + host + ":" + port + "/" + name);
+				Naming.lookup("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() + "/CometServer");
 			client =  new ClientImpl();
 			client.addServer(server);
 		} 
@@ -33,10 +45,13 @@ public class CometClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		catch (JAXBException e) {
+			
+		}
 	}
 	
-	public static void main(String args[]) throws MalformedURLException, RemoteException, NotBoundException{
-		CometClient cc = new CometClient("127.0.0.1", "1099", "CometServer");
+	public static void main(String args[]) throws MalformedURLException, RemoteException, NotBoundException, JAXBException{
+		CometClient cc = new CometClient();
 	}
 	
 	protected void finalize () throws Throwable {

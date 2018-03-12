@@ -36,7 +36,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	}
 	
 	public boolean removeServer(Server serv) throws RemoteException {
-		if(server == null)return false;
+		if(server == null) return false;
 		server = null;
 		serv.removeClient(this);
 		lg.addServer(null);
