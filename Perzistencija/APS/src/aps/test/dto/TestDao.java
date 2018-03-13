@@ -34,10 +34,10 @@ public class TestDao {
 //		ud.updateUser(u1);
 
 		//Get documents user works on
-		ArrayList<Document> docs = ud.getAllDocuments(4);
-		for(Document d : docs) {
-			System.out.println(d.getFilename()+" "+d.getProgramLaunguage());
-		}
+//		ArrayList<Document> docs = ud.getAllDocuments(4);
+//		for(Document d : docs) {
+//			System.out.println(d.getFilename()+" "+d.getProgramLaunguage());
+//		}
 		
 		//Get WorksOn objects where beside document there are privileges
 //		ArrayList<WorksOn> workings = ud.getAllWorksOn(4);
@@ -109,8 +109,13 @@ public class TestDao {
 //		DocumentVersion v = dvd.getDocumentVersionById(4);
 //		v.setContent(v.getContent().concat("DODATO"));
 //		dvd.updateDocumentVersion(v);
-		
 
+//		User usr = ud.getUserById(3);
+//		Document doc = dd.getDocumentById(3);
+//		ArrayList<DocumentVersion> vers = dd.getDocumentVersionsByUser(usr, doc);
+//		for(DocumentVersion dv : vers) {
+//			System.out.println(dv.getContent());
+//		}
 		//======================== WORKS_ON =========================
 		
 		//ili cuvati prvo d i u pa onda w

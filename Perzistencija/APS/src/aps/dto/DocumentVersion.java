@@ -24,6 +24,10 @@ public class DocumentVersion {
 	@JoinColumn(name="DOCUMENT_ID")
 	private Document document;
 	
+	@ManyToOne
+	@JoinColumn(name="USER_ID")
+	private User user;
+	
 	@Column(name="CONTENT")
 	private String content;
 	
@@ -35,8 +39,9 @@ public class DocumentVersion {
 	public DocumentVersion() {
 		
 	}
-	public DocumentVersion(Document doc,String content,Date dateTime) {
+	public DocumentVersion(Document doc,User u, String content,Date dateTime) {
 		this.document = doc;
+		this.user = u;
 		this.content = content;
 		this.dateTime = dateTime;
 	}
@@ -49,18 +54,32 @@ public class DocumentVersion {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
 	public Document getDocument() {
 		return document;
 	}
 	public void setDocument(Document document) {
 		this.document = document;
 	}
+	
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	
 	public String getContent() {
 		return content;
 	}
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	
 	public Date getDateTime() {
 		return dateTime;
 	}

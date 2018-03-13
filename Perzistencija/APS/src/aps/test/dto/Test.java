@@ -40,15 +40,15 @@ public class Test {
 //
 //		System.out.println("Pre cuvanja(samo tekst): "+text.length());
 //		System.out.println("Pre cuvanja: "+v1.getContent().length());
-		User u1 = new User("Mika","asdf123","mika@hotmail.com","http://slika12.jpg");
-		Document d1 = new Document("C++");
-		WorksOn w1 = new WorksOn();
-		w1.setDocument(d1);
-		w1.setUser(u1);
-		w1.setPrivilege("owner");
-		
-		Session s = HibernateUtil.getSessionFactory().openSession();
-		s.beginTransaction();
+//		User u1 = new User("Mika","asdf123","mika@hotmail.com","http://slika12.jpg");
+//		Document d1 = new Document("C++");
+//		WorksOn w1 = new WorksOn();
+//		w1.setDocument(d1);
+//		w1.setUser(u1);
+//		w1.setPrivilege("owner");
+//		
+//		Session s = HibernateUtil.getSessionFactory().openSession();
+//		s.beginTransaction();
 
 //		Document d = new Document("Python");
 //		User u2 = new User("Tika2","qwery123","tika@gmial.com","http://img3.jpg");
@@ -60,6 +60,7 @@ public class Test {
 		//WorksOn w = s.load(WorksOn.class, 4);
 		
 		
+		
 		/*Document d = s.load(Document.class, 3);
 
 		System.out.println("Jezik: "+d.getProgramLaunguage());
@@ -69,11 +70,11 @@ public class Test {
 		}*/
 		
 		//User usr = s.load(User.class, 2);
-		User usr = s.get(User.class, 222);
-		if(usr != null)
-			System.out.println("Username: "+usr.getUsername());
-		else
-			System.out.println("Ne postoji ");
+//		User usr = s.get(User.class, 222);
+//		if(usr != null)
+//			System.out.println("Username: "+usr.getUsername());
+//		else
+//			System.out.println("Ne postoji ");
 //		for(WorksOn v : usr.getDocuments()) {
 //			System.out.println("Sadrzaj: "+v.getDocument().getProgramLaunguage());
 //		}
@@ -82,14 +83,9 @@ public class Test {
 		//s.save(doc);
 		//s.save(v1);
 		
-		//DocumentVersion vers = s.load(DocumentVersion.class,3);
 		
-//		Document doc = s.load(Document.class, 5);
-//		for(User u in )
-		
-		
-		s.getTransaction().commit();
-		s.close();
+//		s.getTransaction().commit();
+//		s.close();
 		
 	}
 }

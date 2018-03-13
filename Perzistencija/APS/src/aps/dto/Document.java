@@ -28,45 +28,55 @@ public class Document {
 	@Column(name="NAME")
 	private String filename;
 	
-	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="document")
 	private Collection<DocumentVersion> versions;
 	
 	@OneToMany(mappedBy="document", cascade = CascadeType.ALL)
 	private Collection<WorksOn> users;
 	
+	@OneToMany(mappedBy="document", cascade = CascadeType.ALL)
+	private Collection<JoinRequest> requests;
 	
 //constructors
 	public Document() {
 		this.versions = new ArrayList<DocumentVersion>();
 		this.users = new ArrayList<WorksOn>();
+		this.requests = new ArrayList<JoinRequest>();
 	}
-	public Document(String programLanguage) {
-		this.programLaunguage = programLanguage;
+	
+	public Document(String programLanguage,String filename) {
 		this.versions = new ArrayList<DocumentVersion>();
+		this.users = new ArrayList<WorksOn>();
+		this.requests = new ArrayList<JoinRequest>();
+		this.programLaunguage = programLanguage;
+		this.filename = filename;
 	}
-
 
 //getters and setters
-	
 	public Collection<DocumentVersion> getVersions() {
 		return versions;
 	}
 	public void setVersions(Collection<DocumentVersion> versions) {
 		this.versions = versions;
 	}
+	
+	
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
 	public String getProgramLaunguage() {
 		return programLaunguage;
 	}
 	public void setProgramLaunguage(String programLaunguage) {
 		this.programLaunguage = programLaunguage;
 	}
+	
+	
 	public String getFilename() {
 		return filename;
 	}
@@ -74,10 +84,19 @@ public class Document {
 		this.filename = filename;
 	}
 	
+	
 	public Collection<WorksOn> getUsers() {
 		return users;
 	}
 	public void setUsers(Collection<WorksOn> users) {
 		this.users = users;
+	}
+	
+	
+	public Collection<JoinRequest> getRequests() {
+		return requests;
+	}
+	public void setRequests(Collection<JoinRequest> requests) {
+		this.requests = requests;
 	}
 }

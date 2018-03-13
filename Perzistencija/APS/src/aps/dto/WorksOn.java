@@ -15,6 +15,8 @@ import javax.persistence.Table;
 public class WorksOn {
 
 //attributes
+	public static enum Privilege {ReadOnly,ReadWrite,Owner};
+	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ID")
 	private int id;
@@ -30,15 +32,14 @@ public class WorksOn {
 	@Column(name="PRIVILEGE")
 	private String privilege;
 	
-
 //constructors
 	public WorksOn() {
 		
 	}
-	public WorksOn(Document doc,User u,String privilege) {
+	public WorksOn(Document doc,User u,Privilege privilege) {
 		this.document = doc;
 		this.user = u;
-		this.privilege = privilege;
+		this.privilege = privilege.toString();
 	}
 	
 //getters and setters
@@ -48,26 +49,30 @@ public class WorksOn {
 	public void setId(int id) {
 		this.id = id;
 	}
+	
+	
 	public Document getDocument() {
 		return document;
 	}
 	public void setDocument(Document document) {
 		this.document = document;
 	}
+	
+	
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	
 	public String getPrivilege() {
 		return privilege;
 	}
 	public void setPrivilege(String privilege) {
 		this.privilege = privilege;
 	}
-	
-	
 
 }
 

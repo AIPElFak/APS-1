@@ -28,6 +28,7 @@
     <mapping class="aps.dto.Document"/>
     <mapping class="aps.dto.DocumentVersion"/>
     <mapping class="aps.dto.WorksOn"/>
+    <mapping class="aps.dto.JoinRequest"/>
     
   </session-factory>
 </hibernate-configuration>
