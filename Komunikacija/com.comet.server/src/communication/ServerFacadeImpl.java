@@ -44,38 +44,18 @@ public class ServerFacadeImpl implements ServerFacade {
 	}
 
 	@Override
-	public void lobbyBroadcast(String message, Client cl) throws RemoteException {
-		msgsrv.lobbyBroadcast(message, cl);
+	public Authenticator getAuthenticator() throws RemoteException {
+		return auth;
 	}
 
 	@Override
-	public void documentBroadcast(Document doc, Client cl, String message) throws RemoteException {
-		msgsrv.lobbyBroadcast(message, cl);
+	public MessageServer getMessageServer() throws RemoteException {
+		return msgsrv;
 	}
 
 	@Override
-	public boolean login(Client cl, String username, String password) throws RemoteException {
-		return auth.login(cl, username, password);
-	}
-
-	@Override
-	public boolean logout(Client cl) throws RemoteException {
-		return auth.logout(cl);
-	}
-
-	@Override
-	public boolean signin(Client cl) throws RemoteException {
-		return auth.signin(cl);
-	}
-
-	@Override
-	public boolean deleteAccount(Client cl) throws RemoteException {
-		return auth.deleteAccount(cl);
-	}
-
-	@Override
-	public boolean modifyUserData(Client cl) throws RemoteException {
-		return auth.modifyUserData(cl);
+	public DocumentSynchronizer getDocumentSynchronizer() throws RemoteException {
+		return docsynch;
 	}
 
 }

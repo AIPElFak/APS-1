@@ -2,25 +2,18 @@ package communication;
 
 import java.rmi.RemoteException;
 
+import components.Authenticator;
+import components.DocumentSynchronizer;
+import components.MessageServer;
 import utilities.Document;
 
 public interface ServerFacade {
 	
-	void lobbyBroadcast(String message, Client cl) throws RemoteException;
+	Authenticator getAuthenticator() throws RemoteException;
 	
-	void documentBroadcast(Document doc, Client cl, String message) throws RemoteException;
+	MessageServer getMessageServer() throws RemoteException;
 	
-	boolean login (Client cl, String username, String password) throws RemoteException;
-	
-	boolean logout (Client cl) throws RemoteException;
-	
-	boolean signin (Client cl) throws RemoteException;
-	
-	boolean deleteAccount (Client cl) throws RemoteException;
-	
-	boolean modifyUserData (Client cl) throws RemoteException;
-	
-	void logActivity(String message) throws RemoteException;
+	DocumentSynchronizer getDocumentSynchronizer() throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;
 	

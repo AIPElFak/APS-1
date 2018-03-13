@@ -54,14 +54,4 @@ public class CometClient {
 		CometClient cc = new CometClient();
 	}
 	
-	protected void finalize () throws Throwable {
-		try {
-			server.removeClient(client);
-			super.finalize();
-		} 
-		catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

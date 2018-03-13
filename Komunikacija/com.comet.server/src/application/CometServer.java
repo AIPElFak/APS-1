@@ -63,24 +63,4 @@ public class CometServer {
 		System.out.println("Server has started working...");
 	}
 	
-	protected void finalize() throws Throwable {
-		try {
-			Naming.unbind("rmi://" + host + ":" + port +"/" + name);
-			super.finalize();
-			System.exit(0);
-		} 
-		catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
 }

@@ -40,7 +40,6 @@ import javax.swing.JButton;
 public class EditorFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextArea lineNumbers;
 	private JTextField textField;
 
 	/**
