@@ -15,7 +15,4 @@ public interface UserData extends Remote {
 	
 	String getImage() throws RemoteException;
 	
-	
-	
-	
 }

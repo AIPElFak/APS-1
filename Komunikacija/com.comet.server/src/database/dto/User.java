@@ -1,5 +1,7 @@
 package database.dto;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -16,7 +18,7 @@ import utilities.UserData;
 
 @Entity
 @Table (name="USER_DETAILS")
-public class User implements UserData{
+public class User extends UnicastRemoteObject implements UserData{
 	
 //attributes
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,13 +47,15 @@ public class User implements UserData{
 	private Collection<JoinRequest> requests;
 	
 //constructors
-	public User() {
+	public User() throws RemoteException {
+		super();
 		this.documents = new ArrayList<WorksOn>();
 		this.versions = new ArrayList<DocumentVersion>();
 		this.requests = new ArrayList<JoinRequest>();
 	}
 	
-	public User(String username,String password,String email,String image) {
+	public User(String username,String password,String email,String image) throws RemoteException {
+		super();
 		this.documents = new ArrayList<WorksOn>();
 		this.versions = new ArrayList<DocumentVersion>();
 		this.requests = new ArrayList<JoinRequest>();

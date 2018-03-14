@@ -19,7 +19,7 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	
 	public AuthenticatorImpl() throws RemoteException {
 		super();
-//		clients = new ArrayList<Client>();
+		clients = new ArrayList<Client>();
 //		users = new ArrayList<UserData>();
 //		
 //		UserData udMarko = new UserDataImpl("Marko", "Sifra", "Owner");		
