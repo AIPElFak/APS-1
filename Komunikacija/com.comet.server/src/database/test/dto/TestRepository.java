@@ -72,10 +72,30 @@ public class TestRepository {
 //		System.out.println(i.getMessage());
 		
 
-		Document doc3 = dd.getById(3);
-		ArrayList<WorksOn> wo = dd.getAllWorksOnDocument(doc3.getId());
-		for(WorksOn w: wo) {
-			System.out.println(w.getUser().getUsername());
-		}
+//		Document doc3 = dd.getById(3);
+//		ArrayList<WorksOn> wo = dd.getAllWorksOnDocument(doc3.getId());
+//		for(WorksOn w: wo) {
+//			System.out.println(w.getUser().getUsername());
+//		}
+		
+
+//		User novi = new User("NewUser2","NewPass","newEmail@gmail.com","http://ImgurImage/323.jpg");
+//		if(ud.add(novi))
+//			System.out.println("Uspesno");
+//		else
+//			System.out.println("Neuspesno");
+		
+//		User del = ud.getById(19);
+//		del.setUsername("P1");
+//		if(ud.update(del))
+//			System.out.println("Uspesno");
+//		else
+//			System.out.println("Neuspesno");
+		
+
+		Document doc1 = new Document("Java","Preduzece23",true);
+		//dd.add(doc1);
+		doc1 = dd.getById(26);
+		System.out.println(doc1.getFilename()+doc1.isPassword_protected());
 	}
 }

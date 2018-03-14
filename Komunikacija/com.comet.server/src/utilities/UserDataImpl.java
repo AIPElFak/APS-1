@@ -7,13 +7,16 @@ import utilities.UserData;
 
 public class UserDataImpl extends UnicastRemoteObject implements UserData {
 
-	private String username, password, privilegies;
+	private int id;
+	private String username, password, email, imageUrl;
 	
-	public UserDataImpl(String username, String password, String privilegies) throws RemoteException {
+	public UserDataImpl(String username, String password, String email, String imageUrl,int id) throws RemoteException {
 		super();
+		this.id = id;
 		this.username = username;
 		this.password = password;
-		this.privilegies = privilegies;
+		this.email = email;
+		this.imageUrl = imageUrl;
 	}
 
 	@Override
@@ -27,8 +30,19 @@ public class UserDataImpl extends UnicastRemoteObject implements UserData {
 	}
 
 	@Override
-	public String getPrivilegies() throws RemoteException {
-		return privilegies;
+	public int getId() throws RemoteException {
+		return id;
 	}
+
+	@Override
+	public String getEmail() throws RemoteException {
+		return email;
+	}
+
+	@Override
+	public String getImage() throws RemoteException {
+		return imageUrl;
+	}
+
 
 }

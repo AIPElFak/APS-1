@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import components.Authenticator;
 import database.dao.BusinessLogic;
 import database.dto.User;
+import database.test.dto.Info;
 import utilities.UserData;
 import utilities.UserDataImpl;
 import communication.Client;
@@ -18,14 +19,14 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	
 	public AuthenticatorImpl() throws RemoteException {
 		super();
-		clients = new ArrayList<Client>();
-		users = new ArrayList<UserData>();
-		
-		UserData udMarko = new UserDataImpl("Marko", "Sifra", "Owner");		
-		UserData udSentic = new UserDataImpl("Sentic", "Sifra", "Guest");
-
-		users.add(udMarko);
-		users.add(udSentic);
+//		clients = new ArrayList<Client>();
+//		users = new ArrayList<UserData>();
+//		
+//		UserData udMarko = new UserDataImpl("Marko", "Sifra", "Owner");		
+//		UserData udSentic = new UserDataImpl("Sentic", "Sifra", "Guest");
+//
+//		users.add(udMarko);
+//		users.add(udSentic);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -35,7 +36,7 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		BusinessLogic logic = new BusinessLogic();
 		User user = logic.login(username, password);
 		if(user!=null) {
-			//cl.setUserData(userData);
+			cl.setUserData(user);
 			return true;
 		}
 		return false;
@@ -51,21 +52,29 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	}
 
 	@Override
-	public boolean signin(Client cl) throws RemoteException {
-		// TODO Auto-generated method stub
+	public boolean signin(Client cl, String username, String password, String email, String imageUrl) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		User user = new User(username, password, email, imageUrl);
+		Info info = logic.register(user);
+		if(info.isSuccessful()) {
+			cl.setUserData(user);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean deleteAccount(Client cl) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		BusinessLogic logic = new BusinessLogic();
+		User user = (User)cl.getUserData();
+		return logic.deleteUser(user);
 	}
 
 	@Override
 	public boolean modifyUserData(Client cl) throws RemoteException {
-		// TODO Auto-generated method stub
-		return false;
+		BusinessLogic logic = new BusinessLogic();
+		User user = (User)cl.getUserData();
+		return logic.updateUser(user);
 	}
 
 	@Override

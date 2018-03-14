@@ -18,4 +18,12 @@ public class BusinessLogic {
 	public Info register(User user) {
 		return userDao.register(user);
 	}
+	
+	public boolean deleteUser(User user) {
+		return userDao.delete(user);
+	}
+
+	public boolean updateUser(User user) {
+		return userDao.update(user);
+	}
 }

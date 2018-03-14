@@ -19,13 +19,15 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 	}
 
 	@Override
-	public void add(TEntity entity) {
+	public boolean add(TEntity entity) {
+		boolean success = false;
 		Transaction trns = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
 			s.save(entity);
 			s.getTransaction().commit();
+			success = true;
 		}
 		catch(RuntimeException e) {
 			if(trns!=null) {
@@ -36,16 +38,19 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 		finally {
 			s.close();
 		}
+		return success;
 	}
 
 	@Override
-	public void update(TEntity entity) {
+	public boolean update(TEntity entity) {
+		boolean success = false;
 		Transaction trns = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
 			s.update(entity);
 			s.getTransaction().commit();
+			success = true;
 		}
 		catch(RuntimeException e) {
 			if(trns != null) {
@@ -56,16 +61,19 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 		finally {
 			s.close();
 		}
+		return success;
 	}
 
 	@Override
-	public void delete(TEntity entity) {
+	public boolean delete(TEntity entity) {
+		boolean success = false;
 		Transaction trns = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
 			s.delete(entity);
 			s.getTransaction().commit();
+			success = true;
 		}
 		catch(RuntimeException e) {
 			if(trns != null) {
@@ -76,6 +84,7 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 		finally {
 			s.close();
 		}
+		return success;
 	}
 
 	@Override

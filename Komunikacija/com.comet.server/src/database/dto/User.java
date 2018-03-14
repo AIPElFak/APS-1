@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import utilities.UserData;
+
 @Entity
 @Table (name="USER_DETAILS")
-public class User {
+public class User implements UserData{
 	
 //attributes
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
