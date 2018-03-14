@@ -6,9 +6,9 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/aps</property>
-    <property name="hibernate.connection.username">root</property>
-    <property name="hibernate.connection.password"></property>
+    <property name="hibernate.connection.url">jdbc:mysql://160.99.38.10:6666/db_comet</property>
+    <property name="hibernate.connection.username">comet</property>
+    <property name="hibernate.connection.password">vranjanac!</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     
     
@@ -24,11 +24,11 @@
      
      
     <!--mapiranja klasa-->
-    <mapping class="aps.dto.User"/>
-    <mapping class="aps.dto.Document"/>
-    <mapping class="aps.dto.DocumentVersion"/>
-    <mapping class="aps.dto.WorksOn"/>
-    <mapping class="aps.dto.JoinRequest"/>
+    <mapping class="database.dto.User"/>
+    <mapping class="database.dto.Document"/>
+    <mapping class="database.dto.DocumentVersion"/>
+    <mapping class="database.dto.WorksOn"/>
+    <mapping class="database.dto.JoinRequest"/>
     
   </session-factory>
 </hibernate-configuration>

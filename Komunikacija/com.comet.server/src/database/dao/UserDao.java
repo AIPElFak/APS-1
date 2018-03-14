@@ -41,7 +41,7 @@ public class UserDao extends Repository<User>{
 				info = new Info("Email allredy exists.",false);
 			else {
 				info = new Info();
-				s.save(u);
+				s.save(u);							//TODO: use some hashing method here
 			}
 			s.getTransaction().commit();
 		}

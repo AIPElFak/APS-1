@@ -16,7 +16,7 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 	}
 	
 
-	public DocumentVersion getDocumentVersionByDate(Date dateTime,Document d) {
+	public DocumentVersion getDocumentVersionByDate(Date dateTime, Document d) {
 		Transaction trns = null;
 		DocumentVersion v = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -66,17 +66,17 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 		return vers;
 	}
 	
-	public DocumentVersion getDocumentLastVersion(int documentId){
+	public DocumentVersion getDocumentLastVersion(Document doc){
 		Transaction trns = null;
 		DocumentVersion last = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
-			String query = "SELECT * FROM document_version" + 
+			String query = "SELECT * FROM DOCUMENT_VERSION" + 
 							" WHERE DOCUMENT_ID = :docId" + 
-							" AND ID = (SELECT MAX(ID) FROM document_version WHERE DOCUMENT_ID = :docId);";
+							" AND ID = (SELECT MAX(ID) FROM DOCUMENT_VERSION WHERE DOCUMENT_ID = :docId);";
 			last = (DocumentVersion)s.createNativeQuery(query,DocumentVersion.class)
-					.setParameter("docId", documentId)
+					.setParameter("docId", doc.getId())
 					.uniqueResult();
 			s.getTransaction().commit();
 		}
@@ -92,16 +92,15 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 		return last;
 	}
 	
-	public ArrayList<DocumentVersion> getAllDocumentVersions(int documentId){
+	public ArrayList<DocumentVersion> getAllDocumentVersions(Document doc){
 		Transaction trns = null;
 		ArrayList<DocumentVersion> list = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
-			String query = "SELECT * FROM document_version" + 
-							" WHERE DOCUMENT_ID = :docId";
-			list = (ArrayList<DocumentVersion>)s.createNativeQuery(query,DocumentVersion.class)
-					.setParameter("docId", documentId)
+			String query = "from DocumentVersion where document = :doc";
+			list = (ArrayList<DocumentVersion>)s.createQuery(query,DocumentVersion.class)
+					.setParameter("doc", doc)
 					.list();
 			s.getTransaction().commit();
 		}

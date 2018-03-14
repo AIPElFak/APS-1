@@ -14,7 +14,7 @@ public class DocumentDao extends Repository<Document>{
 		this.setClassType(Document.class);
 	}
 	
-	public ArrayList<WorksOn> getUsersWorksOnDocument(int documentId){
+	public ArrayList<WorksOn> getAllWorksOnDocument(int documentId){
 		Transaction trns = null;
 		ArrayList<WorksOn> list = new ArrayList<WorksOn>();
 		Session s = HibernateUtil.getSessionFactory().openSession();

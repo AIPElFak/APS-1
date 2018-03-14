@@ -5,6 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import components.Authenticator;
+import database.dao.BusinessLogic;
+import database.dto.User;
 import utilities.UserData;
 import utilities.UserDataImpl;
 import communication.Client;
@@ -30,19 +32,21 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 
 	@Override
 	public boolean login(Client cl, String username, String password) throws RemoteException {
-		if (!clients.contains(cl)) return false;
-		for(UserData ud : users) {
-			if(ud.getUsername().equals(username) && ud.getPassword().equals(password)) {
-				cl.setUserData(ud);
-				return true;
-			}
+		BusinessLogic logic = new BusinessLogic();
+		User user = logic.login(username, password);
+		if(user!=null) {
+			//cl.setUserData(userData);
+			return true;
 		}
 		return false;
 	}
 
 	@Override
 	public boolean logout(Client cl) throws RemoteException {
-		// TODO Auto-generated method stub
+		if(cl.getUserData()!=null) {
+			cl.setUserData(null);
+			return true;
+		}
 		return false;
 	}
 

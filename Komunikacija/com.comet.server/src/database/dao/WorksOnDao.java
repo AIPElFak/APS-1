@@ -67,4 +67,33 @@ public class WorksOnDao extends Repository<WorksOn>{
 		return requests;
 	}
 	
+	
+	public ArrayList<JoinRequest> getRequestsForOwnerDocuments(User owner) {
+		Transaction trns = null;
+		ArrayList<WorksOn> list = null;
+		ArrayList<JoinRequest> requests = new ArrayList<JoinRequest>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			String query = "from WorksOn where privilege = :privilege and user = :user";
+			list = (ArrayList<WorksOn>)s.createQuery(query, WorksOn.class)
+					.setParameter("privilege", WorksOn.Privilege.Owner.toString())
+					.setParameter("user", owner)
+					.list();
+			
+			for(WorksOn w : list)
+				requests.addAll(w.getDocument().getRequests());
+			
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) 
+				s.getTransaction().rollback();
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+		return requests;
+	}
 }
