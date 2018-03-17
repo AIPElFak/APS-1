@@ -57,7 +57,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
 
         while (wordR <= after) {
             if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                if (text.substring(wordL, wordR).matches("( |\\t)*(" + keyWords + ")"))
+                if (text.substring(wordL, wordR).matches("(\\W)*(" + keyWords + ")\\)*|(\\w)*\\)*"))
                     setCharacterAttributes(wordL, wordR - wordL, attr, false);
                 else
                     setCharacterAttributes(wordL, wordR - wordL, attrNonKeyWords, false);
@@ -76,7 +76,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
         if (before < 0) before = 0;
         int after = findFirstNonWordChar(text, offs);
 
-        if (text.substring(before, after).matches("( |\\t)*(" + keyWords + ")")) {
+        if (text.substring(before, after).matches("(\\W)*(" + keyWords + ")\\)*|(\\w)*\\)*")) {
             setCharacterAttributes(before, after - before, attr, false);
         } else {
             setCharacterAttributes(before, after - before, attrNonKeyWords, false);
