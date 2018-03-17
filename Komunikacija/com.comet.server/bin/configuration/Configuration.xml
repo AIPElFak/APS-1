@@ -1,4 +1,0 @@
-<rmiConfiguration id="100">
-    <rmiHost>127.0.0.1</rmiHost>
-    <rmiPort>1099</rmiPort>
-</rmiConfiguration>
