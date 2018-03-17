@@ -8,11 +8,13 @@ public interface View {
 	
 	void disposeView();
 	
+	void setCaretLocation(int x, int y);
+	
 	void showRowColPosition(int row, int col);
 	
 	void setDocumentName(String name);
 	
-	void updateDocumentInfo(String extension, String progLanguage);
+	void updateStatisics(String statistics);
 	
 	void updateContent(String content);
 }

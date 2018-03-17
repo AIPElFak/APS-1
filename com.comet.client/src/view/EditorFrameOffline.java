@@ -12,8 +12,11 @@ import javax.swing.JScrollPane;
 import controller.ControllerOffline;
 import controller.ControllerOfflineImpl;
 import guicomponents.ButtonColorChanger;
+import guicomponents.CometEditor;
+import guicomponents.CometEditorDocument;
 import guicomponents.CometFlatButton;
 import guicomponents.TextLineNumber;
+import languages.SymbolTable;
 import model.ModelImpl;
 
 import javax.swing.JMenuBar;
@@ -22,6 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -29,18 +33,31 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import javax.swing.text.html.HTMLDocument;
+import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class EditorFrameOffline extends JFrame implements View {
 
 	private JTextPane textPane;
 	private JPanel contentPane;
-	private JLabel lblRowColStatus, lblDocumentName, lblExtension, lblProgrammingLanguage;
+	private JLabel lblRowColStatus, lblDocumentName, lblStatistics;
+	
+	private Style cometStyle;
+	private DefaultCaret caret;
 	
 	private ControllerOffline controller;
 
@@ -238,7 +255,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		
 		JPanel leftSeparator = new JPanel();
 		leftSeparator.setBorder(new MatteBorder(0, 2, 0, 2, new Color(130, 130, 130)));
-		leftSeparator.setBackground(new Color(180, 180, 180));
+		leftSeparator.setBackground(new Color(190, 190, 190));
 		panel.add(leftSeparator, BorderLayout.EAST);
 		
 		JPanel statusPanel = new JPanel();
@@ -247,40 +264,56 @@ public class EditorFrameOffline extends JFrame implements View {
 		statusPanel.setLayout(new FlowLayout());
 		contentPane.add(statusPanel, BorderLayout.SOUTH);
 		
-		lblRowColStatus = new JLabel("Row 0, Col 0");
+		lblRowColStatus = new JLabel("Cursor(0, 0)");
 		lblRowColStatus.setFont(new Font("Courier New", Font.PLAIN, 13));
 		lblRowColStatus.setForeground(Color.LIGHT_GRAY);
 		lblRowColStatus.setBorder(new EmptyBorder(0, 15, 0, 15));
 		statusPanel.add(lblRowColStatus);
 		
-		lblExtension = new JLabel("Extension");
-		lblExtension.setForeground(Color.LIGHT_GRAY);
-		lblExtension.setFont(new Font("Courier New", Font.PLAIN, 13));
-		lblExtension.setBorder(new EmptyBorder(0, 15, 0, 15));
-		statusPanel.add(lblExtension);
-		
-		lblProgrammingLanguage = new JLabel("Programming language");
-		lblProgrammingLanguage.setForeground(Color.LIGHT_GRAY);
-		lblProgrammingLanguage.setFont(new Font("Courier New", Font.PLAIN, 13));
-		lblProgrammingLanguage.setBorder(new EmptyBorder(0, 15, 0, 15));
-		statusPanel.add(lblProgrammingLanguage);
+		lblStatistics = new JLabel("Number of words: 0");
+		lblStatistics.setForeground(Color.LIGHT_GRAY);
+		lblStatistics.setFont(new Font("Courier New", Font.PLAIN, 13));
+		lblStatistics.setBorder(new EmptyBorder(0, 15, 0, 15));
+		statusPanel.add(lblStatistics);
 		
 		JPanel editorHolder = new JPanel();
 		editorHolder.setLayout(new BorderLayout(0, 0));
 		
-		textPane = new JTextPane();
-		textPane.setContentType("HTML/plain");
+		caret = new DefaultCaret();
+		
+		textPane = new JTextPane(
+				new CometEditorDocument(new SymbolTable("Java")));
+		textPane.setCaret(caret);
 		textPane.setForeground(Color.WHITE);
 		textPane.setCaretColor(Color.WHITE);
 		textPane.setFont(new Font("Courier New", Font.PLAIN, 16));
 		textPane.setSelectionColor(Color.WHITE);
 		textPane.setSelectedTextColor(Color.BLACK);
+		cometStyle = textPane.addStyle("CometStyle", null);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		TextLineNumber tln = new TextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
+		textPane.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				updateText(e);
+			}
+			public void insertUpdate(DocumentEvent e) {
+				updateText(e);
+			}
+			public void removeUpdate(DocumentEvent e) {
+				updateText(e);
+			}
+			private void updateText(DocumentEvent e) {
+				int x = textPane.getText().split("[\r]").length;
+				int y = e.getOffset() + e.getLength();
+				int numOfWords = textPane.getText().split("[  |(|)|]").length;
+				controller.updateCaretLocation(x, y);
+				controller.updateDocumentStatisics("Number of words: " + numOfWords);
+			}
+		});
 		editorHolder.add(textScroll);
 		contentPane.add(editorHolder, BorderLayout.CENTER);
 		
@@ -300,7 +333,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		
 		JPanel rightSeparator = new JPanel();
 		rightSeparator.setBorder(new MatteBorder(0, 2, 0, 2, new Color(130, 130, 130)));
-		rightSeparator.setBackground(SystemColor.activeCaptionBorder);
+		rightSeparator.setBackground(new Color(190, 190, 190));
 		contentPane.add(rightSeparator, BorderLayout.EAST);
 		
 		setLocationRelativeTo(null);
@@ -332,13 +365,17 @@ public class EditorFrameOffline extends JFrame implements View {
 	}
 
 	@Override
-	public void updateDocumentInfo(String extension, String progLanguage) {
-		lblExtension.setText(extension);
-		lblProgrammingLanguage.setText(progLanguage);
+	public void updateContent(String content) {
+		textPane.setText(content);
 	}
 
 	@Override
-	public void updateContent(String content) {
-		textPane.setText(content);
+	public void setCaretLocation(int x, int y) {
+		this.lblRowColStatus.setText("Cursor(" + x + ", " + y + ") ");
+	}
+
+	@Override
+	public void updateStatisics(String statistics) {
+		lblStatistics.setText(statistics);
 	}
 }

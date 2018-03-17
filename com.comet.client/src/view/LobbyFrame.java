@@ -307,12 +307,18 @@ public class LobbyFrame extends JFrame implements View {
 	}
 
 	@Override
-	public void updateDocumentInfo(String extension, String progLanguage) {
+	public void updateContent(String content) {
 		return;
 	}
 
 	@Override
-	public void updateContent(String content) {
+	public void setCaretLocation(int x, int y) {
 		return;
+	}
+
+	@Override
+	public void updateStatisics(String statistics) {
+		// TODO Auto-generated method stub
+		
 	}
 }

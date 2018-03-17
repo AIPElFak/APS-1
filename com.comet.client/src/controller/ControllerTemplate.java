@@ -13,13 +13,17 @@ public interface ControllerTemplate {
 	
 	View getView();
 	
-	public void exitApplication();
+	void updateCaretLocation(int x, int y);
 	
-	public void updateDocumentName(String name);
+	void exitApplication();
 	
-	public void updateDocumentInfo(String extension, String progLanguage);
+	void updateDocumentName(String name);
 	
-	public void updateDocumentContent(String content);
+	void updateDocumentInfo(String extension, String progLanguage);
+	
+	void updateDocumentStatisics(String statistics);
+	
+	void updateDocumentContent(String content);
 	
 	void updateRowColStatus(int row, int col);
 	

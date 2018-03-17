@@ -1,8 +1,5 @@
 package controller;
 
-import model.Model;
-import view.View;
-
 public class ControllerOfflineImpl extends ControllerTemplateImpl implements ControllerOffline{
 
 	@Override
@@ -20,7 +17,6 @@ public class ControllerOfflineImpl extends ControllerTemplateImpl implements Con
 	@Override
 	public void createNewDocument() {
 		getView().setDocumentName("New document");
-		getView().updateDocumentInfo("*.*", "");
 		getView().updateContent("");
 		getModel().setName("New document");
 		getModel().setContent("");

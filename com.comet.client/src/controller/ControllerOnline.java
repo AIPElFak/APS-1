@@ -1,9 +1,7 @@
 package controller;
 
 import communication.Client;
-import model.Model;
 import utilities.Document;
-import view.View;
 
 public interface ControllerOnline extends ControllerTemplate {
 	

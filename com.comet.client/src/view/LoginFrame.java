@@ -169,9 +169,9 @@ public class LoginFrame extends JFrame {
 							Thread.sleep(1500);
 						} 
 						catch (InterruptedException e) {}
+						frame.setVisible(true);
 						cs.stopAnimation();
 						disposeFrame();
-						frame.setVisible(true);
 					}
 				});
 				t1.start();

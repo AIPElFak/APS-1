@@ -121,7 +121,6 @@ public class ControllerOnlineImpl extends ControllerTemplateImpl implements Cont
 	public void createNewDocument() {
 		getView().setDocumentName("New document");
 		getView().updateContent("");
-		getView().updateDocumentInfo("*.*", "");
 		getModel().setContent("");
 		getModel().setExtension("");
 		getModel().setLanguage("");

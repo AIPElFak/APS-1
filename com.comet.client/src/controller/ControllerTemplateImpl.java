@@ -55,4 +55,14 @@ public class ControllerTemplateImpl implements ControllerTemplate {
 		return view;
 	}
 
+	@Override
+	public void updateCaretLocation(int x, int y) {
+		view.setCaretLocation(x, y);
+	}
+
+	@Override
+	public void updateDocumentStatisics(String statistics) {
+		view.updateStatisics(statistics);
+	}
+
 }
