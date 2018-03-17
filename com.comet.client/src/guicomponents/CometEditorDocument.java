@@ -48,54 +48,37 @@ public class CometEditorDocument extends DefaultStyledDocument  {
         
 		super.insertString(offset, str, a);
 
+		int offs = 0;
+		
         String text = getText(0, getLength());
-        int before = findLastNonWordChar(text, offset);
-        if (before < 0) before = 0;
-        int after = findFirstNonWordChar(text, offset + str.length());
-        int wordL = before;
-        int wordR = before;
-
-        while (wordR <= after) {
-            if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                if (text.substring(wordL, wordR).matches("(\\W)*(" + keyWords + ")\\)*|(\\w)*\\)*"))
-                    setCharacterAttributes(wordL, wordR - wordL, attr, false);
-                else
-                    setCharacterAttributes(wordL, wordR - wordL, attrNonKeyWords, false);
-                wordL = wordR;
-            }
-            wordR++;
+        String[] tokens = text.split("\\W");
+        
+        for(String token : tokens) {
+        	if(token.matches("(" + keyWords + ")"))
+        		setCharacterAttributes(offs, offs + token.length(), attr, false);
+        	else
+        		setCharacterAttributes(offs, offs + token.length(), attrNonKeyWords, false);
+        	offs += token.length() + 1;
         }
+ 
     }
 	
 	@Override
 	public void remove (int offs, int len) throws BadLocationException {
         super.remove(offs, len);
 
+        int offset = 0;
+		
         String text = getText(0, getLength());
-        int before = findLastNonWordChar(text, offs);
-        if (before < 0) before = 0;
-        int after = findFirstNonWordChar(text, offs);
-
-        if (text.substring(before, after).matches("(\\W)*(" + keyWords + ")\\)*|(\\w)*\\)*")) {
-            setCharacterAttributes(before, after - before, attr, false);
-        } else {
-            setCharacterAttributes(before, after - before, attrNonKeyWords, false);
+        String[] tokens = text.split("\\W");
+        
+        for(String token : tokens) {
+        	if(token.matches("(" + keyWords + ")"))
+        		setCharacterAttributes(offset, offset + token.length(), attr, false);
+        	else
+        		setCharacterAttributes(offset, offset + token.length(), attrNonKeyWords, false);
+        	offset += token.length() + 1;
         }
-    }
-	
-	
-	private int findLastNonWordChar (String text, int index) {
-        while (--index >= 0)
-            if (String.valueOf(text.charAt(index)).matches("\\W")) break;
-        return index;
-    }
-
-    private int findFirstNonWordChar (String text, int index) {
-        while (index < text.length()) {
-            if (String.valueOf(text.charAt(index)).matches("\\W")) break;
-            index++;
-        }
-        return index;
     }
 	
 }
