@@ -1,5 +1,6 @@
 package database.test.dto;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import database.dao.DocumentDao;
@@ -15,7 +16,7 @@ import database.dto.WorksOn;
 
 public class TestRepository {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws RemoteException {
 
 		UserDao ud = new UserDao();
 		DocumentDao dd = new DocumentDao();
@@ -93,9 +94,15 @@ public class TestRepository {
 //			System.out.println("Neuspesno");
 		
 
-		Document doc1 = new Document("Java","Preduzece23",true);
-		//dd.add(doc1);
-		doc1 = dd.getById(26);
-		System.out.println(doc1.getFilename()+doc1.isPassword_protected());
+//		Document doc1 = new Document("Java","Preduzece23",true);
+//		//dd.add(doc1);
+//		doc1 = dd.getById(26);
+//		System.out.println(doc1.getFilename()+doc1.isPassword_protected());
+		
+//		User u = new User("Marko", "Sifra", "marecare@gmail.com", "http://Imgur/neamSlidzu.jpg");
+//		ud.register(u);
+		
+		User u2 = ud.login("Marko", "Sifra");
+		System.out.println(u2.getUsername()+" "+u2.getEmail()+" "+u2.getPassword());
 	}
 }

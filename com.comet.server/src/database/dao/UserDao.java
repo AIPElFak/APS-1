@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import database.test.dto.PasswordSecurity;
 import database.dto.Document;
 import database.dto.User;
 import database.dto.WorksOn;
@@ -41,7 +42,8 @@ public class UserDao extends Repository<User>{
 				info = new Info("Email allredy exists.",false);
 			else {
 				info = new Info();
-				s.save(u);							//TODO: use some hashing method here
+				u.setPassword(PasswordSecurity.SHA_256(u.getPassword()));
+				s.save(u);
 			}
 			s.getTransaction().commit();
 		}
@@ -69,7 +71,7 @@ public class UserDao extends Repository<User>{
 			String query = "SELECT * FROM USER_DETAILS WHERE BINARY USERNAME = :usrnm AND BINARY PASS = :pass";
 			user = (User)s.createNativeQuery(query,User.class)
 					.setParameter("usrnm", username)
-					.setParameter("pass", password)						//TODO: use some hashing method here
+					.setParameter("pass", PasswordSecurity.SHA_256(password))
 					.uniqueResult();
 				
 			s.getTransaction().commit();
