@@ -17,4 +17,11 @@ public interface View {
 	void updateStatisics(String statistics);
 	
 	void updateContent(String content);
+	
+	void find(String text);
+	
+	void replace(String text, String replace);
+	
+	String getDocumentContent();
+	
 }

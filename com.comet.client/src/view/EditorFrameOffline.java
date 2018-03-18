@@ -33,7 +33,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
+import javax.swing.text.Document;
 import javax.swing.text.Style;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -67,6 +69,8 @@ public class EditorFrameOffline extends JFrame implements View {
 			new Color(60, 60, 60),
 			new Color(60, 60, 60)
 		);
+		
+		JFrame self = this;
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1024, 700);
@@ -125,9 +129,9 @@ public class EditorFrameOffline extends JFrame implements View {
 		JMenuItem mntmUndo = new JMenuItem("Undo");
 		mntmUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String text = textPane.getText();
 				UndoRedoManager.getInstance()
-					.addRedoCommand(new CommandUndoRedo(controller, text));
+				.addRedoCommand(
+					new CommandUndoRedo(controller, textPane.getText()));
 				UndoRedoManager.getInstance().undo();
 			}
 		});
@@ -158,6 +162,12 @@ public class EditorFrameOffline extends JFrame implements View {
 		mnEdit.addSeparator();
 		
 		JMenuItem mntmFindReplace = new JMenuItem("Find / Replace");
+		mntmFindReplace.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FindReplaceDialog frd = new FindReplaceDialog(self, controller);
+				frd.setVisible(true);
+			}
+		});
 		mnEdit.add(mntmFindReplace);
 		
 		JMenu mnRun = new JMenu("Run");
@@ -280,6 +290,12 @@ public class EditorFrameOffline extends JFrame implements View {
 		lblStatistics.setBorder(new EmptyBorder(0, 15, 0, 15));
 		statusPanel.add(lblStatistics);
 		
+		JLabel lblCopyright = new JLabel("<html><body>Copyright &copy Sentic & Marko<body></html>");
+		lblCopyright.setForeground(Color.LIGHT_GRAY);
+		lblCopyright.setFont(new Font("Courier New", Font.PLAIN, 13));
+		lblCopyright.setBorder(new EmptyBorder(0, 15, 0, 15));
+		statusPanel.add(lblCopyright);
+		
 		JPanel editorHolder = new JPanel();
 		editorHolder.setLayout(new BorderLayout(0, 0));
 		
@@ -384,5 +400,32 @@ public class EditorFrameOffline extends JFrame implements View {
 	@Override
 	public void updateStatisics(String statistics) {
 		lblStatistics.setText(statistics);
+	}
+
+	@Override
+	public void find(String text) {
+		int index = textPane.getText().indexOf(text);
+		if (index < 0) return;
+		textPane.select(index, index + text.length());
+	}
+
+	@Override
+	public void replace(String text, String replace) {
+		int index = textPane.getText().indexOf(text);
+		if (index < 0) return;
+		Document doc = textPane.getDocument();
+		try {
+			doc.remove(index, text.length());
+			doc.insertString(index, replace, null);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		textPane.select(index, index + replace.length());
+	}
+
+	@Override
+	public String getDocumentContent() {
+		return textPane.getText();
 	}
 }

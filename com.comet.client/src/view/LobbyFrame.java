@@ -347,4 +347,22 @@ public class LobbyFrame extends JFrame implements View {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void find(String text) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void replace(String text, String replace) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getDocumentContent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
