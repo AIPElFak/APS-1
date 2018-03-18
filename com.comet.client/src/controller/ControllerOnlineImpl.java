@@ -4,11 +4,11 @@ import java.rmi.RemoteException;
 
 import communication.Client;
 import communication.Server;
-import utilities.Document;
+import utilities.DocumentRemote;
 
 public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
 	
-	private Document document;
+	private DocumentRemote document;
 	
 	private Server server;
 	private Client client;
@@ -86,13 +86,13 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void deleteDocument(Client cl, Document doc) {
+	public void deleteDocument(Client cl, DocumentRemote doc) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void openDocument(Client cl, Document doc) {
+	public void openDocument(Client cl, DocumentRemote doc) {
 		// TODO Auto-generated method stub
 		
 	}

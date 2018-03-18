@@ -8,12 +8,12 @@ import view.LoginFrame;
 import communication.Client;
 import communication.Server;
 import controller.ControllerOnline;
-import utilities.Document;
-import utilities.UserData;
+import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
-	private UserData userData;
+	private UserRemote userData;
 	
 	private ControllerOnline controller;
 	
@@ -34,7 +34,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	}
 
 	@Override
-	public void documentRecv(Document doc, Client cl, String message) throws RemoteException {
+	public void documentRecv(DocumentRemote doc, Client cl, String message) throws RemoteException {
 		// TODO Auto-generated method stub
 	}
 
@@ -45,12 +45,12 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	}
 
 	@Override
-	public void setUserData(UserData userData) throws RemoteException {
+	public void setUserData(UserRemote userData) throws RemoteException {
 		this.userData = userData;
 	}
 
 	@Override
-	public UserData getUserData() throws RemoteException {
+	public UserRemote getUserData() throws RemoteException {
 		return userData;
 	}
 	

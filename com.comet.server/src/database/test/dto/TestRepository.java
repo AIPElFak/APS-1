@@ -102,7 +102,10 @@ public class TestRepository {
 //		User u = new User("Marko", "Sifra", "marecare@gmail.com", "http://Imgur/neamSlidzu.jpg");
 //		ud.register(u);
 		
-		User u2 = ud.login("Marko", "Sifra");
-		System.out.println(u2.getUsername()+" "+u2.getEmail()+" "+u2.getPassword());
+		User u2 = ud.login("Pera", "pera123");
+		for(WorksOn w : u2.getDocuments()) {
+			System.out.println(w.getDocument().getFilename());
+		}
+		
 	}
 }

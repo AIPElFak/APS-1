@@ -31,6 +31,9 @@ public class Document {
 	@Column(name="PASSWORD_PROTECTED", columnDefinition = "BIT", length = 1)
 	private boolean password_protected;
 	
+	@Column(name="PASSWORD")
+	private String password;
+	
 	@OneToMany(cascade=CascadeType.ALL, mappedBy="document")
 	private Collection<DocumentVersion> versions;
 	
@@ -47,7 +50,7 @@ public class Document {
 		this.requests = new ArrayList<JoinRequest>();
 	}
 	
-	public Document(String programLanguage,String filename, boolean passwordProtected) {
+	public Document(String programLanguage,String filename, boolean passwordProtected, String password) {
 		this.versions = new ArrayList<DocumentVersion>();
 		this.users = new ArrayList<WorksOn>();
 		this.requests = new ArrayList<JoinRequest>();
@@ -94,6 +97,14 @@ public class Document {
 	}
 	public void setPassword_protected(boolean password_protected) {
 		this.password_protected = password_protected;
+	}
+	
+	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	
 	

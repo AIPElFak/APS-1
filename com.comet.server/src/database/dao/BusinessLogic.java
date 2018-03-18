@@ -1,5 +1,8 @@
 package database.dao;
 
+import java.util.ArrayList;
+
+import database.dto.Document;
 import database.dto.User;
 import database.test.dto.Info;
 
@@ -25,5 +28,9 @@ public class BusinessLogic {
 
 	public boolean updateUser(User user) {
 		return userDao.update(user);
+	}
+
+	public ArrayList<Document> getAvailableDocuments(int limit) {
+		return documentDao.getAll(limit);
 	}
 }

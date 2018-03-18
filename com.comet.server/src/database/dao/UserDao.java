@@ -42,7 +42,7 @@ public class UserDao extends Repository<User>{
 				info = new Info("Email allredy exists.",false);
 			else {
 				info = new Info();
-				u.setPassword(PasswordSecurity.SHA_256(u.getPassword()));
+				//u.setPassword(PasswordSecurity.SHA_256(u.getPassword()));
 				s.save(u);
 			}
 			s.getTransaction().commit();
@@ -71,9 +71,11 @@ public class UserDao extends Repository<User>{
 			String query = "SELECT * FROM USER_DETAILS WHERE BINARY USERNAME = :usrnm AND BINARY PASS = :pass";
 			user = (User)s.createNativeQuery(query,User.class)
 					.setParameter("usrnm", username)
-					.setParameter("pass", PasswordSecurity.SHA_256(password))
+					.setParameter("pass", password)//PasswordSecurity.SHA_256(password))
 					.uniqueResult();
-				
+			
+			user.getDocuments().size();//fora da ga nateram da load-uje works on, jer uvek treba kad se loguje user
+			
 			s.getTransaction().commit();
 		}
 		catch(RuntimeException e) {

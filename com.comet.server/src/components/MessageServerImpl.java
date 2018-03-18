@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import components.MessageServer;
 import communication.Client;
-import utilities.Document;
+import utilities.DocumentRemote;
 
 public class MessageServerImpl extends UnicastRemoteObject implements MessageServer {
 
@@ -32,7 +32,7 @@ public class MessageServerImpl extends UnicastRemoteObject implements MessageSer
 		}
 	}
 
-	public void documentBroadcast(Document doc, Client cl, String message) throws RemoteException {
+	public void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException {
 		// TODO Auto-generated method stub
 		
 	}

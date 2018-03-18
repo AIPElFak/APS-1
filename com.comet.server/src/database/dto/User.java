@@ -1,7 +1,6 @@
 package database.dto;
 
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,11 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import utilities.UserData;
-
 @Entity
 @Table (name="USER_DETAILS")
-public class User extends UnicastRemoteObject implements UserData{
+public class User{
 	
 //attributes
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)

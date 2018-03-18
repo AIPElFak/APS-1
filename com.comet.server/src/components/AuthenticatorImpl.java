@@ -8,14 +8,14 @@ import components.Authenticator;
 import database.dao.BusinessLogic;
 import database.dto.User;
 import database.test.dto.Info;
-import utilities.UserData;
-import utilities.UserDataImpl;
+import utilities.UserRemote;
+import utilities.UserRemoteImpl;
 import communication.Client;
 
 public class AuthenticatorImpl extends UnicastRemoteObject implements Authenticator {
 
 	private ArrayList<Client> clients;
-	private ArrayList<UserData> users;
+	private ArrayList<UserRemote> users;
 	
 	public AuthenticatorImpl() throws RemoteException {
 		super();
@@ -36,7 +36,9 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		BusinessLogic logic = new BusinessLogic();
 		User user = logic.login(username, password);
 		if(user!=null) {
-			cl.setUserData(user);
+			UserRemoteImpl ur = new UserRemoteImpl(user);
+			ur.setAvailableDocuments2(logic.getAvailableDocuments(Integer.MAX_VALUE));
+			cl.setUserData(ur);
 			return true;
 		}
 		return false;
@@ -57,7 +59,8 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		User user = new User(username, password, email, imageUrl);
 		Info info = logic.register(user);
 		if(info.isSuccessful()) {
-			cl.setUserData(user);
+			UserRemoteImpl ur = new UserRemoteImpl(user);
+			cl.setUserData(ur);
 			return true;
 		}
 		return false;

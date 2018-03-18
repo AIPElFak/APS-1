@@ -1,7 +1,7 @@
 package controller;
 
 import communication.Client;
-import utilities.Document;
+import utilities.DocumentRemote;
 
 public interface ControllerOnline extends Controller {
 	
@@ -27,9 +27,9 @@ public interface ControllerOnline extends Controller {
 	
 	public void createDocument(Client cl, String name, String lang, String password);
 	
-	public void deleteDocument(Client cl, Document doc);
+	public void deleteDocument(Client cl, DocumentRemote doc);
 	
-	public void openDocument(Client cl, Document doc);
+	public void openDocument(Client cl, DocumentRemote doc);
 	
 	public void setClient(Client cl);
 	

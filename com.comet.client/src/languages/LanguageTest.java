@@ -13,7 +13,7 @@ public class LanguageTest {
 		
 		SymbolTable st = new SymbolTable("Java");
 		
-		System.out.println(st.getColorForWord("class"));
+		//System.out.println(st.getColorForWord("class"));
 		
 	}
 	

@@ -5,7 +5,7 @@ import java.rmi.RemoteException;
 import components.Authenticator;
 import components.DocumentSynchronizer;
 import components.MessageServer;
-import utilities.Document;
+import utilities.DocumentRemote;
 
 public interface ServerFacade {
 	

@@ -11,7 +11,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import utilities.Document;
+import utilities.DocumentRemote;
 import communication.Client;
 import communication.Server;
 import configuration.RmiConfiguration;
@@ -49,7 +49,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public void documentBroadcast(Document doc, Client cl, String message) throws RemoteException {
+	public void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException {
 		facade.getMessageServer().documentBroadcast(doc, cl, message);
 	}
 
