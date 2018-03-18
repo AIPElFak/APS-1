@@ -49,8 +49,6 @@
 	<keyWord>void</keyWord>
 	<keyWord>volatile</keyWord>
 	<keyWord>while</keyWord>
-	<commentSymbol>//</commentSymbol>
-	<commentSymbol>/*</commentSymbol>
-	<commentSymbol>*/</commentSymbol>
-	<stringSymbol>"</stringSymbol>
+	<keyWord>true</keyWord>
+	<keyWord>false</keyWord>
 </programmingLanguage>

@@ -14,6 +14,7 @@ import guicomponents.ButtonColorChanger;
 import guicomponents.CometFlatButton;
 import view.View;
 import javax.swing.JList;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -27,6 +28,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
@@ -69,7 +72,7 @@ public class LobbyFrame extends JFrame implements View {
 			
 		
 		JPanel messagePane = new JPanel();
-		messagePane.setBackground(Color.DARK_GRAY);
+		messagePane.setBackground(new Color(60, 60, 60));
 		messagePane.setBounds(758, 0, 236, 571);
 		contentPane.add(messagePane);
 		messagePane.setLayout(null);
@@ -80,22 +83,23 @@ public class LobbyFrame extends JFrame implements View {
 		
 		textArea = new JTextArea();
 		textArea.setColumns(10);
-		textArea.setBorder(new EmptyBorder(5, 10, 5, 10));
+		textArea.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 2, 0, 2, new Color(180, 180, 180)),
+				new EmptyBorder(5, 10, 5, 10)));
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 13));
-		textArea.setBackground(new Color(191, 196, 204));
-		textArea.setForeground(new Color(230, 230, 250));
+		textArea.setBackground(new Color(60, 60, 60));
+		textArea.setForeground(new Color(150, 150, 150));
 		textArea.setBounds(10, 85, 216, 231);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setFocusable(false);
-		textArea.setForeground(new Color(1, 71, 176));
 		
 		JScrollPane textAreaScroll = new JScrollPane(
 			textArea,
-			JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+			JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 		);
-		textAreaScroll.setBounds(10, 75, 216, 365);
+		textAreaScroll.setBounds(10, 75, 216, 357);
 		textAreaScroll.setBorder(null);
 		messagePane.add(textAreaScroll);
 		
@@ -126,12 +130,23 @@ public class LobbyFrame extends JFrame implements View {
 		messagePane.add(lblLobbyChat);
 		
 		txtChatInput = new JTextField();
-		txtChatInput.setForeground(new Color(1, 91, 181));
-		txtChatInput.setHorizontalAlignment(SwingConstants.LEFT);
+		txtChatInput.setText("Enter your message.");
+		txtChatInput.setCaretColor(new Color(238, 238, 255));
+		txtChatInput.setForeground(new Color(150, 150, 150));
+		txtChatInput.setHorizontalAlignment(SwingConstants.CENTER);
 		txtChatInput.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtChatInput.setBounds(10, 451, 216, 37);
-		txtChatInput.setBackground(new Color(191, 196, 204));
+		txtChatInput.setBounds(10, 471, 216, 27);
+		txtChatInput.setBackground(new Color(60, 60, 60));
 		txtChatInput.setMargin(new Insets(5, 5, 5, 5));
+		txtChatInput.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				txtChatInput.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				if(txtChatInput.getText().equals("")) 
+					txtChatInput.setText("Enter your message.");
+			}
+		});
 		txtChatInput.setBorder(new EmptyBorder(5, 10, 5, 10));
 		messagePane.add(txtChatInput);
 		txtChatInput.setColumns(10);
@@ -139,6 +154,17 @@ public class LobbyFrame extends JFrame implements View {
 		JSeparator topChatLowerSeparator = new JSeparator();
 		topChatLowerSeparator.setBounds(10, 62, 216, 2);
 		messagePane.add(topChatLowerSeparator);
+		
+		JLabel lblMessageInput = new JLabel("Message input:");
+		lblMessageInput.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMessageInput.setForeground(new Color(244, 244, 255));
+		lblMessageInput.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblMessageInput.setBounds(10, 443, 216, 35);
+		messagePane.add(lblMessageInput);
+		
+		JSeparator separator_1 = new JSeparator();
+		separator_1.setBounds(10, 440, 216, 2);
+		messagePane.add(separator_1);
 		
 		JPanel documentPane = new JPanel();
 		documentPane.setBounds(0, 0, 758, 571);

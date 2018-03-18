@@ -44,7 +44,7 @@ public class CometSplashScreen extends JFrame implements Runnable {
 					images[counter % 9].getScaledInstance(109, 117, Image.SCALE_DEFAULT)));
 			counter++;
 			try {
-				Thread.sleep(130);
+				Thread.sleep(80);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

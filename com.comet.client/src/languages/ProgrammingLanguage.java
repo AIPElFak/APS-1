@@ -12,8 +12,6 @@ public class ProgrammingLanguage {
 
 	String extension;
     List<String> keyWords = new ArrayList<String>();
-    List<String> commentSymbol = new ArrayList<String>();
-    List<String> stringSymbol = new ArrayList<String>();
     String name;
 
     public List<String> getKeyWords() {
@@ -23,24 +21,6 @@ public class ProgrammingLanguage {
     @XmlElement(name="keyWord")
     public void setKeyWords(List<String> keyWords) {
         this.keyWords = keyWords;
-    }
-
-    public List<String> getCommentSymbol() {
-        return commentSymbol;
-    }
-    
-    @XmlElement
-    public void setCommentSymbol(List<String> symbol) {
-        commentSymbol = symbol;
-    }
-
-    public List<String> getStringSymbol() {
-        return stringSymbol;
-    }
-    
-    @XmlElement
-    public void setStringSymbol(List<String> symbol) {
-        stringSymbol = symbol;
     }
     
     public String getName() {

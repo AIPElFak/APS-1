@@ -15,7 +15,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
 	private static final long serialVersionUID = 1L;
 	
 	private StyleContext cont;
-    private AttributeSet attr;
+    private AttributeSet attrKeyWords;
     private AttributeSet attrNonKeyWords;
     
     private String keyWords;
@@ -23,7 +23,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
     public CometEditorDocument(SymbolTable st) {
     	
     	cont = StyleContext.getDefaultStyleContext();
-    	attr = cont.addAttribute(
+    	attrKeyWords = cont.addAttribute(
     			cont.getEmptySet(),
     			StyleConstants.Foreground,
     			new Color(247, 121, 121));
@@ -55,7 +55,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
         
         for(String token : tokens) {
         	if(token.matches("(" + keyWords + ")"))
-        		setCharacterAttributes(offs, offs + token.length(), attr, false);
+        		setCharacterAttributes(offs, offs + token.length(), attrKeyWords, false);
         	else
         		setCharacterAttributes(offs, offs + token.length(), attrNonKeyWords, false);
         	offs += token.length() + 1;
@@ -74,7 +74,7 @@ public class CometEditorDocument extends DefaultStyledDocument  {
         
         for(String token : tokens) {
         	if(token.matches("(" + keyWords + ")"))
-        		setCharacterAttributes(offset, offset + token.length(), attr, false);
+        		setCharacterAttributes(offset, offset + token.length(), attrKeyWords, false);
         	else
         		setCharacterAttributes(offset, offset + token.length(), attrNonKeyWords, false);
         	offset += token.length() + 1;

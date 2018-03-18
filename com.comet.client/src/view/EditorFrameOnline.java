@@ -14,8 +14,10 @@ import javax.swing.text.PlainDocument;
 import javax.swing.text.StyledEditorKit;
 
 import guicomponents.ButtonColorChanger;
+import guicomponents.CometEditorDocument;
 import guicomponents.CometFlatButton;
 import guicomponents.TextLineNumber;
+import languages.SymbolTable;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -213,12 +215,14 @@ public class EditorFrameOnline extends JFrame {
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setForeground(Color.WHITE);
+		textPane.setCaretColor(new Color(238,238,255));
+		textPane.setDocument(new CometEditorDocument(new SymbolTable("Java")));
 		textPane.setFont(new Font("Courier New", Font.PLAIN, 16));
 		textPane.setSelectionColor(Color.WHITE);
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		TextLineNumber tln = new TextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
