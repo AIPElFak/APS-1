@@ -9,15 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controller.CommandUndoRedo;
 import controller.ControllerOffline;
-import controller.ControllerOfflineImpl;
+import controller.UndoRedoManager;
 import guicomponents.ButtonColorChanger;
-import guicomponents.CometEditor;
 import guicomponents.CometEditorDocument;
 import guicomponents.CometFlatButton;
 import guicomponents.TextLineNumber;
 import languages.SymbolTable;
-import model.ModelImpl;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -25,7 +24,6 @@ import javax.swing.JLabel;
 import javax.swing.JToolBar;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.Point;
 
 import javax.swing.ImageIcon;
 import java.awt.Font;
@@ -35,20 +33,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
-import javax.swing.text.html.HTMLDocument;
-import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
 public class EditorFrameOffline extends JFrame implements View {
 
@@ -132,9 +123,22 @@ public class EditorFrameOffline extends JFrame implements View {
 		menuBar.add(mnEdit);
 		
 		JMenuItem mntmUndo = new JMenuItem("Undo");
+		mntmUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String text = textPane.getText();
+				UndoRedoManager.getInstance()
+					.addRedoCommand(new CommandUndoRedo(controller, text));
+				UndoRedoManager.getInstance().undo();
+			}
+		});
 		mnEdit.add(mntmUndo);
 		
 		JMenuItem mntmRedo = new JMenuItem("Redo");
+		mntmRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UndoRedoManager.getInstance().redo();
+			}
+		});
 		mnEdit.add(mntmRedo);
 		
 		mnEdit.addSeparator();
@@ -292,13 +296,16 @@ public class EditorFrameOffline extends JFrame implements View {
 		cometStyle = textPane.addStyle("CometStyle", null);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		TextLineNumber tln = new TextLineNumber(textPane);
-		textScroll.setRowHeaderView(tln);
+		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
 		textPane.getDocument().addDocumentListener(new DocumentListener() {
 			public void changedUpdate(DocumentEvent e) {
 				updateText(e);
+				String text = textPane.getText().substring(0, e.getOffset());
+				UndoRedoManager.getInstance()
+					.addUndoCommand(new CommandUndoRedo(controller, text));
 			}
 			public void insertUpdate(DocumentEvent e) {
 				updateText(e);

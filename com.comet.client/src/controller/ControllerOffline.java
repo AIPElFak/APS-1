@@ -1,6 +1,6 @@
 package controller;
 
-public interface ControllerOffline extends ControllerTemplate {
+public interface ControllerOffline extends Controller {
 	
 	void updateRowColStatus(int row, int col);
 	

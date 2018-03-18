@@ -1,6 +1,6 @@
 package controller;
 
-public class ControllerOfflineImpl extends ControllerTemplateImpl implements ControllerOffline{
+public class ControllerOfflineImpl extends ControllerImpl implements ControllerOffline{
 
 	@Override
 	public void saveDocument(String path, String name) {

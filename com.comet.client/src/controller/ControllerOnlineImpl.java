@@ -6,7 +6,7 @@ import communication.Client;
 import communication.Server;
 import utilities.Document;
 
-public class ControllerOnlineImpl extends ControllerTemplateImpl implements ControllerOnline {
+public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
 	
 	private Document document;
 	

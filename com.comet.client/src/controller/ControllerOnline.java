@@ -3,7 +3,7 @@ package controller;
 import communication.Client;
 import utilities.Document;
 
-public interface ControllerOnline extends ControllerTemplate {
+public interface ControllerOnline extends Controller {
 	
 	boolean logIn(String username, String password);
 	
