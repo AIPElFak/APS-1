@@ -13,6 +13,10 @@ public interface Controller {
 	
 	View getView();
 	
+	void find(String text);
+	
+	void replace(String text, String replace);
+	
 	void updateModelContent(String content);
 	
 	void updateCaretLocation(int x, int y);

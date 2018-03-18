@@ -70,4 +70,15 @@ public class ControllerImpl implements Controller {
 		model.setContent(content);
 	}
 
+	@Override
+	public void find(String text) {
+		view.find(text);
+	}
+
+	@Override
+	public void replace(String text, String replace) {
+		view.replace(text, replace);
+		model.setContent(view.getDocumentContent());
+	}
+
 }
