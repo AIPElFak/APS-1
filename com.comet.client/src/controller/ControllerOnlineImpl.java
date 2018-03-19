@@ -71,6 +71,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			server.addClient(cl);
 		} 
 		catch (RemoteException e) {}
+		catch (NullPointerException e) {
+			System.exit(0);
+		}
 	}
 
 	@Override

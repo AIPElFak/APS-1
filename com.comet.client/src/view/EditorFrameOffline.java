@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -12,10 +11,7 @@ import javax.swing.JScrollPane;
 import controller.CommandUndoRedo;
 import controller.ControllerOffline;
 import controller.UndoRedoManager;
-import guicomponents.ButtonColorChanger;
-import guicomponents.CometEditorDocument;
-import guicomponents.CometFlatButton;
-import guicomponents.TextLineNumber;
+import guicomponents.GUIFactory;
 import languages.SymbolTable;
 
 import javax.swing.JMenuBar;
@@ -42,6 +38,7 @@ import javax.swing.JFileChooser;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 public class EditorFrameOffline extends JFrame implements View {
 
@@ -64,7 +61,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		setIconImage(new ImageIcon(getClass()
 				.getResource("../resources/cometIconMin.png")).getImage());
 		
-		ButtonColorChanger toolBarColorChanger = new ButtonColorChanger(
+		MouseAdapter toolBarColorChanger = GUIFactory.createButtonColorChanger(
 			new Color(60, 60, 60),
 			new Color(60, 60, 60),
 			new Color(60, 60, 60)
@@ -207,7 +204,8 @@ public class EditorFrameOffline extends JFrame implements View {
 		toolbar.setFloatable(false);
 		panel.add(toolbar, BorderLayout.WEST);
 		
-		JButton New = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton New = GUIFactory.createCometFlatButton
+				("", new Color(60,60,60), Color.WHITE);
 		New.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/documentEdit.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -216,7 +214,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		New.addMouseListener(toolBarColorChanger);
 		toolbar.add(New);
 		
-		JButton Open = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Open = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Open.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/open.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -240,7 +238,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		toolbar.addSeparator();
 		toolbar.addSeparator();
 		
-		JButton Paste = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Paste = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Paste.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/paste.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -249,7 +247,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		Paste.addMouseListener(toolBarColorChanger);
 		toolbar.add(Paste);
 		
-		JButton Find = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Find = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Find.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/search.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -258,7 +256,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		Find.addMouseListener(toolBarColorChanger);
 		toolbar.add(Find);
 		
-		JButton Copy = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Copy = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Copy.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/copy.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -302,7 +300,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		caret = new DefaultCaret();
 		
 		textPane = new JTextPane(
-				new CometEditorDocument(new SymbolTable("Java")));
+				GUIFactory.createCometEditorDocument(new SymbolTable("Java")));
 		textPane.setCaret(caret);
 		textPane.setForeground(Color.WHITE);
 		textPane.setCaretColor(Color.WHITE);
@@ -311,8 +309,8 @@ public class EditorFrameOffline extends JFrame implements View {
 		textPane.setSelectedTextColor(Color.BLACK);
 		cometStyle = textPane.addStyle("CometStyle", null);
 		JScrollPane textScroll = new JScrollPane(textPane);
-		TextLineNumber tln = new TextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		JPanel tln = GUIFactory.createTextLineNumber(textPane);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
@@ -413,15 +411,17 @@ public class EditorFrameOffline extends JFrame implements View {
 	public void replace(String text, String replace) {
 		int index = textPane.getText().indexOf(text);
 		if (index < 0) return;
+		UndoRedoManager.getInstance()
+			.addUndoCommand(new CommandUndoRedo(controller, textPane.getText()));
 		Document doc = textPane.getDocument();
 		try {
 			doc.remove(index, text.length());
 			doc.insertString(index, replace, null);
+			textPane.select(index, index + replace.length());
 		} catch (BadLocationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		textPane.select(index, index + replace.length());
 	}
 
 	@Override

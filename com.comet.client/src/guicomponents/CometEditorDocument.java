@@ -10,7 +10,7 @@ import javax.swing.text.StyleContext;
 
 import languages.SymbolTable;
 
-public class CometEditorDocument extends DefaultStyledDocument  {
+class CometEditorDocument extends DefaultStyledDocument  {
 	
 	private static final long serialVersionUID = 1L;
 	

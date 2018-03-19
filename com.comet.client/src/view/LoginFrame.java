@@ -10,8 +10,7 @@ import controller.ControllerOffline;
 import controller.ControllerOfflineImpl;
 import controller.ControllerOnline;
 import controller.ControllerOnlineImpl;
-import guicomponents.ButtonColorChanger;
-import guicomponents.CometFlatButton;
+import guicomponents.GUIFactory;
 import model.Model;
 import model.ModelImpl;
 import view.EditorFrameOffline;
@@ -71,7 +70,8 @@ public class LoginFrame extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		MouseAdapter buttonColorChanger = new ButtonColorChanger(
+		MouseAdapter buttonColorChanger = GUIFactory.createButtonColorChanger
+		(
 			new Color(52, 52, 52),
 			new Color(32, 32, 32),
 			new Color(12, 12, 12)
@@ -124,7 +124,7 @@ public class LoginFrame extends JFrame {
 		loginInputs.add(singInOutHolder);
 		singInOutHolder.setLayout(new GridLayout(1, 2));
 		
-		JButton btnSignIn = new CometFlatButton("Sign in",
+		JButton btnSignIn = GUIFactory.createCometFlatButton("Sign in",
 				new Color(52, 52, 52), Color.LIGHT_GRAY);
 		btnSignIn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -136,7 +136,7 @@ public class LoginFrame extends JFrame {
 		btnSignIn.setBorder(new LineBorder(Color.DARK_GRAY));
 		singInOutHolder.add(btnSignIn);
 		
-		JButton btnSignUp = new CometFlatButton("Sign up",
+		JButton btnSignUp = GUIFactory.createCometFlatButton("Sign up",
 				new Color(52, 52, 52), Color.LIGHT_GRAY);
 		btnSignUp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -148,7 +148,7 @@ public class LoginFrame extends JFrame {
 		btnSignUp.setBorder(new LineBorder(Color.DARK_GRAY));
 		singInOutHolder.add(btnSignUp);
 		
-		JButton btnContinueOffline = new CometFlatButton(
+		JButton btnContinueOffline = GUIFactory.createCometFlatButton(
 				"or continue offline...",
 				new Color(52, 52, 52), Color.LIGHT_GRAY);
 		btnContinueOffline.addMouseListener(buttonColorChanger);
@@ -271,7 +271,7 @@ public class LoginFrame extends JFrame {
 		btnLoginFb.setBounds(322, 212, 46, 47);
 		inputsHolder.add(btnLoginFb);
 		
-		JButton btnLogIn = new CometFlatButton(
+		JButton btnLogIn = GUIFactory.createCometFlatButton(
 				"Log in",
 				new Color(52, 52, 52),
 				Color.LIGHT_GRAY);
@@ -351,7 +351,7 @@ public class LoginFrame extends JFrame {
 		txtEmail.setBounds(31, 135, 172, 20);
 		signUpInputs.add(txtEmail);
 		
-		JButton btnCreateAccount = new CometFlatButton(
+		JButton btnCreateAccount = GUIFactory.createCometFlatButton(
 				"Create account",
 				new Color(52, 52, 52),
 				Color.LIGHT_GRAY);
@@ -398,7 +398,7 @@ public class LoginFrame extends JFrame {
 				.getImage().getScaledInstance(88, 82, Image.SCALE_DEFAULT)));
 		signUpInputs.add(lblImage);
 		
-		CometFlatButton btnLoadImage = new CometFlatButton(
+		JButton btnLoadImage = GUIFactory.createCometFlatButton(
 				"Create account",
 				new Color(52, 52, 52),
 				Color.LIGHT_GRAY);

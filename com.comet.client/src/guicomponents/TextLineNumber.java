@@ -9,7 +9,7 @@ import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 
-public class TextLineNumber extends JPanel
+class TextLineNumber extends JPanel
 	implements CaretListener, DocumentListener, PropertyChangeListener
 {
 	public final static float LEFT = 0.0f;

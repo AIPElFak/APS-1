@@ -2,7 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,11 +12,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import controller.Controller;
+import guicomponents.GUIFactory;
 
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
 
-import guicomponents.CometFlatButton;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -43,6 +41,7 @@ public class FindReplaceDialog extends JDialog {
 		
 		setBounds(100, 100, 300, 170);
 		setUndecorated(true);
+		setAlwaysOnTop(true);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(null);
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -88,7 +87,7 @@ public class FindReplaceDialog extends JDialog {
 			JPanel panel = new JPanel();
 			contentPanel.add(panel, BorderLayout.SOUTH);
 			panel.setBackground(new Color(50, 50, 50));
-			panel.setBorder(new MatteBorder(1, 0, 0, 0, new Color(30, 30, 30)));
+			panel.setBorder(new MatteBorder(1, 1, 1, 1, new Color(30, 30, 30)));
 		}
 		{
 			JPanel panel = new JPanel();
@@ -164,7 +163,7 @@ public class FindReplaceDialog extends JDialog {
 				panel.add(pnlButtonHolder);
 				pnlButtonHolder.setLayout(new GridLayout(1, 3));
 				{
-					CometFlatButton cmtfltbtnFind = new CometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
+					JButton cmtfltbtnFind = GUIFactory.createCometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
 					cmtfltbtnFind.setFont(new Font("Courier New", Font.PLAIN, 11));
 					cmtfltbtnFind.setText("Find");
 					cmtfltbtnFind.setForeground(new Color(244, 244, 255));
@@ -177,7 +176,7 @@ public class FindReplaceDialog extends JDialog {
 					pnlButtonHolder.add(cmtfltbtnFind);
 				}
 				{
-					CometFlatButton cmtfltbtnReplace = new CometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
+					JButton cmtfltbtnReplace = GUIFactory.createCometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
 					cmtfltbtnReplace.setFont(new Font("Courier New", Font.PLAIN, 11));
 					cmtfltbtnReplace.setText("Replace");
 					cmtfltbtnReplace.setForeground(new Color(244, 244, 255));
@@ -192,7 +191,7 @@ public class FindReplaceDialog extends JDialog {
 					});
 				}
 				{
-					CometFlatButton cometFlatButton = new CometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
+					JButton cometFlatButton = GUIFactory.createCometFlatButton("Send", new Color(32, 32, 32), new Color(244, 244, 255));
 					cometFlatButton.setFont(new Font("Courier New", Font.PLAIN, 11));
 					cometFlatButton.setText("Cancel");
 					cometFlatButton.setForeground(new Color(244, 244, 255));

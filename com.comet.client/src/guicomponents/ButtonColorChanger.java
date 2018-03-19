@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 
-public class ButtonColorChanger extends MouseAdapter {
+class ButtonColorChanger extends MouseAdapter {
 	
 	private Color original, mouseEntered, mousePressed;
 	

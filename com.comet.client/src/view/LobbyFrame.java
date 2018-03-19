@@ -10,8 +10,7 @@ import javax.swing.border.LineBorder;
 import communication.Client;
 import communication.Server;
 import controller.ControllerOnline;
-import guicomponents.ButtonColorChanger;
-import guicomponents.CometFlatButton;
+import guicomponents.GUIFactory;
 import view.View;
 import javax.swing.JList;
 import javax.swing.BorderFactory;
@@ -65,10 +64,12 @@ public class LobbyFrame extends JFrame implements View {
 		setResizable(false);
 		contentPane.setLayout(null);
 		
-		ButtonColorChanger docBtnColorChanger = new ButtonColorChanger(
+		MouseAdapter docBtnColorChanger = GUIFactory.createButtonColorChanger
+		(
 				new Color(1, 96, 181),
 				new Color(1, 86, 171),
-				new Color(1, 76, 161));
+				new Color(1, 76, 161)
+		);
 			
 		
 		JPanel messagePane = new JPanel();
@@ -107,11 +108,11 @@ public class LobbyFrame extends JFrame implements View {
 		topChatUpperSeparator.setBounds(10, 11, 216, 2);
 		messagePane.add(topChatUpperSeparator);
 		
-		JButton btnSend = new CometFlatButton(
+		JButton btnSend = GUIFactory.createCometFlatButton(
 				"Send",
 				new Color(32, 32, 32),
 				new Color(244, 244, 255));
-		btnSend.addMouseListener(new ButtonColorChanger(
+		btnSend.addMouseListener(GUIFactory.createButtonColorChanger(
 			new Color(32, 32, 32),
 			new Color(12, 12, 12),
 			new Color(2, 2, 2))
@@ -193,7 +194,7 @@ public class LobbyFrame extends JFrame implements View {
 		docButtonsHolder.setOpaque(false);
 		docButtonsHolder.setLayout(new GridLayout(1, 3));
 		
-		JButton btnCreateDocument = new CometFlatButton(
+		JButton btnCreateDocument = GUIFactory.createCometFlatButton(
 				"Create document",
 				new Color(1, 91, 181),
 				new Color(244, 244, 255));
@@ -201,7 +202,7 @@ public class LobbyFrame extends JFrame implements View {
 		btnCreateDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
 		docButtonsHolder.add(btnCreateDocument);
 		
-		JButton btnOpenDocument = new CometFlatButton(
+		JButton btnOpenDocument = GUIFactory.createCometFlatButton(
 				"Open document",
 				new Color(1, 91, 181),
 				new Color(244, 244, 181));
@@ -209,7 +210,7 @@ public class LobbyFrame extends JFrame implements View {
 		btnOpenDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
 		docButtonsHolder.add(btnOpenDocument);
 		
-		CometFlatButton btnDeleteDocument = new CometFlatButton(
+		JButton btnDeleteDocument = GUIFactory.createCometFlatButton(
 				"Delete document",
 				new Color(1, 91, 181),
 				new Color(244, 244, 181));
@@ -249,7 +250,7 @@ public class LobbyFrame extends JFrame implements View {
 		documentPane.add(searchButtonsHolder);
 		searchButtonsHolder.setLayout(new GridLayout(1, 3));
 		
-		JButton btnSearch = new CometFlatButton(
+		JButton btnSearch = GUIFactory.createCometFlatButton(
 				"",
 				new Color(1, 91, 181),
 				new Color(1, 71, 161));
@@ -260,7 +261,7 @@ public class LobbyFrame extends JFrame implements View {
 		btnSearch.addMouseListener(docBtnColorChanger);
 		searchButtonsHolder.add(btnSearch);
 		
-		JButton btnProfile = new CometFlatButton(
+		JButton btnProfile = GUIFactory.createCometFlatButton(
 				"",
 				new Color(1, 91, 181),
 				new Color(1, 71, 161));
@@ -271,7 +272,7 @@ public class LobbyFrame extends JFrame implements View {
 		btnProfile.addMouseListener(docBtnColorChanger);
 		searchButtonsHolder.add(btnProfile);
 		
-		JButton btnInfo = new CometFlatButton(
+		JButton btnInfo = GUIFactory.createCometFlatButton(
 				"",
 				new Color(1, 91, 181),
 				new Color(1, 71, 161));

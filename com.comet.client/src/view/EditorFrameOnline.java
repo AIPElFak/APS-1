@@ -13,10 +13,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.StyledEditorKit;
 
-import guicomponents.ButtonColorChanger;
-import guicomponents.CometEditorDocument;
-import guicomponents.CometFlatButton;
-import guicomponents.TextLineNumber;
+import guicomponents.GUIFactory;
 import languages.SymbolTable;
 
 import javax.swing.JMenuBar;
@@ -73,7 +70,8 @@ public class EditorFrameOnline extends JFrame {
 		setIconImage(new ImageIcon(getClass()
 				.getResource("../resources/cometIconMin.png")).getImage());
 		
-		ButtonColorChanger toolBarColorChanger = new ButtonColorChanger(
+		MouseAdapter toolBarColorChanger =  GUIFactory.createButtonColorChanger
+		(
 			new Color(60, 60, 60),
 			new Color(60, 60, 60),
 			new Color(60, 60, 60)
@@ -119,7 +117,7 @@ public class EditorFrameOnline extends JFrame {
 		toolbar.setFloatable(false);
 		panel.add(toolbar, BorderLayout.WEST);
 		
-		JButton New = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton New = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		New.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/documentEdit.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -128,7 +126,7 @@ public class EditorFrameOnline extends JFrame {
 		New.addMouseListener(toolBarColorChanger);
 		toolbar.add(New);
 		
-		JButton Open = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Open = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Open.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/open.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -143,7 +141,7 @@ public class EditorFrameOnline extends JFrame {
 		toolbar.addSeparator();
 		toolbar.addSeparator();
 		
-		JButton Paste = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Paste = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Paste.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/paste.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -152,7 +150,7 @@ public class EditorFrameOnline extends JFrame {
 		Paste.addMouseListener(toolBarColorChanger);
 		toolbar.add(Paste);
 		
-		JButton Find = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Find = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Find.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/search.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -161,7 +159,7 @@ public class EditorFrameOnline extends JFrame {
 		Find.addMouseListener(toolBarColorChanger);
 		toolbar.add(Find);
 		
-		JButton Copy = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton Copy = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Copy.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/copy.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -177,7 +175,7 @@ public class EditorFrameOnline extends JFrame {
 		toolbar.addSeparator();
 		toolbar.addSeparator();
 		
-		JButton SaveVersion = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton SaveVersion = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		SaveVersion.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/cloudUpload.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -186,7 +184,7 @@ public class EditorFrameOnline extends JFrame {
 		SaveVersion.addMouseListener(toolBarColorChanger);
 		toolbar.add(SaveVersion);
 		
-		JButton PullVersion = new CometFlatButton("", new Color(60,60,60), Color.WHITE);
+		JButton PullVersion = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		PullVersion.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/cloudDownload.png"))
 				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
@@ -216,12 +214,13 @@ public class EditorFrameOnline extends JFrame {
 		JTextPane textPane = new JTextPane();
 		textPane.setForeground(Color.WHITE);
 		textPane.setCaretColor(new Color(238,238,255));
-		textPane.setDocument(new CometEditorDocument(new SymbolTable("Java")));
+		textPane.setDocument(
+				GUIFactory.createCometEditorDocument(new SymbolTable("Java")));
 		textPane.setFont(new Font("Courier New", Font.PLAIN, 16));
 		textPane.setSelectionColor(Color.WHITE);
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
-		TextLineNumber tln = new TextLineNumber(textPane);
+		JPanel tln = GUIFactory.createTextLineNumber(textPane);
 		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
@@ -338,13 +337,13 @@ public class EditorFrameOnline extends JFrame {
 			}
 		});
 		
-		JButton btnSend = new CometFlatButton(
+		JButton btnSend = GUIFactory.createCometFlatButton(
 			"Send",
 			new Color(92, 92, 92),
 			new Color(230, 230, 250)
 		);
 		btnSend.setBounds(0, 539, 143, 34);
-		btnSend.addMouseListener(new ButtonColorChanger(
+		btnSend.addMouseListener(GUIFactory.createButtonColorChanger(
 			new Color(92, 92, 92),
 			new Color(102, 102, 102),
 			new Color(112, 112, 112))

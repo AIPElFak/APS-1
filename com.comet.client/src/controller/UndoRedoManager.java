@@ -40,4 +40,11 @@ public class UndoRedoManager {
 		command.execute();
 	}
 	
+	public void clear() {
+		for(Command command : undoCommands)
+			undoCommands.remove(command);
+		for(Command command : redoCommands)
+			redoCommands.remove(command);
+	}
+	
 }
