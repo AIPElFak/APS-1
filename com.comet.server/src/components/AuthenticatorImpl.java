@@ -30,18 +30,15 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		User user = logic.login(username, password);
 		if(user == null) return false; 
 		UserRemoteImpl ur = new UserRemoteImpl(user);
-		//ur.setAvailableDocuments2(logic.getAvailableDocuments(Integer.MAX_VALUE));
 		cl.setUserData(ur);
 		return true;
 	}
 
 	@Override
 	public boolean logout(Client cl) throws RemoteException {
-		if(cl.getUserData()!=null) {
-			cl.setUserData(null);
-			return true;
-		}
-		return false;
+		if(cl.getUserData() == null) return false;
+		cl.setUserData(null);
+		return true;
 	}
 
 	@Override
@@ -60,8 +57,8 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	@Override
 	public boolean deleteAccount(Client cl) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		User user = (User)cl.getUserData();
-		return logic.deleteUser(user);
+		UserRemoteImpl ur = (UserRemoteImpl) cl.getUserData();
+		return logic.deleteUserById(ur.getId());
 	}
 
 	@Override

@@ -6,12 +6,12 @@ import java.net.URL;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import utilities.DocumentList;
 import utilities.DocumentRemote;
 import communication.Client;
 import communication.Server;
@@ -80,7 +80,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public DocumentList getAllAvailableDocuments() throws RemoteException {
+	public ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException {
 		return facade.getDocumentSynchronizer().getAllAvailableDocuments();
 	}
 

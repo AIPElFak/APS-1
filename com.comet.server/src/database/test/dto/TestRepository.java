@@ -102,10 +102,13 @@ public class TestRepository {
 //		User u = new User("Marko", "Sifra", "marecare@gmail.com", "http://Imgur/neamSlidzu.jpg");
 //		ud.register(u);
 		
-		User u2 = ud.login("Pera", "pera123");
-		for(WorksOn w : u2.getDocuments()) {
-			System.out.println(w.getDocument().getFilename());
-		}
+//		User u2 = ud.login("asdf", "asdf");
+//		for(WorksOn w : u2.getDocuments()) {
+//			System.out.println(w.getDocument().getFilename());
+//		}
+		
+		ud.deleteById(18);
+		
 		
 	}
 }

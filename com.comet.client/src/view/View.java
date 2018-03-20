@@ -1,6 +1,8 @@
 package view;
 
-import utilities.DocumentList;
+import java.util.ArrayList;
+
+import utilities.DocumentRemote;
 
 public interface View {
 	
@@ -24,7 +26,7 @@ public interface View {
 	
 	void replace(String text, String replace);
 	
-	void showAvailableDocument(DocumentList docLst);
+	void showAvailableDocument(ArrayList<DocumentRemote> docLst);
 	
 	String getDocumentContent();
 	

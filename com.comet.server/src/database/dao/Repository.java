@@ -86,7 +86,33 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 		}
 		return success;
 	}
-
+	
+	@Override
+	public boolean deleteById(int id) {
+		boolean success = false;
+		Transaction trns = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			TEntity entity = s.get(classType, id);
+			if(entity != null) {
+				s.delete(entity);
+				success = true;
+			}
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns != null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+		return success;
+	}
+	
 	@Override
 	public TEntity getById(int id) {
 		Transaction trns = null;
@@ -131,6 +157,7 @@ public class Repository<TEntity> implements IRepository<TEntity>{
 		}
 		return list;
 	}
+	
 
 //	public DocumentVersion getDocumentVersionById(int versionId) {
 //	Transaction trns = null;

@@ -2,11 +2,8 @@ package communication;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
-import components.Authenticator;
-import components.DocumentSynchronizer;
-import components.MessageServer;
-import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public interface Server extends Remote {
@@ -27,7 +24,7 @@ public interface Server extends Remote {
 	
 	void logActivity(String message) throws RemoteException;
 	
-	DocumentList getAllAvailableDocuments() throws RemoteException;
+	ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException;
 	
 	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	

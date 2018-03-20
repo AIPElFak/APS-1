@@ -25,6 +25,10 @@ public class BusinessLogic {
 	public boolean deleteUser(User user) {
 		return userDao.delete(user);
 	}
+	
+	public boolean deleteUserById(int id) {
+		return userDao.deleteById(id);
+	}
 
 	public boolean updateUser(User user) {
 		return userDao.update(user);

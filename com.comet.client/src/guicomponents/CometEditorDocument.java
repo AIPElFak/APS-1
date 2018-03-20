@@ -55,7 +55,7 @@ class CometEditorDocument extends DefaultStyledDocument  {
 
 		String text = getText(0, getLength());
 		int leftIndex = findLastNonWordChar(text, offset);
-		int rightIndex = findLastNonWordChar(text, offset + str.length());
+		int rightIndex = findFirstNonWordChar(text, offset + str.length());
 		
 		if(leftIndex == rightIndex) return;
 		if(leftIndex < 0) leftIndex = 0;
@@ -68,7 +68,7 @@ class CometEditorDocument extends DefaultStyledDocument  {
 		
 		if(text.substring(leftIndex, rightIndex).matches("\\n*(" + keyWords + ")"))
     		setCharacterAttributes(i, j, attrKeyWords, false);
-		else if(text.substring(leftIndex, rightIndex).matches("-?\\d+"))
+		else if(text.substring(leftIndex, rightIndex).matches("\\d+"))
     		setCharacterAttributes(i, j, attrNumbers, false);
 		else
 			setCharacterAttributes(i, j, attrNonKeyWords, false);
@@ -81,20 +81,20 @@ class CometEditorDocument extends DefaultStyledDocument  {
 
         String text = getText(0, getLength());
 		int leftIndex = findLastNonWordChar(text, offs);
-		int rightIndex = findLastNonWordChar(text, offs + len);
+		int rightIndex = findFirstNonWordChar(text, offs + len);
 		
 		if(leftIndex == rightIndex) return;
 		if(leftIndex < 0) leftIndex = 0;
 		else leftIndex++;
 		
-		System.out.println(text.substring(leftIndex, rightIndex));
-		
 		int i = leftIndex;
 		int j = rightIndex - leftIndex;
 		
+		System.out.println(text.substring(leftIndex, rightIndex));
+		
 		if(text.substring(leftIndex, rightIndex).matches("\\n*(" + keyWords + ")"))
     		setCharacterAttributes(i, j, attrKeyWords, false);
-		else if(text.substring(leftIndex, rightIndex).matches("-?\\d+"))
+		else if(text.substring(leftIndex, rightIndex).matches("\\d+"))
     		setCharacterAttributes(i, j, attrNumbers, false);
 		else
 			setCharacterAttributes(i, j, attrNonKeyWords, false);

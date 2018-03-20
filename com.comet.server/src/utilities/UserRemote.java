@@ -1,7 +1,6 @@
 package utilities;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.rmi.Remote;
 
 public interface UserRemote extends Remote {
@@ -15,9 +14,5 @@ public interface UserRemote extends Remote {
 	String getEmail() throws RemoteException;
 	
 	String getImage() throws RemoteException;
-
-	ArrayList<? extends DocumentRemote> getCurrentDocuments() throws RemoteException;
-	
-	ArrayList<? extends DocumentRemote> getAvailableDocuments() throws RemoteException;
 	
 }

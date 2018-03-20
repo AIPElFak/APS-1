@@ -1,10 +1,10 @@
 package controller;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import communication.Client;
 import communication.Server;
-import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
@@ -144,7 +144,7 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public void displayAllAvailableDocuments() {
 		try {
-			DocumentList docLst = server.getAllAvailableDocuments();
+			ArrayList<DocumentRemote> docLst = server.getAllAvailableDocuments();
 			getView().showAvailableDocument(docLst);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block

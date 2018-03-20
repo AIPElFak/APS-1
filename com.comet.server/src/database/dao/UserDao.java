@@ -74,8 +74,6 @@ public class UserDao extends Repository<User>{
 					.setParameter("pass", password)//PasswordSecurity.SHA_256(password))
 					.uniqueResult();
 			
-			user.getDocuments().size();//fora da ga nateram da load-uje works on, jer uvek treba kad se loguje user
-			
 			s.getTransaction().commit();
 		}
 		catch(RuntimeException e) {

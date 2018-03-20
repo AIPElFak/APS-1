@@ -1,9 +1,9 @@
 package components;
 
 import java.rmi.*;
+import java.util.ArrayList;
 
 import communication.Client;
-import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public interface DocumentSynchronizer extends Remote {
@@ -12,7 +12,7 @@ public interface DocumentSynchronizer extends Remote {
 	
 	boolean removeClient (Client cl) throws RemoteException;
 	
-	DocumentList getAllAvailableDocuments() throws RemoteException;
+	ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException;
 	
 	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	

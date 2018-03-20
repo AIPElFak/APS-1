@@ -10,7 +10,6 @@ import javax.swing.border.MatteBorder;
 
 import controller.ControllerOnline;
 import guicomponents.GUIFactory;
-import utilities.DocumentList;
 import utilities.DocumentRemote;
 import view.View;
 import javax.swing.JList;
@@ -34,6 +33,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -400,17 +400,11 @@ public class LobbyFrame extends JFrame implements View {
 	}
 
 	@Override
-	public void showAvailableDocument(DocumentList docLst) {
+	public void showAvailableDocument(ArrayList<DocumentRemote> docLst) {
 		dlm = new DefaultListModel<DocumentRemote>();
-		try {
-			for(DocumentRemote d : docLst.getAllAvailableDocument()) {
-				dlm.addElement(d);
-			}
-			list.setModel(dlm);
-			
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(DocumentRemote d : docLst) {
+			dlm.addElement(d);
 		}
+		list.setModel(dlm);
 	}
 }

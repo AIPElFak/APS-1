@@ -5,8 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 import components.DocumentSynchronizer;
-import utilities.DocumentList;
-import utilities.DocumentListImpl;
+import database.dao.BusinessLogic;
+import database.dto.Document;
 import utilities.DocumentRemote;
 import utilities.DocumentRemoteImpl;
 import communication.Client;
@@ -21,17 +21,12 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 		clients = new ArrayList<Client>();
 		documents = new ArrayList<DocumentRemote>();
 		
-		DocumentRemote doc1 = new DocumentRemoteImpl(2, "Cica", "Python", "Sentic2", false);
-		DocumentRemote doc2 = new DocumentRemoteImpl(1, "Sentic", "C#", "Sentic", true);
-		DocumentRemote doc3 = new DocumentRemoteImpl(2, "Martin", "C++", "Sentic2", false);
-		DocumentRemote doc4 = new DocumentRemoteImpl(1, "Samo jako", "C", "Sentic", true);
-		DocumentRemote doc5 = new DocumentRemoteImpl(2, "Srbija", "JavaScrpit", "Sentic2", false);
-		
-		documents.add(doc1);
-		documents.add(doc2);
-		documents.add(doc3);
-		documents.add(doc4);
-		documents.add(doc5);
+		documents = this.populateDocuments(Integer.MAX_VALUE);
+//		DocumentRemote doc = new DocumentRemoteImpl(1, "Text", "Java", "Sentic", true);
+//		DocumentRemote doc2 = new DocumentRemoteImpl(2, "Text2", "Java2", "Sentic2", true);
+//		
+//		documents.add(doc);
+//		documents.add(doc2);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -51,8 +46,8 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 	}
 
 	@Override
-	public DocumentList getAllAvailableDocuments() throws RemoteException {
-		return new DocumentListImpl(documents);
+	public ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException {
+		return documents;
 	}
 
 	@Override
@@ -62,6 +57,17 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 				cl.setWorkingDocument(d);
 				d.addClientToThisDocument(cl);
 		}
+	}
+	
+	private ArrayList<DocumentRemote> populateDocuments(int limit) throws RemoteException{
+		BusinessLogic logic = new BusinessLogic();
+		ArrayList<Document> docs = new ArrayList<Document>();
+		ArrayList<DocumentRemote> docsRemote = new ArrayList<DocumentRemote>();		//TODO: test
+		docs = logic.getAvailableDocuments(limit);
+		for(Document d : docs) {
+			docsRemote.add(new DocumentRemoteImpl(d));
+		}
+		return docsRemote;
 	}
 
 }

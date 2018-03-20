@@ -10,6 +10,8 @@ import database.dto.Document;
 
 public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentRemote {
 
+	private static final long serialVersionUID = 1L;
+
 	int id;
 	String name,type,privilege;
 	boolean passwordProtected;
