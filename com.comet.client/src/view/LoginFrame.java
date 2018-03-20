@@ -441,8 +441,10 @@ public class LoginFrame extends JFrame {
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} finally {
+						cs.stopAnimation();
 					}
-					cs.stopAnimation();
+					
 				}
 			});
 			t1.start();

@@ -24,6 +24,7 @@ import utilities.DocumentRemote;
 class CometListRenderer extends JPanel implements ListCellRenderer<DocumentRemote> {
 
 	private JLabel first, second, third;
+	private Image imageIcon, imageIconSelected;
 	
 	public CometListRenderer() {
         
@@ -33,24 +34,27 @@ class CometListRenderer extends JPanel implements ListCellRenderer<DocumentRemot
         setBorder(new MatteBorder(0, 0, 1, 0, new Color(115, 178, 178)));
        
 			
-		ImageIcon imageIcon = new ImageIcon(getClass()
-				 .getResource("../resources/document.png"));
+		imageIcon = new ImageIcon(getClass()
+				 .getResource("../resources/document.png")).getImage();
+		
+		imageIconSelected = new ImageIcon(getClass()
+				 .getResource("../resources/documentSelected.png")).getImage();
 			
 		first = new JLabel();
-		first.setFont(new Font("Courier New", Font.PLAIN, 13));
-		first.setIcon(new ImageIcon(imageIcon.getImage()
+		first.setFont(new Font("Courier New", Font.PLAIN, 12));
+		first.setIcon(new ImageIcon(imageIcon
 				.getScaledInstance(36, 36, Image.SCALE_DEFAULT)));
 		first.setBorder(new EmptyBorder(3, 30, 3, 0));
 	    add(first);
 	        
 	    second = new JLabel();
-	    second.setFont(new Font("Courier New", Font.PLAIN, 13));
-	    second.setBorder(new EmptyBorder(3, 30, 3, 0));
+	    second.setFont(new Font("Courier New", Font.PLAIN, 12));
+	    second.setBorder(new EmptyBorder(3, 45, 3, 0));
 	    add(second);
 	        
 	    third = new JLabel();
-	    third.setFont(new Font("Courier New", Font.PLAIN, 13));
-	    third.setBorder(new EmptyBorder(3, 30, 3, 0));
+	    third.setFont(new Font("Courier New", Font.PLAIN, 12));
+	    third.setBorder(new EmptyBorder(3, 45, 3, 0));
 	    add(third);
         
     }
@@ -61,21 +65,32 @@ class CometListRenderer extends JPanel implements ListCellRenderer<DocumentRemot
 
 			try {
 				first.setText(doc.getName());
-				second.setText("<html><body><b>&#128218</b>  " + doc.getType() + "</body></html>");
-				third.setText("<html><body>  "  + (doc.isPasswordProtected() ? " &#128274 password" : " &#128275 free") + "</body></html>");
+				second.setText("<html><body><b>&#128218</b>  " 
+						+ doc.getType() + "</body></html>");
+				third.setText("<html><body>  "  
+						+ (doc.isPasswordProtected() ? " &#128274 password" : " &#128275 free") 
+						+ "</body></html>");
+			
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
         
        if (isSelected) {
-            first.setForeground(new Color(229, 39, 39));
-            second.setForeground(new Color(229, 39, 39));
-            third.setForeground(new Color(229, 39, 39));
+            first.setForeground(new Color(234, 129, 4));
+            second.setForeground(new Color(234, 129, 4));
+            third.setForeground(new Color(234, 129, 4));
+            
+            first.setIcon(new ImageIcon(imageIconSelected
+					.getScaledInstance(38, 38, Image.SCALE_DEFAULT)));
+            
         } else {
             first.setForeground(new Color(1, 91, 181));
             second.setForeground(new Color(1, 91, 181));
             third.setForeground(new Color(1, 91, 181));
+            
+            first.setIcon(new ImageIcon(imageIcon
+					.getScaledInstance(36, 36, Image.SCALE_DEFAULT)));
         }
 		
 		return this;
