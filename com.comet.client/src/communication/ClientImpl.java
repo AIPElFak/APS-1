@@ -3,10 +3,7 @@ package communication;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import view.LobbyFrame;
-import view.LoginFrame;
 import communication.Client;
-import communication.Server;
 import controller.ControllerOnline;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
@@ -14,6 +11,7 @@ import utilities.UserRemote;
 public class ClientImpl extends UnicastRemoteObject implements Client {
 
 	private UserRemote userData;
+	private DocumentRemote document;
 	
 	private ControllerOnline controller;
 	
@@ -38,11 +36,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
-	public void directRecv(Client cl, String message) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void setUserData(UserRemote userData) throws RemoteException {
@@ -57,6 +50,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	@Override
 	public void finalize() {
 		controller.removeClient(this);
+	}
+
+	@Override
+	public void setWorkingDocument(DocumentRemote doc) throws RemoteException {
+		this.document = doc;
 	}
 
 }

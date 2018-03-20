@@ -18,6 +18,7 @@ public class LanguageManager {
 			URL url = getClass().getResource("../languages/languages.xml");
 			languages = (Languages) 
 					jaxbUnmarshaller.unmarshal(new File(url.getPath()));
+			System.out.println(languages.getLanguage()[0].getName());
 		} catch (JAXBException e) {System.out.println(e);}
 		
 	}

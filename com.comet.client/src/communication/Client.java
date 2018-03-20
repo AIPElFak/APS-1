@@ -13,9 +13,9 @@ public interface Client extends Remote {
 	
 	void documentRecv(DocumentRemote doc, Client cl, String message) throws RemoteException;
 	
-	void directRecv(Client cl, String message) throws RemoteException;
-	
 	void setUserData(UserRemote userData) throws RemoteException;
+	
+	void setWorkingDocument(DocumentRemote doc) throws RemoteException;
 	
 	UserRemote getUserData() throws RemoteException;
 	

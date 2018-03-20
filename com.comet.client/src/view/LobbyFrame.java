@@ -6,14 +6,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
-import communication.Client;
-import communication.Server;
 import controller.ControllerOnline;
 import guicomponents.GUIFactory;
+import utilities.DocumentList;
+import utilities.DocumentRemote;
 import view.View;
 import javax.swing.JList;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -42,6 +44,8 @@ public class LobbyFrame extends JFrame implements View {
 	private JTextField txtChatInput;
 	private JTextArea textArea;
 	private JTextField txtSearch;
+	private JList<DocumentRemote> list;
+	private DefaultListModel<DocumentRemote> dlm;
 	
 	private ControllerOnline controller;
 	
@@ -221,7 +225,8 @@ public class LobbyFrame extends JFrame implements View {
 		botDocSeparator.setBounds(10, 503, 738, 2);
 		documentPane.add(botDocSeparator);
 		
-		JList list = new JList();
+		list = new JList<DocumentRemote>();
+		list.setCellRenderer(GUIFactory.createCometListRenderer());
 		list.setBounds(10, 86, 539, 406);
 		list.setBackground(new Color(175, 238, 238));
 		
@@ -231,7 +236,7 @@ public class LobbyFrame extends JFrame implements View {
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 		);
 		listBoxScroll.setBorder(null);
-		listBoxScroll.setBounds(10, 118, 738, 370);
+		listBoxScroll.setBounds(10, 160, 738, 328);
 		documentPane.add(listBoxScroll);
 		
 		txtSearch = new JTextField();
@@ -282,6 +287,36 @@ public class LobbyFrame extends JFrame implements View {
 		btnInfo.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnInfo.addMouseListener(docBtnColorChanger);
 		searchButtonsHolder.add(btnInfo);
+		
+		JPanel listHeader = new JPanel();
+		listHeader.setBounds(10, 118, 738, 32);
+		documentPane.add(listHeader);
+		listHeader.setBackground(new Color(21, 126, 251));
+		listHeader.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JLabel lblDocumentName = new JLabel("Document name");
+		lblDocumentName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDocumentName.setFont(new Font("Courier New", Font.PLAIN, 15));
+		lblDocumentName.setForeground(new Color(238, 238, 255));
+		lblDocumentName.setBorder(new MatteBorder(1, 0, 1, 0, new Color(238, 238, 255)));
+		listHeader.add(lblDocumentName);
+		
+		JLabel lblProgrammingLanguage = new JLabel("Programming language");
+		lblProgrammingLanguage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblProgrammingLanguage.setFont(new Font("Courier New", Font.PLAIN, 15));
+		lblProgrammingLanguage.setForeground(new Color(238, 238, 255));
+		lblProgrammingLanguage.setBorder(new MatteBorder(1, 0, 1, 0, new Color(238, 238, 255)));
+		listHeader.add(lblProgrammingLanguage);
+		
+		JLabel lblPasswordProtection = new JLabel("Password protection");
+		lblPasswordProtection.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPasswordProtection.setFont(new Font("Courier New", Font.PLAIN, 15));
+		lblPasswordProtection.setForeground(new Color(238, 238, 255));
+		lblPasswordProtection.setBorder(new MatteBorder(1, 0, 1, 0, new Color(238, 238, 255)));
+		listHeader.add(lblPasswordProtection);
+		
+		controller.displayAllAvailableDocuments();
+		
 	}
 
 	public void appendMessage(String username, String text) {
@@ -345,25 +380,37 @@ public class LobbyFrame extends JFrame implements View {
 
 	@Override
 	public void updateStatisics(String statistics) {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 
 	@Override
 	public void find(String text) {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 
 	@Override
 	public void replace(String text, String replace) {
-		// TODO Auto-generated method stub
-		
+		return;
 	}
 
 	@Override
 	public String getDocumentContent() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void showAvailableDocument(DocumentList docLst) {
+		dlm = new DefaultListModel<DocumentRemote>();
+		try {
+			for(DocumentRemote d : docLst.getAllAvailableDocument()) {
+				dlm.addElement(d);
+			}
+			list.setModel(dlm);
+			
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

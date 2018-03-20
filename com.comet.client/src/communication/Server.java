@@ -3,6 +3,7 @@ package communication;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
+import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public interface Server extends Remote {
@@ -22,6 +23,10 @@ void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	boolean modifyUserData (Client cl) throws RemoteException;
 	
 	void logActivity(String message) throws RemoteException;
+	
+	DocumentList getAllAvailableDocuments() throws RemoteException;
+	
+	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;
 	

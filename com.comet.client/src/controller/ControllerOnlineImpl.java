@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 
 import communication.Client;
 import communication.Server;
+import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
@@ -128,6 +129,27 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		getModel().setExtension("");
 		getModel().setLanguage("");
 		getModel().setName("New document");
+	}
+
+	@Override
+	public void addClientToDocument(int docId) {
+		try {
+			server.addClientToDocument(client, docId);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void displayAllAvailableDocuments() {
+		try {
+			DocumentList docLst = server.getAllAvailableDocuments();
+			getView().showAvailableDocument(docLst);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

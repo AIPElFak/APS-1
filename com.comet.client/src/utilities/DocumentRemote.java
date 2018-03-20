@@ -13,4 +13,5 @@ public interface DocumentRemote extends Remote {
 	boolean isPasswordProtected() throws RemoteException;
 	
 	String getPrivilege() throws RemoteException;
+	
 }

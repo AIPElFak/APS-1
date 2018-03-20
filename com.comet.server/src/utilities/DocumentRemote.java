@@ -2,6 +2,8 @@ package utilities;
 
 import java.rmi.*;
 
+import communication.Client;
+
 public interface DocumentRemote extends Remote {
 
 	int getId() throws RemoteException;
@@ -13,4 +15,7 @@ public interface DocumentRemote extends Remote {
 	boolean isPasswordProtected() throws RemoteException;
 	
 	String getPrivilege() throws RemoteException;
+	
+	void addClientToThisDocument(Client cl) throws RemoteException;
+	
 }

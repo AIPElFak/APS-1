@@ -11,6 +11,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import utilities.DocumentList;
 import utilities.DocumentRemote;
 import communication.Client;
 import communication.Server;
@@ -76,6 +77,16 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	@Override
 	public boolean modifyUserData(Client cl) throws RemoteException {
 		return facade.getAuthenticator().modifyUserData(cl);
+	}
+
+	@Override
+	public DocumentList getAllAvailableDocuments() throws RemoteException {
+		return facade.getDocumentSynchronizer().getAllAvailableDocuments();
+	}
+
+	@Override
+	public void addClientToDocument(Client cl, int docId) throws RemoteException {
+		facade.getDocumentSynchronizer().addClientToDocument(cl, docId);
 	}
 
 }

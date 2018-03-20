@@ -34,8 +34,6 @@ public class FindReplaceDialog extends JDialog {
 	private JTextField txtEnterTextHere;
 	private JTextField textField;
 
-	private Controller controller;
-	private JFrame parent;
 	
 	public FindReplaceDialog(JFrame parent, Controller controller) {
 		
@@ -48,9 +46,6 @@ public class FindReplaceDialog extends JDialog {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		
 		JDialog self = this;
-		
-		this.controller = controller;
-		this.parent = parent;
 		
 		int x = parent.getX() + parent.getWidth() - this.getWidth() - 22;
 		int y = parent.getY() + 74;

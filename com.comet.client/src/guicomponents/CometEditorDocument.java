@@ -16,6 +16,7 @@ class CometEditorDocument extends DefaultStyledDocument  {
 	
 	private StyleContext cont;
     private AttributeSet attrKeyWords;
+    private AttributeSet attrNumbers;
     private AttributeSet attrNonKeyWords;
     
     private String keyWords;
@@ -27,6 +28,10 @@ class CometEditorDocument extends DefaultStyledDocument  {
     			cont.getEmptySet(),
     			StyleConstants.Foreground,
     			new Color(247, 121, 121));
+    	attrNumbers = cont.addAttribute(
+    			cont.getEmptySet(),
+    			StyleConstants.Foreground,
+    			new Color(120, 191, 255));
     	attrNonKeyWords = cont.addAttribute(
     			cont.getEmptySet(),
     			StyleConstants.Foreground,
@@ -48,18 +53,25 @@ class CometEditorDocument extends DefaultStyledDocument  {
         
 		super.insertString(offset, str, a);
 
-		int offs = 0;
+		String text = getText(0, getLength());
+		int leftIndex = findLastNonWordChar(text, offset);
+		int rightIndex = findLastNonWordChar(text, offset + str.length());
 		
-        String text = getText(0, getLength());
-        String[] tokens = text.split("\\W");
-        
-        for(String token : tokens) {
-        	if(token.matches("(" + keyWords + ")"))
-        		setCharacterAttributes(offs, offs + token.length(), attrKeyWords, false);
-        	else
-        		setCharacterAttributes(offs, offs + token.length(), attrNonKeyWords, false);
-        	offs += token.length() + 1;
-        }
+		if(leftIndex == rightIndex) return;
+		if(leftIndex < 0) leftIndex = 0;
+		else leftIndex++;
+		
+		System.out.println(text.substring(leftIndex, rightIndex));
+		
+		int i = leftIndex;
+		int j = rightIndex - leftIndex;
+		
+		if(text.substring(leftIndex, rightIndex).matches("\\n*(" + keyWords + ")"))
+    		setCharacterAttributes(i, j, attrKeyWords, false);
+		else if(text.substring(leftIndex, rightIndex).matches("-?\\d+"))
+    		setCharacterAttributes(i, j, attrNumbers, false);
+		else
+			setCharacterAttributes(i, j, attrNonKeyWords, false);
  
     }
 	
@@ -67,18 +79,45 @@ class CometEditorDocument extends DefaultStyledDocument  {
 	public void remove (int offs, int len) throws BadLocationException {
         super.remove(offs, len);
 
-        int offset = 0;
-		
         String text = getText(0, getLength());
-        String[] tokens = text.split("\\W");
-        
-        for(String token : tokens) {
-        	if(token.matches("(" + keyWords + ")"))
-        		setCharacterAttributes(offset, offset + token.length(), attrKeyWords, false);
-        	else
-        		setCharacterAttributes(offset, offset + token.length(), attrNonKeyWords, false);
-        	offset += token.length() + 1;
+		int leftIndex = findLastNonWordChar(text, offs);
+		int rightIndex = findLastNonWordChar(text, offs + len);
+		
+		if(leftIndex == rightIndex) return;
+		if(leftIndex < 0) leftIndex = 0;
+		else leftIndex++;
+		
+		System.out.println(text.substring(leftIndex, rightIndex));
+		
+		int i = leftIndex;
+		int j = rightIndex - leftIndex;
+		
+		if(text.substring(leftIndex, rightIndex).matches("\\n*(" + keyWords + ")"))
+    		setCharacterAttributes(i, j, attrKeyWords, false);
+		else if(text.substring(leftIndex, rightIndex).matches("-?\\d+"))
+    		setCharacterAttributes(i, j, attrNumbers, false);
+		else
+			setCharacterAttributes(i, j, attrNonKeyWords, false);
+       
+    }
+	
+	private int findLastNonWordChar (String text, int index) {
+        while (--index >= 0) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
         }
+        return index;
+    }
+
+    private int findFirstNonWordChar (String text, int index) {
+        while (index < text.length()) {
+            if (String.valueOf(text.charAt(index)).matches("\\W")) {
+                break;
+            }
+            index++;
+        }
+        return index;
     }
 	
 }

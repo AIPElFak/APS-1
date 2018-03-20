@@ -2,6 +2,7 @@ package controller;
 
 import communication.Client;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 public interface ControllerOnline extends Controller {
 	
@@ -20,6 +21,10 @@ public interface ControllerOnline extends Controller {
 	void recvDocumentMessage(Client cl, String Message);
 	
 	void saveDocument(String path, String name);
+	
+	void addClientToDocument(int docId);
+	
+	void displayAllAvailableDocuments();
 	
 	void createNewDocument();
 	

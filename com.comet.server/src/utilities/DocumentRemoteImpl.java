@@ -2,7 +2,10 @@ package utilities;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.List;
 
+import communication.Client;
 import database.dto.Document;
 
 public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentRemote {
@@ -10,9 +13,11 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	int id;
 	String name,type,privilege;
 	boolean passwordProtected;
+	List<Client> collaborators;
 	
 	public DocumentRemoteImpl() throws RemoteException {
 		super();
+		collaborators = new ArrayList<Client>();
 	}
 
 	public DocumentRemoteImpl(int id,String name,String type,String privilege,boolean passwordProtected)  throws RemoteException{
@@ -21,6 +26,7 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.type = type;
 		this.passwordProtected = passwordProtected;
 		this.privilege = privilege;
+		collaborators = new ArrayList<Client>();
 	}
 	
 	public DocumentRemoteImpl(Document doc)  throws RemoteException{
@@ -29,6 +35,7 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.type = doc.getProgramLaunguage();
 		this.passwordProtected = doc.isPassword_protected();
 		this.privilege = "";
+		collaborators = new ArrayList<Client>();
 	}
 	
 	
@@ -75,6 +82,16 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	@Override
 	public String getPrivilege() throws RemoteException {
 		return this.privilege;
+	}
+	
+	@Override
+	public String toString() {
+		return name; 
+	}
+
+	@Override
+	public void addClientToThisDocument(Client cl) throws RemoteException {
+		collaborators.add(cl);
 	}
 
 }

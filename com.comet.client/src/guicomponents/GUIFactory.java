@@ -4,11 +4,14 @@ import java.awt.Color;
 import java.awt.event.MouseAdapter;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.JTextComponent;
 
 import languages.SymbolTable;
+import utilities.DocumentRemote;
 
 public class GUIFactory {
 
@@ -40,6 +43,12 @@ public class GUIFactory {
 		
 		return new TextLineNumber(component, minimumDisplayDigits);
 		
+	}
+	
+	public static ListCellRenderer<? super DocumentRemote> createCometListRenderer() {
+	
+		return new CometListRenderer();
+	
 	}
 	
 }

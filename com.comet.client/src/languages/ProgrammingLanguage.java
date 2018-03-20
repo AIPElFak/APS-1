@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ProgrammingLanguage {
 
-	String extension;
     List<String> keyWords = new ArrayList<String>();
     String name;
 

@@ -1,5 +1,7 @@
 package view;
 
+import utilities.DocumentList;
+
 public interface View {
 	
 	void appendDocumentMessage(String username, String message);
@@ -21,6 +23,8 @@ public interface View {
 	void find(String text);
 	
 	void replace(String text, String replace);
+	
+	void showAvailableDocument(DocumentList docLst);
 	
 	String getDocumentContent();
 	

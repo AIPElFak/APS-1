@@ -13,6 +13,7 @@ import controller.ControllerOffline;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.SymbolTable;
+import utilities.DocumentList;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -427,5 +428,10 @@ public class EditorFrameOffline extends JFrame implements View {
 	@Override
 	public String getDocumentContent() {
 		return textPane.getText();
+	}
+
+	@Override
+	public void showAvailableDocument(DocumentList docLst) {
+		return;
 	}
 }

@@ -20,13 +20,6 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	public AuthenticatorImpl() throws RemoteException {
 		super();
 		clients = new ArrayList<Client>();
-//		users = new ArrayList<UserData>();
-//		
-//		UserData udMarko = new UserDataImpl("Marko", "Sifra", "Owner");		
-//		UserData udSentic = new UserDataImpl("Sentic", "Sifra", "Guest");
-//
-//		users.add(udMarko);
-//		users.add(udSentic);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -35,13 +28,11 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	public boolean login(Client cl, String username, String password) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		User user = logic.login(username, password);
-		if(user!=null) {
-			UserRemoteImpl ur = new UserRemoteImpl(user);
-			ur.setAvailableDocuments2(logic.getAvailableDocuments(Integer.MAX_VALUE));
-			cl.setUserData(ur);
-			return true;
-		}
-		return false;
+		if(user == null) return false; 
+		UserRemoteImpl ur = new UserRemoteImpl(user);
+		//ur.setAvailableDocuments2(logic.getAvailableDocuments(Integer.MAX_VALUE));
+		cl.setUserData(ur);
+		return true;
 	}
 
 	@Override

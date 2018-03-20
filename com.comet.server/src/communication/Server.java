@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import components.Authenticator;
 import components.DocumentSynchronizer;
 import components.MessageServer;
+import utilities.DocumentList;
 import utilities.DocumentRemote;
 
 public interface Server extends Remote {
@@ -25,6 +26,10 @@ public interface Server extends Remote {
 	boolean modifyUserData (Client cl) throws RemoteException;
 	
 	void logActivity(String message) throws RemoteException;
+	
+	DocumentList getAllAvailableDocuments() throws RemoteException;
+	
+	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;
 	
