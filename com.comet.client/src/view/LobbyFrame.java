@@ -7,6 +7,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import controller.ControllerOnline;
 import guicomponents.GUIFactory;
@@ -247,6 +249,22 @@ public class LobbyFrame extends JFrame implements View {
 		txtSearch.setBorder(null);
 		txtSearch.setBackground(new Color(175, 238, 238));
 		txtSearch.setBounds(10, 75, 455, 32);
+		txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+			public void changedUpdate(DocumentEvent e) {
+				searchForDocuments(e);
+			}
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				searchForDocuments(e);
+			}
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				searchForDocuments(e);
+			}
+			private void searchForDocuments(DocumentEvent e) {
+				controller.searchDocuments(txtSearch.getText());
+			}
+		});
 		documentPane.add(txtSearch);
 		
 		JPanel searchButtonsHolder = new JPanel();
@@ -264,6 +282,12 @@ public class LobbyFrame extends JFrame implements View {
 				.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
 		btnSearch.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnSearch.addMouseListener(docBtnColorChanger);
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				controller.searchDocuments(txtSearch.getText());
+				txtSearch.setText("");
+			}
+		});
 		searchButtonsHolder.add(btnSearch);
 		
 		JButton btnProfile = GUIFactory.createCometFlatButton(

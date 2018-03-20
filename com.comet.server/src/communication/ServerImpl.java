@@ -89,4 +89,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 		facade.getDocumentSynchronizer().addClientToDocument(cl, docId);
 	}
 
+	@Override
+	public ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException {
+		return facade.getDocumentSynchronizer().searchDocuments(criteria);
+	}
+
 }

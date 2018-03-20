@@ -26,6 +26,8 @@ void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
 	ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException;
 	
+	ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException;
+	
 	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;

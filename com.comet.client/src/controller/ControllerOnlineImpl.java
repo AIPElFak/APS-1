@@ -152,4 +152,15 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		}
 	}
 
+	@Override
+	public void searchDocuments(String criteria) {
+		try {
+			ArrayList<DocumentRemote> docs = server.searchDocuments(criteria);
+			getView().showAvailableDocument(docs);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

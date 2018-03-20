@@ -26,6 +26,8 @@ public interface ControllerOnline extends Controller {
 	
 	void displayAllAvailableDocuments();
 	
+	void searchDocuments(String criteria);
+	
 	void createNewDocument();
 	
 	public void openDocument(String path, String name);

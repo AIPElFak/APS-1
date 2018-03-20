@@ -26,6 +26,8 @@ public interface Server extends Remote {
 	
 	ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException;
 	
+	ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException;
+	
 	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;

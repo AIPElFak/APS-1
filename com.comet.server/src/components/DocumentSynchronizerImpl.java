@@ -22,11 +22,6 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 		documents = new ArrayList<DocumentRemote>();
 		
 		documents = this.populateDocuments(Integer.MAX_VALUE);
-//		DocumentRemote doc = new DocumentRemoteImpl(1, "Text", "Java", "Sentic", true);
-//		DocumentRemote doc2 = new DocumentRemoteImpl(2, "Text2", "Java2", "Sentic2", true);
-//		
-//		documents.add(doc);
-//		documents.add(doc2);
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -68,6 +63,15 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 			docsRemote.add(new DocumentRemoteImpl(d));
 		}
 		return docsRemote;
+	}
+
+	@Override
+	public ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException {
+		ArrayList<DocumentRemote> resaults = new ArrayList<DocumentRemote>();
+		for(DocumentRemote doc : documents)
+			if(doc.getName().contains(criteria) || doc.getType().contains(criteria))
+				resaults.add(doc);
+		return resaults;
 	}
 
 }
