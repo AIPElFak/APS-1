@@ -43,13 +43,13 @@ public class BusinessLogic {
 		return documentVersionDao.getDocumentLastVersion(documentId);
 	}
 	
-	public boolean createDocument(Document document) {
-		return documentDao.add(document);
+	public void createDocument(int id, Document doc) {
+		worksOnDao.addWorksOnForNewDocument(doc, id);
 	}
-	
+		
 	public boolean deleteDocument(int id) {
 		return documentDao.deleteById(id);
 	}
-	
+
 //	public boolean addDocumentVersion()
 }

@@ -13,7 +13,7 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	private static final long serialVersionUID = 1L;
 
 	int id;
-	String name,type,privilege;
+	String name, type, privilege, password;
 	boolean passwordProtected;
 	List<Client> collaborators;
 	
@@ -94,6 +94,15 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	@Override
 	public void addClientToThisDocument(Client cl) throws RemoteException {
 		collaborators.add(cl);
+	}
+
+	@Override
+	public String getPassword() throws RemoteException {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

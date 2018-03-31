@@ -14,8 +14,9 @@ public class WorksOnDao extends Repository<WorksOn>{
 		this.setClassType(WorksOn.class);
 	}
 	
-	public void addWorksOnAllExisting(int docId, int userId, WorksOn.Privilege privilege) {
+	public boolean addWorksOnAllExisting(int docId, int userId, WorksOn.Privilege privilege) {
 		Transaction trns = null;
+		boolean success = false;
 		Session s = HibernateUtil.getSessionFactory().openSession();
 		try {
 			trns = s.beginTransaction();
@@ -25,6 +26,7 @@ public class WorksOnDao extends Repository<WorksOn>{
 			s.save(w);
 			
 			s.getTransaction().commit();
+			success = true;
 		}
 		catch(RuntimeException e) {
 			if(trns!=null) {
@@ -35,9 +37,37 @@ public class WorksOnDao extends Repository<WorksOn>{
 		finally {
 			s.close();
 		}
+		return success;
 	}
 
 
+	public boolean addWorksOnForNewDocument(Document doc, int userId) {
+		Transaction trns = null;
+		boolean success = false;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			s.save(doc);
+			User u = s.load(User.class, userId);
+			WorksOn w = new WorksOn(doc, u, WorksOn.Privilege.Owner);
+			s.save(w);
+			
+			s.getTransaction().commit();
+			success = true;
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+		return success;
+	}
+	
+	
 	public ArrayList<JoinRequest> getDocumentsByPrivilegeAndUser(User user, WorksOn.Privilege privilege) {
 		Transaction trns = null;
 		ArrayList<WorksOn> list = null;

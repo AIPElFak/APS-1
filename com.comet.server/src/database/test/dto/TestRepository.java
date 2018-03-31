@@ -111,5 +111,9 @@ public class TestRepository {
 		
 //		DocumentVersion v = dvd.getDocumentLastVersion(3);
 //		System.out.println(v.getContent());
+		
+
+		Document doc1 = new Document("Pascal", "ForPetlja", true, "Proba123");
+		wd.addWorksOnForNewDocument(doc1, 9);
 	}
 }

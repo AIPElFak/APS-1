@@ -36,4 +36,8 @@ public interface Server extends Remote {
 	
 	void removeClient (Client cl) throws RemoteException;
 	
+	
+	
+	void createDocument(Client cl, DocumentRemote doc) throws RemoteException;
+	
 }
