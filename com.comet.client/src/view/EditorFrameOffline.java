@@ -41,6 +41,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+import java.awt.GridLayout;
+import javax.swing.SwingConstants;
 
 public class EditorFrameOffline extends JFrame implements View {
 
@@ -275,25 +277,28 @@ public class EditorFrameOffline extends JFrame implements View {
 		JPanel statusPanel = new JPanel();
 		statusPanel.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(81, 186, 251)));
 		statusPanel.setBackground(new Color(21, 126, 251));
-		statusPanel.setLayout(new FlowLayout());
 		contentPane.add(statusPanel, BorderLayout.SOUTH);
+		statusPanel.setLayout(new GridLayout(1, 3));
 		
 		lblRowColStatus = new JLabel("Cursor(0, 0)");
+		lblRowColStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRowColStatus.setFont(new Font("Courier New", Font.PLAIN, 13));
 		lblRowColStatus.setForeground(Color.LIGHT_GRAY);
-		lblRowColStatus.setBorder(new EmptyBorder(0, 15, 0, 15));
+		lblRowColStatus.setBorder(new EmptyBorder(5, 0, 5, 0));
 		statusPanel.add(lblRowColStatus);
 		
 		lblStatistics = new JLabel("Number of words: 0");
+		lblStatistics.setHorizontalAlignment(SwingConstants.CENTER);
 		lblStatistics.setForeground(Color.LIGHT_GRAY);
 		lblStatistics.setFont(new Font("Courier New", Font.PLAIN, 13));
-		lblStatistics.setBorder(new EmptyBorder(0, 15, 0, 15));
+		lblStatistics.setBorder(new EmptyBorder(5, 0, 5, 0));
 		statusPanel.add(lblStatistics);
 		
 		JLabel lblCopyright = new JLabel("<html><body>Copyright &copy Sentic & Marko<body></html>");
+		lblCopyright.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCopyright.setForeground(Color.LIGHT_GRAY);
 		lblCopyright.setFont(new Font("Courier New", Font.PLAIN, 13));
-		lblCopyright.setBorder(new EmptyBorder(0, 15, 0, 15));
+		lblCopyright.setBorder(new EmptyBorder(5, 0, 5, 0));
 		statusPanel.add(lblCopyright);
 		
 		JPanel editorHolder = new JPanel();

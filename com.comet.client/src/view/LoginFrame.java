@@ -17,6 +17,8 @@ import view.EditorFrameOffline;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.EventQueue;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
@@ -26,6 +28,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Font;
 import javax.swing.JButton;
 
@@ -161,15 +165,20 @@ public class LoginFrame extends JFrame {
 				Thread t2 = new Thread(new Runnable() {
 					public void run() {
 						ControllerOffline cntrl = new ControllerOfflineImpl();
-						EditorFrameOffline frame = new EditorFrameOffline(cntrl);
-						Model model = new ModelImpl();
-						cntrl.setView(frame);
-						cntrl.setModel(model);
 						try {
 							Thread.sleep(1500);
 						} 
 						catch (InterruptedException e) {}
-						frame.setVisible(true);
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								EditorFrameOffline frame = new EditorFrameOffline(cntrl);
+								Model model = new ModelImpl();
+								cntrl.setView(frame);
+								cntrl.setModel(model);
+								frame.setVisible(true);
+								cs.stopAnimation();
+							}
+						});
 						cs.stopAnimation();
 						disposeFrame();
 					}
@@ -419,6 +428,7 @@ public class LoginFrame extends JFrame {
 			CometSplashScreen cs = new CometSplashScreen("Loging in...");
 			Thread t1 = new Thread(cs);
 			Thread t2 = new Thread(new Runnable() {
+				@SuppressWarnings("deprecation")
 				public void run() {
 					try {
 						Server server = new ServerXMLConnector().getConnection();
@@ -430,9 +440,13 @@ public class LoginFrame extends JFrame {
 							JOptionPane.showMessageDialog(contentPane, "Wrong username or password!", "Warning!", JOptionPane.WARNING_MESSAGE);
 							return;
 						}
-						LobbyFrame lf = new LobbyFrame(controller);
 						Thread.sleep(1000);
-						lf.setVisible(true);
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								LobbyFrame lf = new LobbyFrame(controller);
+								lf.setVisible(true);
+							}
+						});
 						disposeFrame();
 					} 
 					catch (RemoteException e) {

@@ -325,7 +325,7 @@ public class LobbyFrame extends JFrame implements View {
 		lblDocumentName.setBorder(new MatteBorder(1, 0, 1, 0, new Color(238, 238, 255)));
 		listHeader.add(lblDocumentName);
 		
-		JLabel lblProgrammingLanguage = new JLabel("Programming language");
+		JLabel lblProgrammingLanguage = new JLabel("Document type");
 		lblProgrammingLanguage.setHorizontalAlignment(SwingConstants.CENTER);
 		lblProgrammingLanguage.setFont(new Font("Courier New", Font.PLAIN, 15));
 		lblProgrammingLanguage.setForeground(new Color(238, 238, 255));

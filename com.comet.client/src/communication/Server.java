@@ -8,7 +8,7 @@ import utilities.DocumentRemote;
 
 public interface Server extends Remote {
 	
-void lobbyBroadcast(String message, Client cl) throws RemoteException;
+	void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
 	void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException;
 	

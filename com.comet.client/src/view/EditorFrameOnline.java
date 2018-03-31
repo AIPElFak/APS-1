@@ -2,8 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -13,44 +11,49 @@ import javax.swing.border.LineBorder;
 import javax.swing.text.PlainDocument;
 import javax.swing.text.StyledEditorKit;
 
+import controller.CommandUndoRedo;
+import controller.Controller;
+import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.SymbolTable;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.Font;
 import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.border.MatteBorder;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.GridLayout;
 
 public class EditorFrameOnline extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtEnterTextHere;
+	private Controller controller;
+	private JFrame self;
+	private JTextPane textPane;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					EditorFrameOnline frame = new EditorFrameOnline();
@@ -94,6 +97,50 @@ public class EditorFrameOnline extends JFrame {
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
+		
+		JMenuItem mntmUndo = new JMenuItem("Undo");
+		mntmUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UndoRedoManager.getInstance()
+				.addRedoCommand(
+					new CommandUndoRedo(controller, textPane.getText()));
+				UndoRedoManager.getInstance().undo();
+			}
+		});
+		mnEdit.add(mntmUndo);
+		
+		JMenuItem mntmRedo = new JMenuItem("Redo");
+		mntmRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UndoRedoManager.getInstance().redo();
+			}
+		});
+		mnEdit.add(mntmRedo);
+		
+		mnEdit.addSeparator();
+		
+		JMenuItem mntmCut = new JMenuItem("Cut");
+		mnEdit.add(mntmCut);
+		
+		JMenuItem mntmCopy = new JMenuItem("Copy");
+		mnEdit.add(mntmCopy);
+		
+		JMenuItem mntmPaste = new JMenuItem("Paste");
+		mnEdit.add(mntmPaste);
+		
+		JMenuItem mntmDelete = new JMenuItem("Delete");
+		mnEdit.add(mntmDelete);
+		
+		mnEdit.addSeparator();
+		
+		JMenuItem mntmFindReplace = new JMenuItem("Find / Replace");
+		mntmFindReplace.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				FindReplaceDialog frd = new FindReplaceDialog(self, controller);
+				frd.setVisible(true);
+			}
+		});
+		mnEdit.add(mntmFindReplace);
 		
 		JMenu mnView = new JMenu("View");
 		menuBar.add(mnView);
@@ -202,16 +249,33 @@ public class EditorFrameOnline extends JFrame {
 		statusPanel.setBorder(new MatteBorder(1, 0, 0, 0, (Color) new Color(81, 186, 251)));
 		statusPanel.setBackground(new Color(21, 126, 251));
 		contentPane.add(statusPanel, BorderLayout.SOUTH);
+		statusPanel.setLayout(new GridLayout(1, 3));
 		
-		JLabel statusLabel = new JLabel("Status bar");
-		statusLabel.setFont(new Font("Courier New", Font.PLAIN, 13));
-		statusLabel.setForeground(Color.LIGHT_GRAY);
-		statusPanel.add(statusLabel);
+		JLabel label = new JLabel("Cursor(0, 0)");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setForeground(Color.LIGHT_GRAY);
+		label.setFont(new Font("Courier New", Font.PLAIN, 13));
+		label.setBorder(new EmptyBorder(5, 0, 5, 0));
+		statusPanel.add(label);
+		
+		JLabel label_1 = new JLabel("Number of words: 0");
+		label_1.setHorizontalAlignment(SwingConstants.CENTER);
+		label_1.setForeground(Color.LIGHT_GRAY);
+		label_1.setFont(new Font("Courier New", Font.PLAIN, 13));
+		label_1.setBorder(new EmptyBorder(5, 0, 5, 0));
+		statusPanel.add(label_1);
+		
+		JLabel label_2 = new JLabel("<html><body>Copyright &copy Sentic & Marko<body></html>");
+		label_2.setHorizontalAlignment(SwingConstants.CENTER);
+		label_2.setForeground(Color.LIGHT_GRAY);
+		label_2.setFont(new Font("Courier New", Font.PLAIN, 13));
+		label_2.setBorder(new EmptyBorder(5, 0, 5, 0));
+		statusPanel.add(label_2);
 		
 		JPanel editorHolder = new JPanel();
 		editorHolder.setLayout(new BorderLayout(0, 0));
 		
-		JTextPane textPane = new JTextPane();
+		textPane = new JTextPane();
 		textPane.setForeground(Color.WHITE);
 		textPane.setCaretColor(new Color(238,238,255));
 		textPane.setDocument(

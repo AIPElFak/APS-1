@@ -69,7 +69,8 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 	public ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException {
 		ArrayList<DocumentRemote> resaults = new ArrayList<DocumentRemote>();
 		for(DocumentRemote doc : documents)
-			if(doc.getName().contains(criteria) || doc.getType().contains(criteria))
+			if(doc.getName().toLowerCase().contains(criteria.toLowerCase())
+				|| doc.getType().toLowerCase().contains(criteria.toLowerCase()))
 				resaults.add(doc);
 		return resaults;
 	}
