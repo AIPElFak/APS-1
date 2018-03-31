@@ -22,6 +22,8 @@ public interface Server extends Remote {
 	
 	boolean modifyUserData (Client cl) throws RemoteException;
 	
+	boolean resetPassword(Client cl) throws RemoteException;
+	
 	void logActivity(String message) throws RemoteException;
 	
 	ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException;

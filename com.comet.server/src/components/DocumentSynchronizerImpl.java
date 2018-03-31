@@ -57,7 +57,7 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 	private ArrayList<DocumentRemote> populateDocuments(int limit) throws RemoteException{
 		BusinessLogic logic = new BusinessLogic();
 		ArrayList<Document> docs = new ArrayList<Document>();
-		ArrayList<DocumentRemote> docsRemote = new ArrayList<DocumentRemote>();		//TODO: test
+		ArrayList<DocumentRemote> docsRemote = new ArrayList<DocumentRemote>();
 		docs = logic.getAvailableDocuments(limit);
 		for(Document d : docs) {
 			docsRemote.add(new DocumentRemoteImpl(d));

@@ -3,6 +3,7 @@ package database.dao;
 import java.util.ArrayList;
 
 import database.dto.Document;
+import database.dto.DocumentVersion;
 import database.dto.User;
 import database.test.dto.Info;
 
@@ -37,4 +38,18 @@ public class BusinessLogic {
 	public ArrayList<Document> getAvailableDocuments(int limit) {
 		return documentDao.getAll(limit);
 	}
+	
+	public DocumentVersion getLastDocumentVersion(int documentId) {
+		return documentVersionDao.getDocumentLastVersion(documentId);
+	}
+	
+	public boolean createDocument(Document document) {
+		return documentDao.add(document);
+	}
+	
+	public boolean deleteDocument(int id) {
+		return documentDao.deleteById(id);
+	}
+	
+//	public boolean addDocumentVersion()
 }

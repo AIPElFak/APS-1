@@ -1,5 +1,4 @@
-/database/
-/communication/
-/components/
 /utilities/
-/configuration/
+/database/
+/components/
+/communication/

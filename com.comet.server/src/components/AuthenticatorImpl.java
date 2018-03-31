@@ -8,6 +8,7 @@ import components.Authenticator;
 import database.dao.BusinessLogic;
 import database.dto.User;
 import database.test.dto.Info;
+import database.test.dto.PasswordReset;
 import utilities.UserRemote;
 import utilities.UserRemoteImpl;
 import communication.Client;
@@ -62,10 +63,26 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 	@Override
 	public boolean modifyUserData(Client cl) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		User user = (User)cl.getUserData();
+		UserRemoteImpl ur = (UserRemoteImpl)cl.getUserData();
+		User user = new User(ur.getUsername(), ur.getPassword(), ur.getEmail(), ur.getImage());
+		user.setId(ur.getId());
 		return logic.updateUser(user);
 	}
 
+	@Override
+	public boolean resetPassword(Client cl) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		UserRemoteImpl ur = (UserRemoteImpl)cl.getUserData();
+		PasswordReset reset = new PasswordReset(ur.getEmail(),ur.getUsername());
+		
+		User user = new User(ur.getUsername(), reset.getNewPassword(), ur.getEmail(), ur.getImage());
+		user.setId(ur.getId());
+		
+		if(!logic.updateUser(user)) return false;
+		reset.Send();
+		return true;
+	}
+	
 	@Override
 	public boolean addClient(Client cl) throws RemoteException {
 		if(clients.contains(cl)) return false;

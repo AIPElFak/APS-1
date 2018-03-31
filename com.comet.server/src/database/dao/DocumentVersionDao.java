@@ -66,7 +66,7 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 		return vers;
 	}
 	
-	public DocumentVersion getDocumentLastVersion(Document doc){
+	public DocumentVersion getDocumentLastVersion(int id){
 		Transaction trns = null;
 		DocumentVersion last = null;
 		Session s = HibernateUtil.getSessionFactory().openSession();
@@ -76,7 +76,7 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 							" WHERE DOCUMENT_ID = :docId" + 
 							" AND ID = (SELECT MAX(ID) FROM DOCUMENT_VERSION WHERE DOCUMENT_ID = :docId);";
 			last = (DocumentVersion)s.createNativeQuery(query,DocumentVersion.class)
-					.setParameter("docId", doc.getId())
+					.setParameter("docId", id)
 					.uniqueResult();
 			s.getTransaction().commit();
 		}
@@ -99,7 +99,7 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 		try {
 			trns = s.beginTransaction();
 			String query = "from DocumentVersion where document = :doc";
-			list = (ArrayList<DocumentVersion>)s.createQuery(query,DocumentVersion.class)
+			list = (ArrayList<DocumentVersion>)s.createQuery(query, DocumentVersion.class)
 					.setParameter("doc", doc)
 					.list();
 			s.getTransaction().commit();

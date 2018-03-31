@@ -80,6 +80,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
+	public boolean resetPassword(Client cl) throws RemoteException {
+		return facade.getAuthenticator().resetPassword(cl);
+	}
+	
+	@Override
 	public ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException {
 		return facade.getDocumentSynchronizer().getAllAvailableDocuments();
 	}

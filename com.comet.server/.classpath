@@ -4,5 +4,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/hibernateComet"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Hibernate"/>
+	<classpathentry kind="lib" path="D:/Fakultet/Cetvrta godina/Arhitektura i projektovanje softvera/Git/APS/com.comet.server/javax.mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

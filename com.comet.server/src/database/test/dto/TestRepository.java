@@ -107,8 +107,9 @@ public class TestRepository {
 //			System.out.println(w.getDocument().getFilename());
 //		}
 		
-		ud.deleteById(18);
+		//ud.deleteById(18);
 		
-		
+//		DocumentVersion v = dvd.getDocumentLastVersion(3);
+//		System.out.println(v.getContent());
 	}
 }
