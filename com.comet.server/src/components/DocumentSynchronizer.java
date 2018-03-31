@@ -18,7 +18,7 @@ public interface DocumentSynchronizer extends Remote {
 	
 	void addClientToDocument(Client cl, int docId) throws RemoteException;
 	
-	void createNewDocument(Client cl, DocumentRemote dr) throws RemoteException;
+	void createDocument(Client cl, DocumentRemote dr) throws RemoteException;
 	
-//	DocumentVersionRemote openDocument(Client cl, DocumentRemote dr) throws RemoteExcepiton;
+	String openDocument (int documentId) throws RemoteException;
 }

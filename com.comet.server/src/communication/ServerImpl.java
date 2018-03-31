@@ -101,7 +101,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
 	@Override
 	public void createDocument(Client cl, DocumentRemote doc) throws RemoteException {
-		facade.getDocumentSynchronizer().createNewDocument(cl, doc);
+		facade.getDocumentSynchronizer().createDocument(cl, doc);
+	}
+
+	@Override
+	public String openDocument(int documentId) throws RemoteException {
+		return facade.getDocumentSynchronizer().openDocument(documentId);
 	}
 
 }

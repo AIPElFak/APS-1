@@ -40,4 +40,5 @@ public interface Server extends Remote {
 	
 	void createDocument(Client cl, DocumentRemote doc) throws RemoteException;
 	
+	String openDocument(int documentId) throws RemoteException;
 }

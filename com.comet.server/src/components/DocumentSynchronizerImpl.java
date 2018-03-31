@@ -76,13 +76,19 @@ public class DocumentSynchronizerImpl extends UnicastRemoteObject implements Doc
 	}
 
 	@Override
-	public void createNewDocument(Client cl, DocumentRemote dr) throws RemoteException {
+	public void createDocument(Client cl, DocumentRemote dr) throws RemoteException {
 		Document doc = new Document(dr.getType(), dr.getName(), dr.isPasswordProtected(), dr.getPassword());
 		BusinessLogic logic = new BusinessLogic();
 		logic.createDocument(cl.getUserData().getId(), doc);
 		
 		dr.addClientToThisDocument(cl);
 //		this.documents.add(dr);			//nece da ima id ako se odma doda u listu... jer je id generisan u bazi..
+	}
+
+	@Override
+	public String openDocument(int documentId) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		return logic.getLastDocumentVersion(documentId).getContent();
 	}
 
 }
