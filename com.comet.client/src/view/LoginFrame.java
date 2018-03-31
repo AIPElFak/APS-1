@@ -367,6 +367,40 @@ public class LoginFrame extends JFrame {
 		btnCreateAccount.addMouseListener(buttonColorChanger);
 		btnCreateAccount.setBorderPainted(false);
 		btnCreateAccount.setBounds(31, 212, 172, 47);
+		btnCreateAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometSplashScreen cs = new CometSplashScreen("Creating account...");
+				Thread t1 = new Thread(cs);
+				Thread t2 = new Thread(new Runnable() {
+					@SuppressWarnings("deprecation")
+					public void run() {
+						try {
+							Server server = new ServerXMLConnector().getConnection();
+							ControllerOnline controller = new ControllerOnlineImpl(server);
+							Client client =  new ClientImpl(controller);
+							controller.setClient(client);
+							String username = txtUsernameSignUp.getText();
+							String password = pfPasswordSignUp.getText();
+							String email = txtEmail.getText();
+							if(!controller.signIn(username, password, email)) {	
+								cs.stopAnimation();
+								JOptionPane.showMessageDialog(contentPane, "Account creation not successful. Account already exists.", "Warning!", JOptionPane.WARNING_MESSAGE);
+								return;
+							}
+							cs.stopAnimation();
+							JOptionPane.showMessageDialog(contentPane, "Account create successfuly!", "Warning!", JOptionPane.WARNING_MESSAGE);
+						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} finally {
+							cs.stopAnimation();
+						}
+					}
+				});
+				t1.start();
+				t2.start();
+			}	
+		});
 		signUpInputs.add(btnCreateAccount);
 		
 		JSeparator signUpPasswordSeparator = new JSeparator();
@@ -444,6 +478,7 @@ public class LoginFrame extends JFrame {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								LobbyFrame lf = new LobbyFrame(controller);
+								cs.stopAnimation();
 								lf.setVisible(true);
 							}
 						});
@@ -458,7 +493,6 @@ public class LoginFrame extends JFrame {
 					} finally {
 						cs.stopAnimation();
 					}
-					
 				}
 			});
 			t1.start();

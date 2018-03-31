@@ -8,7 +8,7 @@ import utilities.DocumentRemote;
 
 public interface Server extends Remote {
 	
-	void lobbyBroadcast(String message, Client cl) throws RemoteException;
+void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
 	void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException;
 	
@@ -16,7 +16,7 @@ public interface Server extends Remote {
 	
 	boolean logout (Client cl) throws RemoteException;
 	
-	boolean signin (Client cl) throws RemoteException;
+	boolean signin (Client cl, String username, String password, String email, String imageUrl) throws RemoteException;
 	
 	boolean deleteAccount (Client cl) throws RemoteException;
 	

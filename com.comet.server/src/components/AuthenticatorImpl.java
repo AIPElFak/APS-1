@@ -46,12 +46,10 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 		BusinessLogic logic = new BusinessLogic();
 		User user = new User(username, password, email, imageUrl);
 		Info info = logic.register(user);
-		if(info.isSuccessful()) {
-			UserRemoteImpl ur = new UserRemoteImpl(user);
-			cl.setUserData(ur);
-			return true;
-		}
-		return false;
+		if(!info.isSuccessful()) return false;
+		UserRemoteImpl ur = new UserRemoteImpl(user);
+		cl.setUserData(ur);
+		return true;
 	}
 
 	@Override

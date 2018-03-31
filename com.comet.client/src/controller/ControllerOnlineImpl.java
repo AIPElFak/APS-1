@@ -34,9 +34,17 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void signIn(String username, String password, String email) {
-		// TODO Auto-generated method stub
-		
+	public boolean signIn(String username, String password, String email) {
+		try {
+			boolean resault = server.signin(client, username, password, email, "http://no-image");
+			if(!resault) return false;
+			server.addClient(client);
+			return true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -68,13 +76,6 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public void setClient(Client cl) {
 		client = cl;
-		try {
-			server.addClient(cl);
-		} 
-		catch (RemoteException e) {}
-		catch (NullPointerException e) {
-			System.exit(0);
-		}
 	}
 
 	@Override

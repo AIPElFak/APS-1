@@ -10,7 +10,7 @@ public interface ControllerOnline extends Controller {
 	
 	boolean logOut(Client cl);
 	
-	void signIn(String username, String password, String email);
+	boolean signIn(String username, String password, String email);
 	
 	void sendLobbyMessage(String Message);
 	
