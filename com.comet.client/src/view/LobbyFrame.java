@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -118,12 +120,12 @@ public class LobbyFrame extends JFrame implements View {
 		
 		JButton btnSend = GUIFactory.createCometFlatButton(
 				"Send",
-				new Color(32, 32, 32),
+				new Color(92, 92, 92),
 				new Color(244, 244, 255));
 		btnSend.addMouseListener(GUIFactory.createButtonColorChanger(
-			new Color(32, 32, 32),
-			new Color(12, 12, 12),
-			new Color(2, 2, 2))
+				new Color(92, 92, 92),
+				new Color(102, 102, 102),
+				new Color(112, 112, 112))
 		);
 		btnSend.addActionListener(new ActionHandler());
 		btnSend.addKeyListener(new KeyHandler());
@@ -133,8 +135,9 @@ public class LobbyFrame extends JFrame implements View {
 		messagePane.add(btnSend);
 		
 		JLabel lblLobbyChat = new JLabel("Lobby chat");
+		lblLobbyChat.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLobbyChat.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblLobbyChat.setBounds(63, 24, 122, 27);
+		lblLobbyChat.setBounds(10, 24, 216, 27);
 		lblLobbyChat.setForeground(new Color(244, 244, 255));
 		messagePane.add(lblLobbyChat);
 		
@@ -182,8 +185,9 @@ public class LobbyFrame extends JFrame implements View {
 		documentPane.setLayout(null);
 		
 		JLabel lblAlreadyOpenDocuments = new JLabel("Available documents");
+		lblAlreadyOpenDocuments.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAlreadyOpenDocuments.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblAlreadyOpenDocuments.setBounds(298, 24, 219, 27);
+		lblAlreadyOpenDocuments.setBounds(10, 24, 738, 27);
 		lblAlreadyOpenDocuments.setForeground(new Color(244, 244, 255));
 		documentPane.add(lblAlreadyOpenDocuments);
 		
@@ -208,6 +212,12 @@ public class LobbyFrame extends JFrame implements View {
 				new Color(244, 244, 255));
 		btnCreateDocument.addMouseListener(docBtnColorChanger);
 		btnCreateDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
+		btnCreateDocument.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CreateDoucmentDialog cd = new CreateDoucmentDialog(controller);
+				cd.setVisible(true);
+			}
+		});
 		docButtonsHolder.add(btnCreateDocument);
 		
 		JButton btnOpenDocument = GUIFactory.createCometFlatButton(
@@ -233,6 +243,7 @@ public class LobbyFrame extends JFrame implements View {
 		list.setCellRenderer(GUIFactory.createCometListRenderer());
 		list.setBounds(10, 86, 539, 406);
 		list.setBackground(new Color(175, 238, 238));
+		list.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		
 		JScrollPane listBoxScroll = new JScrollPane(
 			list,
@@ -275,22 +286,21 @@ public class LobbyFrame extends JFrame implements View {
 		documentPane.add(searchButtonsHolder);
 		searchButtonsHolder.setLayout(new GridLayout(1, 3));
 		
-		JButton btnSearch = GUIFactory.createCometFlatButton(
+		JButton btnRefresh = GUIFactory.createCometFlatButton(
 				"",
 				new Color(1, 91, 181),
 				new Color(1, 71, 161));
-		btnSearch.setIcon(new ImageIcon(new ImageIcon(getClass()
-				.getResource("../resources/searchGlyphWhite.png"))
-				.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
-		btnSearch.setBorder(new LineBorder(new Color(21, 126, 251)));
-		btnSearch.addMouseListener(docBtnColorChanger);
-		btnSearch.addActionListener(new ActionListener() {
+		btnRefresh.setIcon(new ImageIcon(new ImageIcon(getClass()
+				.getResource("../resources/refresh.png"))
+				.getImage().getScaledInstance(19, 19, Image.SCALE_DEFAULT)));
+		btnRefresh.setBorder(new LineBorder(new Color(21, 126, 251)));
+		btnRefresh.addMouseListener(docBtnColorChanger);
+		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				controller.searchDocuments(txtSearch.getText());
-				txtSearch.setText("");
+				controller.displayAllAvailableDocuments();
 			}
 		});
-		searchButtonsHolder.add(btnSearch);
+		searchButtonsHolder.add(btnRefresh);
 		
 		JButton btnProfile = GUIFactory.createCometFlatButton(
 				"",
@@ -385,7 +395,16 @@ public class LobbyFrame extends JFrame implements View {
 
 					@Override
 					public void run() {
+						CometSplashScreen cs = new CometSplashScreen("Loading available documents");
+						new Thread(cs).start();
 						controller.displayAllAvailableDocuments();
+						try {
+							Thread.sleep(800);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						cs.stopAnimation();
 					}
 					
 				}).start();;

@@ -384,11 +384,13 @@ public class LoginFrame extends JFrame {
 							String email = txtEmail.getText();
 							if(!controller.signIn(username, password, email)) {	
 								cs.stopAnimation();
-								JOptionPane.showMessageDialog(contentPane, "Account creation not successful. Account already exists.", "Warning!", JOptionPane.WARNING_MESSAGE);
+								CometDialog cd = new CometDialog("warning", "Account already exists!");
+								cd.setVisible(true);
 								return;
 							}
 							cs.stopAnimation();
-							JOptionPane.showMessageDialog(contentPane, "Account create successfuly!", "Warning!", JOptionPane.WARNING_MESSAGE);
+							CometDialog cd = new CometDialog("info", "Acount created succesfully!");
+							cd.setVisible(true);
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -471,7 +473,8 @@ public class LoginFrame extends JFrame {
 						controller.setClient(client);
 						if(!controller.logIn(txtUsername.getText(), pfPassword.getText())) {	
 							cs.stopAnimation();
-							JOptionPane.showMessageDialog(contentPane, "Wrong username or password!", "Warning!", JOptionPane.WARNING_MESSAGE);
+							CometDialog cd = new CometDialog("warning", "Wrong username or password!");
+							cd.setVisible(true);
 							return;
 						}
 						Thread.sleep(1000);

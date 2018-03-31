@@ -27,7 +27,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public boolean logIn(String username, String password) {
 		try {
-			return server.login(client, username, password);
+			boolean result = server.login(client, username, password);
+			if(!result) return false;
+			server.addClient(client);
+			return true;
 		} 
 		catch (RemoteException e) {}
 		return false;
@@ -36,10 +39,7 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public boolean signIn(String username, String password, String email) {
 		try {
-			boolean resault = server.signin(client, username, password, email, "http://no-image");
-			if(!resault) return false;
-			server.addClient(client);
-			return true;
+			return server.signin(client, username, password, email, "http://no-image");
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
