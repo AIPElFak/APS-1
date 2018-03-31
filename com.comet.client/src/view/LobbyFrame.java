@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class LobbyFrame extends JFrame implements View {
 
@@ -137,7 +139,7 @@ public class LobbyFrame extends JFrame implements View {
 		messagePane.add(lblLobbyChat);
 		
 		txtChatInput = new JTextField();
-		txtChatInput.setText("Enter your message.");
+		txtChatInput.setText("Enter your message");
 		txtChatInput.setCaretColor(new Color(238, 238, 255));
 		txtChatInput.setForeground(new Color(150, 150, 150));
 		txtChatInput.setHorizontalAlignment(SwingConstants.CENTER);
@@ -339,8 +341,55 @@ public class LobbyFrame extends JFrame implements View {
 		lblPasswordProtection.setBorder(new MatteBorder(1, 0, 1, 0, new Color(238, 238, 255)));
 		listHeader.add(lblPasswordProtection);
 		
-		controller.displayAllAvailableDocuments();
-		
+		addWindowListener(new WindowListener(){
+
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						controller.displayAllAvailableDocuments();
+					}
+					
+				}).start();;
+			}});
 	}
 
 	public void appendMessage(String username, String text) {
@@ -352,7 +401,7 @@ public class LobbyFrame extends JFrame implements View {
 			if(e.getKeyCode() == e.VK_ENTER) {
 				textArea.append("Me: " + txtChatInput.getText() + "\n\n");
 				controller.sendLobbyMessage(txtChatInput.getText());
-				txtChatInput.setText("");
+				txtChatInput.setText("Enter your message");
 			}
 		}
 	}
@@ -362,7 +411,7 @@ public class LobbyFrame extends JFrame implements View {
 		public void actionPerformed(ActionEvent ev) {
 			textArea.append("Me: " + txtChatInput.getText() + "\n\n");
 			controller.sendLobbyMessage(txtChatInput.getText());
-			txtChatInput.setText("");
+			txtChatInput.setText("Enter your message");
 		}
 	}
 
