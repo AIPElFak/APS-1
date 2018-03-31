@@ -233,6 +233,7 @@ public class LobbyFrame extends JFrame implements View {
 				new Color(1, 91, 181),
 				new Color(244, 244, 181));
 		btnDeleteDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
+		btnDeleteDocument.addMouseListener(docBtnColorChanger);
 		docButtonsHolder.add(btnDeleteDocument);
 		
 		JSeparator botDocSeparator = new JSeparator();
