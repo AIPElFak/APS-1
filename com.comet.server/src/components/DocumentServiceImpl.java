@@ -82,9 +82,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		if(name.equals("") || type.equals("")) return false;
 		Document doc = new Document(type, name, !password.equals(""), password);
 		BusinessLogic logic = new BusinessLogic();
-		logic.createDocument(cl.getUserData().getId(), doc);
-		DocumentRemote docRemote = new DocumentRemoteImpl(doc);
-		documents.add(docRemote);
+		if(!logic.createDocument(cl.getUserData().getId(), doc)) return false;
+		//DocumentRemote docRemote = new DocumentRemoteImpl(doc);
+		//documents.add(docRemote);
 		return true;
 	}
 
@@ -113,6 +113,12 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		}
 		if(docVer == null) return "";
 		return docVer.getContent();
+	}
+
+	@Override
+	public boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		return logic.addDocumentVersion(documentId, cl.getUserData().getId(), content);
 	}
 
 }

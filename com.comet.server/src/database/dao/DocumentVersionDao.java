@@ -16,6 +16,31 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 	}
 	
 
+	public boolean add(int documentId, int userId, String content) {
+		boolean success = false;
+		Transaction trns = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			Document doc = s.get(Document.class, documentId);
+			User user = s.get(User.class, userId);
+			DocumentVersion vers = new DocumentVersion(doc, user, content, new Date());
+			s.save(vers);
+			s.getTransaction().commit();
+			success = true;
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+		return success;
+	}
+	
 	public DocumentVersion getDocumentVersionByDate(Date dateTime, Document d) {
 		Transaction trns = null;
 		DocumentVersion v = null;

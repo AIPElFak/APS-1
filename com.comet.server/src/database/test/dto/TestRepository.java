@@ -113,7 +113,12 @@ public class TestRepository {
 //		System.out.println(v.getContent());
 		
 
-		Document doc1 = new Document("Pascal", "ForPetlja", true, "Proba123");
-		wd.addWorksOnForNewDocument(doc1, 9);
+//		Document doc1 = new Document("Pascal", "ForPetlja", true, "Proba123");
+//		wd.addWorksOnForNewDocument(doc1, 9);
+		
+//		dvd.add(36, 29, "public static void main(String[] args) throws RemoteException {"
+//						+ "  System.out.println(\"Nova verzija\");"
+//						+ "}");
+		
 	}
 }

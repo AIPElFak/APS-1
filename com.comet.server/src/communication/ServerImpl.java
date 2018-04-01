@@ -109,4 +109,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 		return facade.getDocumentService().openDocument(cl, documentId);
 	}
 
+	@Override
+	public boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException {
+		return facade.getDocumentService().addDocumentVersion(cl, documentId, content);
+	}
+
 }
