@@ -15,9 +15,9 @@ import javax.xml.bind.Unmarshaller;
 
 import communication.Server;
 import communication.ServerImpl;
-import components.AuthenticatorImpl;
-import components.DocumentSynchronizerImpl;
-import components.MessageServerImpl;
+import components.AuthenticationServiceImpl;
+import components.DocumentServiceImpl;
+import components.MessageServiceImpl;
 import configuration.RmiConfiguration;
 
 public class CometServer {
@@ -33,9 +33,9 @@ public class CometServer {
 			RmiConfiguration cfg = (RmiConfiguration) 
 					jaxbUnmarshaller.unmarshal(new File(url.getPath()));
 			LocateRegistry.createRegistry(Integer.parseInt(cfg.getRmiPort()));
-			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/Authenticator", new AuthenticatorImpl());
-			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/DocumentSynchronizer", new DocumentSynchronizerImpl());
-			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/MessageServer", new MessageServerImpl());
+			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/Authenticator", new AuthenticationServiceImpl());
+			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/DocumentSynchronizer", new DocumentServiceImpl());
+			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/MessageServer", new MessageServiceImpl());
 			server = new ServerImpl();
 			Naming.rebind("rmi://" + cfg.getRmiHost() + ":" + cfg.getRmiPort() +"/CometServer", server);
 			this.host = cfg.getRmiHost();

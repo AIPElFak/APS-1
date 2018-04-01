@@ -31,6 +31,8 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -65,7 +67,7 @@ public class LobbyFrame extends JFrame implements View {
 		setTitle("Comet");
 		setIconImage(new ImageIcon(getClass()
 				.getResource("../resources/cometIconMin.png")).getImage());
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1000, 600);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -73,6 +75,8 @@ public class LobbyFrame extends JFrame implements View {
 		setLocationRelativeTo(null);
 		setResizable(false);
 		contentPane.setLayout(null);
+		
+		JFrame self = this;
 		
 		MouseAdapter docBtnColorChanger = GUIFactory.createButtonColorChanger
 		(
@@ -99,7 +103,7 @@ public class LobbyFrame extends JFrame implements View {
 				new EmptyBorder(5, 10, 5, 10)));
 		textArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		textArea.setBackground(new Color(60, 60, 60));
-		textArea.setForeground(new Color(150, 150, 150));
+		textArea.setForeground(new Color(238, 238, 255));
 		textArea.setBounds(10, 85, 216, 231);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -312,6 +316,12 @@ public class LobbyFrame extends JFrame implements View {
 				.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
 		btnProfile.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnProfile.addMouseListener(docBtnColorChanger);
+		btnProfile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometUserDialog cud = new CometUserDialog(controller, self);
+				cud.setVisible(true);
+			}
+		});
 		searchButtonsHolder.add(btnProfile);
 		
 		JButton btnInfo = GUIFactory.createCometFlatButton(
@@ -323,6 +333,13 @@ public class LobbyFrame extends JFrame implements View {
 				.getImage().getScaledInstance(16, 16, Image.SCALE_DEFAULT)));
 		btnInfo.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnInfo.addMouseListener(docBtnColorChanger);
+		btnInfo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometDialog cd = new CometDialog("info", "Number of available"
+						+ " documents: " + dlm.size());
+				cd.setVisible(true);
+			}
+		});
 		searchButtonsHolder.add(btnInfo);
 		
 		JPanel listHeader = new JPanel();
@@ -362,8 +379,12 @@ public class LobbyFrame extends JFrame implements View {
 
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						LoginFrame lf = new LoginFrame();
+						lf.setVisible(true);
+					}
+				});
 			}
 
 			@Override

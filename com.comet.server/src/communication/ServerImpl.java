@@ -46,67 +46,67 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
 	@Override
 	public void lobbyBroadcast(String message, Client cl) throws RemoteException {
-		facade.getMessageServer().lobbyBroadcast(message, cl);
+		facade.getMessageService().lobbyBroadcast(message, cl);
 	}
 
 	@Override
 	public void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException {
-		facade.getMessageServer().documentBroadcast(doc, cl, message);
+		facade.getMessageService().documentBroadcast(doc, cl, message);
 	}
 
 	@Override
 	public boolean login(Client cl, String username, String password) throws RemoteException {
-		return facade.getAuthenticator().login(cl, username, password);
+		return facade.getAuthenticationService().login(cl, username, password);
 	}
 
 	@Override
 	public boolean logout(Client cl) throws RemoteException {
-		return facade.getAuthenticator().logout(cl);
+		return facade.getAuthenticationService().logout(cl);
 	}
 
 	@Override
 	public boolean signin(Client cl, String username, String password, String email, String imageUrl) throws RemoteException {
-		return facade.getAuthenticator().signin( cl, username, password, email, imageUrl);
+		return facade.getAuthenticationService().signin( cl, username, password, email, imageUrl);
 	}
 
 	@Override
 	public boolean deleteAccount(Client cl) throws RemoteException {
-		return facade.getAuthenticator().deleteAccount(cl);
+		return facade.getAuthenticationService().deleteAccount(cl);
 	}
 
 	@Override
 	public boolean modifyUserData(Client cl) throws RemoteException {
-		return facade.getAuthenticator().modifyUserData(cl);
+		return facade.getAuthenticationService().modifyUserData(cl);
 	}
 
 	@Override
 	public boolean resetPassword(Client cl) throws RemoteException {
-		return facade.getAuthenticator().resetPassword(cl);
+		return facade.getAuthenticationService().resetPassword(cl);
 	}
 	
 	@Override
 	public ArrayList<DocumentRemote> getAllAvailableDocuments() throws RemoteException {
-		return facade.getDocumentSynchronizer().getAllAvailableDocuments();
+		return facade.getDocumentService().getAllAvailableDocuments();
 	}
 
 	@Override
 	public void addClientToDocument(Client cl, int docId) throws RemoteException {
-		facade.getDocumentSynchronizer().addClientToDocument(cl, docId);
+		facade.getDocumentService().addClientToDocument(cl, docId);
 	}
 
 	@Override
 	public ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException {
-		return facade.getDocumentSynchronizer().searchDocuments(criteria);
+		return facade.getDocumentService().searchDocuments(criteria);
 	}
 
 	@Override
-	public void createDocument(Client cl, DocumentRemote doc) throws RemoteException {
-		facade.getDocumentSynchronizer().createDocument(cl, doc);
+	public boolean createDocument(Client cl, String name, String type, String password) throws RemoteException {
+		return facade.getDocumentService().createDocument(cl, name, type, password);
 	}
 
 	@Override
 	public String openDocument(int documentId) throws RemoteException {
-		return facade.getDocumentSynchronizer().openDocument(documentId);
+		return facade.getDocumentService().openDocument(documentId);
 	}
 
 }

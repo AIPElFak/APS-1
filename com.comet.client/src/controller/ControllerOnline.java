@@ -12,6 +12,10 @@ public interface ControllerOnline extends Controller {
 	
 	boolean signIn(String username, String password, String email);
 	
+	boolean modifyUserData(Client cl);
+	
+	boolean deleteAccount();
+	
 	void sendLobbyMessage(String Message);
 	
 	void sendDocumentMessage(Client cl, String Message);
@@ -30,16 +34,18 @@ public interface ControllerOnline extends Controller {
 	
 	void createNewDocument();
 	
-	public void openDocument(String path, String name);
+	void openDocument(String path, String name);
 	
-	public void createDocument(Client cl, String name, String lang, String password);
+	boolean createDocument(String name, String type, String password);
 	
-	public void deleteDocument(Client cl, DocumentRemote doc);
+	void deleteDocument(Client cl, DocumentRemote doc);
 	
-	public void openDocument(Client cl, DocumentRemote doc);
+	void openDocument(Client cl, DocumentRemote doc);
 	
-	public void setClient(Client cl);
+	void setClient(Client cl);
 	
-	public void removeClient(Client cl);
+	void removeClient(Client cl);
+	
+	UserRemote getUserData();
 	
 }

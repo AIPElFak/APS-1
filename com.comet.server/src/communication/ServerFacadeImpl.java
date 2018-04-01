@@ -5,23 +5,23 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
-import components.Authenticator;
-import components.DocumentSynchronizer;
-import components.MessageServer;
+import components.AuthenticationService;
+import components.DocumentService;
+import components.MessageService;
 import utilities.DocumentRemote;
 
 public class ServerFacadeImpl implements ServerFacade {
 	
-	private Authenticator auth;
-	private DocumentSynchronizer docsynch;
-	private MessageServer msgsrv;
+	private AuthenticationService auth;
+	private DocumentService docsynch;
+	private MessageService msgsrv;
 	
 	public ServerFacadeImpl(String host, String port) throws MalformedURLException, RemoteException, NotBoundException {
-		auth = (Authenticator) 
+		auth = (AuthenticationService) 
 				Naming.lookup("rmi://" + host + ":" + port + "/Authenticator");
-		docsynch = (DocumentSynchronizer)
+		docsynch = (DocumentService)
 				Naming.lookup("rmi://" + host + ":" + port + "/DocumentSynchronizer");
-		msgsrv = (MessageServer)
+		msgsrv = (MessageService)
 				Naming.lookup("rmi://" + host + ":" + port + "/MessageServer");
 	}
 	
@@ -44,17 +44,17 @@ public class ServerFacadeImpl implements ServerFacade {
 	}
 
 	@Override
-	public Authenticator getAuthenticator() throws RemoteException {
+	public AuthenticationService getAuthenticationService() throws RemoteException {
 		return auth;
 	}
 
 	@Override
-	public MessageServer getMessageServer() throws RemoteException {
+	public MessageService getMessageService() throws RemoteException {
 		return msgsrv;
 	}
 
 	@Override
-	public DocumentSynchronizer getDocumentSynchronizer() throws RemoteException {
+	public DocumentService getDocumentService() throws RemoteException {
 		return docsynch;
 	}
 

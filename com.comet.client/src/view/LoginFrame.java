@@ -21,6 +21,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
 import javax.swing.JSeparator;
@@ -55,7 +56,11 @@ public class LoginFrame extends JFrame {
 	private JPasswordField pfPasswordSignUp;
 	private JLabel lblImage;
 
+	private JFrame self;
+
 	public LoginFrame() {
+		
+		self = this;
 		
 		setIconImage(new ImageIcon(getClass()
 				.getResource("../resources/cometIconMin.png")).getImage());
@@ -391,6 +396,9 @@ public class LoginFrame extends JFrame {
 							cs.stopAnimation();
 							CometDialog cd = new CometDialog("info", "Acount created succesfully!");
 							cd.setVisible(true);
+							txtUsernameSignUp.setText("Enter your username");
+							txtEmail.setText("Enter your email");
+							pfPasswordSignUp.setText("markojelep");
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -437,17 +445,18 @@ public class LoginFrame extends JFrame {
 		signUpInputs.add(pfPasswordSignUp);
 		
 		lblImage = new JLabel("");
-		lblImage.setBounds(311, 83, 88, 82);
+		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+		lblImage.setBounds(296, 81, 120, 120);
+		lblImage.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(52, 52, 52)));
 		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
-				.getResource("../resources/no-image.png"))
-				.getImage().getScaledInstance(88, 82, Image.SCALE_DEFAULT)));
+				.getResource("../resources/personImage.jpg"))
+				.getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT)));
 		signUpInputs.add(lblImage);
 		
 		JButton btnLoadImage = GUIFactory.createCometFlatButton(
-				"Create account",
+				"Load image",
 				new Color(52, 52, 52),
 				Color.LIGHT_GRAY);
-		btnLoadImage.setText("Load image");
 		btnLoadImage.setBounds(270, 212, 172, 47);
 		btnLoadImage.setBorderPainted(false);
 		btnLoadImage.addMouseListener(buttonColorChanger);

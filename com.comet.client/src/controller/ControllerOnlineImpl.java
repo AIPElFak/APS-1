@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import communication.Client;
 import communication.Server;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
 	
@@ -85,9 +86,14 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void createDocument(Client cl, String name, String lang, String password) {
-		// TODO Auto-generated method stub
-		
+	public boolean createDocument(String name, String type, String password) {
+		try {
+			return server.createDocument(client, name, type, password);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -162,6 +168,34 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public UserRemote getUserData() {
+		try {
+			return client.getUserData();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
+		return null;
+	}
+
+	@Override
+	public boolean modifyUserData(Client cl) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean deleteAccount() {
+		try {
+			return server.deleteAccount(client);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

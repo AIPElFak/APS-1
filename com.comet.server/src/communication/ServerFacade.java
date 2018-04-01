@@ -2,18 +2,18 @@ package communication;
 
 import java.rmi.RemoteException;
 
-import components.Authenticator;
-import components.DocumentSynchronizer;
-import components.MessageServer;
+import components.AuthenticationService;
+import components.DocumentService;
+import components.MessageService;
 import utilities.DocumentRemote;
 
 public interface ServerFacade {
 	
-	Authenticator getAuthenticator() throws RemoteException;
+	AuthenticationService getAuthenticationService() throws RemoteException;
 	
-	MessageServer getMessageServer() throws RemoteException;
+	MessageService getMessageService() throws RemoteException;
 	
-	DocumentSynchronizer getDocumentSynchronizer() throws RemoteException;
+	DocumentService getDocumentService() throws RemoteException;
 	
 	void addClient (Client cl) throws RemoteException;
 	

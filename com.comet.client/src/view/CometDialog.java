@@ -30,16 +30,6 @@ public class CometDialog extends JDialog {
 	private Image INFO_IMAGE;
 	
 	private Image selectedImage;
-	
-	public static void main(String[] args) {
-		try {
-			CometDialog dialog = new CometDialog("info", "Lep sam!");
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public CometDialog(String type, String message) {
 		setTitle("Comet");

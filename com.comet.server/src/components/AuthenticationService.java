@@ -1,0 +1,25 @@
+package components;
+
+import java.rmi.*;
+
+import communication.Client;
+
+public interface AuthenticationService extends Remote {
+	
+	boolean login (Client cl, String username, String password) throws RemoteException;
+	
+	boolean logout (Client cl) throws RemoteException;
+	
+	boolean signin (Client cl, String username, String password, String email, String imageUrl) throws RemoteException;
+	
+	boolean deleteAccount (Client cl) throws RemoteException;
+	
+	boolean modifyUserData (Client cl) throws RemoteException;
+	
+	boolean resetPassword(Client cl) throws RemoteException;
+
+	boolean addClient (Client cl) throws RemoteException;
+	
+	boolean removeClient (Client cl) throws RemoteException;
+
+}

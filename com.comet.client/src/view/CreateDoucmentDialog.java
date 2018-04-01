@@ -36,21 +36,12 @@ public class CreateDoucmentDialog extends JDialog {
 	private JTextField txtPassword;
 
 	private ControllerOnline controller;
-	
-	public static void main(String[] args) {
-		try {
-			ControllerOnline cntrl = new ControllerOnlineImpl();
-			CreateDoucmentDialog dialog = new CreateDoucmentDialog(cntrl);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	public CreateDoucmentDialog(ControllerOnline cntrl) {
 		
 		controller = cntrl;
+		
+		JDialog self = this;
 		
 		setBounds(100, 100, 450, 315);
 		getContentPane().setLayout(new BorderLayout());
@@ -146,14 +137,54 @@ public class CreateDoucmentDialog extends JDialog {
 		panel.setLayout(new GridLayout(1, 0, 0, 0));
 		panel.setBackground(new Color(21, 126, 251));
 		
-		JButton btnCreateDocument = GUIFactory.createCometFlatButton("Create document", new Color(1, 91, 181), new Color(244, 244, 255));
+		JButton btnCreateDocument = GUIFactory.createCometFlatButton
+		(
+				"Create document",
+				new Color(1, 91, 181),
+				new Color(244, 244, 255)
+		);
 		btnCreateDocument.addMouseListener(docBtnColorChanger);
 		btnCreateDocument.setBorder(new LineBorder(new Color(11, 116, 241)));
+		btnCreateDocument.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometSplashScreen cs = new CometSplashScreen("Creating new document...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {}
+						String name = txtDocumentName.getText();
+						String type = txtDocumentType.getText();
+						String password = txtPassword.getText();
+						cs.stopAnimation();
+						CometDialog cd;
+						if(controller.createDocument(name, type, password)) {
+							cd = new CometDialog("info", "Document created.");
+							cd.setVisible(true);
+							controller.displayAllAvailableDocuments();
+						}else {
+							cd = new CometDialog("warning", "Document creation failed.");
+							cd.setVisible(true);
+						}
+						try {
+							Thread.sleep(700);
+						} catch (InterruptedException e) {}
+						cd.dispose();
+						self.dispose();
+					}
+				}).start();
+			}
+		});
 		panel.add(btnCreateDocument);
 		
-		JDialog self = this;
-		
-		JButton btnCancel = GUIFactory.createCometFlatButton("Cancel", new Color(1, 91, 181), new Color(244, 244, 255));
+		JButton btnCancel = GUIFactory.createCometFlatButton
+		(
+				"Cancel",
+				new Color(1, 91, 181),
+				new Color(244, 244, 255)
+		);
 		btnCancel.setBorder(new LineBorder(new Color(11, 116, 241)));
 		btnCancel.addMouseListener(docBtnColorChanger);
 		btnCancel.addActionListener(new ActionListener() {
