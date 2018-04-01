@@ -61,8 +61,6 @@ class CometEditorDocument extends DefaultStyledDocument  {
 		if(leftIndex < 0) leftIndex = 0;
 		else leftIndex++;
 		
-		System.out.println(text.substring(leftIndex, rightIndex));
-		
 		int i = leftIndex;
 		int j = rightIndex - leftIndex;
 		
@@ -89,8 +87,6 @@ class CometEditorDocument extends DefaultStyledDocument  {
 		
 		int i = leftIndex;
 		int j = rightIndex - leftIndex;
-		
-		System.out.println(text.substring(leftIndex, rightIndex));
 		
 		if(text.substring(leftIndex, rightIndex).matches("\\n*(" + keyWords + ")"))
     		setCharacterAttributes(i, j, attrKeyWords, false);

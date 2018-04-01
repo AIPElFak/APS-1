@@ -1,6 +1,7 @@
 package utilities;
 
 import java.rmi.*;
+import java.util.List;
 
 import communication.Client;
 
@@ -19,5 +20,9 @@ public interface DocumentRemote extends Remote {
 	String getPrivilege() throws RemoteException;
 	
 	void addClientToThisDocument(Client cl) throws RemoteException;
+	
+	void removeCollaborator(Client cl) throws RemoteException;
+	
+	List<Client> getCollaborators() throws RemoteException;
 	
 }

@@ -105,4 +105,17 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.password = password;
 	}
 
+	@Override
+	public void removeCollaborator(Client cl) throws RemoteException {
+		for(Client c : collaborators) {
+			if(c.getUserData().getId() == cl.getUserData().getId())
+				collaborators.remove(c);
+		}
+	}
+
+	@Override
+	public List<Client> getCollaborators() throws RemoteException {
+		return collaborators;
+	}
+
 }

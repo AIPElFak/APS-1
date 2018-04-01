@@ -12,6 +12,7 @@ import javax.swing.text.JTextComponent;
 
 import languages.SymbolTable;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 public class GUIFactory {
 
@@ -49,6 +50,12 @@ public class GUIFactory {
 	
 		return new CometListRenderer();
 	
+	}
+	
+	public static ListCellRenderer<? super UserRemote> createCollabRenderer(){
+		
+		return new CollabRenderer();
+		
 	}
 	
 }

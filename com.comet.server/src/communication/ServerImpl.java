@@ -50,8 +50,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException {
-		facade.getMessageService().documentBroadcast(doc, cl, message);
+	public void documentBroadcast(Client cl, String message) throws RemoteException {
+		facade.getMessageService().documentBroadcast(cl, message);
 	}
 
 	@Override
@@ -105,8 +105,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public String openDocument(int documentId) throws RemoteException {
-		return facade.getDocumentService().openDocument(documentId);
+	public String openDocument(Client cl, int documentId) throws RemoteException {
+		return facade.getDocumentService().openDocument(cl, documentId);
 	}
 
 }

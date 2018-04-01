@@ -3,11 +3,14 @@ package components;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.List;
 
 import database.dao.BusinessLogic;
 import database.dto.Document;
+import database.dto.DocumentVersion;
 import utilities.DocumentRemote;
 import utilities.DocumentRemoteImpl;
+import utilities.UserRemote;
 import communication.Client;
 
 public class DocumentServiceImpl extends UnicastRemoteObject implements DocumentService {
@@ -86,9 +89,30 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	}
 
 	@Override
-	public String openDocument(int documentId) throws RemoteException {
+	public String openDocument(Client cl, int documentId) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		return logic.getLastDocumentVersion(documentId).getContent();
+		DocumentVersion docVer = logic.getLastDocumentVersion(documentId);
+		DocumentRemote target = null;
+		for(DocumentRemote docRem : documents)
+			if(docRem.getId() == documentId)
+				target = docRem;
+		target.addClientToThisDocument(cl);
+		cl.setWorkingDocument(target);
+		List<UserRemote> users = new ArrayList<UserRemote>();
+		for(Client c : target.getCollaborators()) {
+			try {
+				users.add(c.getUserData());
+			}
+			catch(RemoteException e) {}
+		}
+		for(Client c : target.getCollaborators()) {
+			try {
+				c.updateCollaboratorsList(users);
+			}
+			catch(RemoteException e) {}
+		}
+		if(docVer == null) return "";
+		return docVer.getContent();
 	}
 
 }

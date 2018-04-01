@@ -1,8 +1,11 @@
 package view;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import communication.Client;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 public interface View {
 	
@@ -29,5 +32,7 @@ public interface View {
 	void showAvailableDocument(ArrayList<DocumentRemote> docLst);
 	
 	String getDocumentContent();
+
+	void updateCollaborators(List<UserRemote> collabs);
 	
 }

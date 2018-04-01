@@ -12,9 +12,12 @@ import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import communication.Client;
 import controller.ControllerOnline;
 import guicomponents.GUIFactory;
+import model.ModelImpl;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 import view.View;
 import javax.swing.JList;
 import javax.swing.BorderFactory;
@@ -40,6 +43,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -54,6 +58,8 @@ public class LobbyFrame extends JFrame implements View {
 	private JTextField txtSearch;
 	private JList<DocumentRemote> list;
 	private DefaultListModel<DocumentRemote> dlm;
+	
+	private boolean documentOpened;
 	
 	private ControllerOnline controller;
 	
@@ -230,6 +236,33 @@ public class LobbyFrame extends JFrame implements View {
 				new Color(244, 244, 181));
 		btnOpenDocument.addMouseListener(docBtnColorChanger);
 		btnOpenDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
+		btnOpenDocument.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DocumentRemote doc = list.getSelectedValue();
+				if(doc == null) return;
+				CometSplashScreen cs = new CometSplashScreen("Opening doucment...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(1500);
+							EditorFrameOnline editor = new EditorFrameOnline(controller);
+							controller.setView(editor);
+							controller.setModel(new ModelImpl());
+							if(!controller.openDocument(doc)) {
+								cs.stopAnimation();
+								return;
+							}
+							editor.setVisible(true);
+							documentOpened = true;
+							self.dispose();
+							cs.stopAnimation();
+						} catch (InterruptedException e) {}
+					}
+				}).start();
+			}
+		});
 		docButtonsHolder.add(btnOpenDocument);
 		
 		JButton btnDeleteDocument = GUIFactory.createCometFlatButton(
@@ -379,6 +412,7 @@ public class LobbyFrame extends JFrame implements View {
 
 			@Override
 			public void windowClosed(WindowEvent arg0) {
+				if(documentOpened) return;
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						LoginFrame lf = new LoginFrame();
@@ -520,5 +554,11 @@ public class LobbyFrame extends JFrame implements View {
 			dlm.addElement(d);
 		}
 		list.setModel(dlm);
+	}
+
+	@Override
+	public void updateCollaborators(List<UserRemote> collabs) {
+		// TODO Auto-generated method stub
+		
 	}
 }

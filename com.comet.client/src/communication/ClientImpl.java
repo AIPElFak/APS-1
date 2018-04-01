@@ -2,6 +2,7 @@ package communication;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.List;
 
 import communication.Client;
 import controller.ControllerOnline;
@@ -32,10 +33,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	}
 
 	@Override
-	public void documentRecv(DocumentRemote doc, Client cl, String message) throws RemoteException {
-		// TODO Auto-generated method stub
+	public void documentRecv(Client cl, String message) throws RemoteException {
+		controller.recvDocumentMessage(cl, message);
 	}
-
 
 	@Override
 	public void setUserData(UserRemote userData) throws RemoteException {
@@ -55,6 +55,16 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 	@Override
 	public void setWorkingDocument(DocumentRemote doc) throws RemoteException {
 		this.document = doc;
+	}
+
+	@Override
+	public void updateCollaboratorsList(List<UserRemote> collaborators) throws RemoteException {
+		controller.updateCollaborators(collaborators);
+	}
+
+	@Override
+	public DocumentRemote getDocumentData() throws RemoteException {
+		return document;
 	}
 
 }

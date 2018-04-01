@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import communication.Client;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
@@ -18,7 +20,7 @@ public interface ControllerOnline extends Controller {
 	
 	void sendLobbyMessage(String Message);
 	
-	void sendDocumentMessage(Client cl, String Message);
+	void sendDocumentMessage(String Message);
 	
 	void recvLobbyMessage(Client cl, String Message);
 	
@@ -40,11 +42,13 @@ public interface ControllerOnline extends Controller {
 	
 	void deleteDocument(Client cl, DocumentRemote doc);
 	
-	void openDocument(Client cl, DocumentRemote doc);
+	boolean openDocument(DocumentRemote doc);
 	
 	void setClient(Client cl);
 	
 	void removeClient(Client cl);
+	
+	void updateCollaborators(List<UserRemote> collabs);
 	
 	UserRemote getUserData();
 	

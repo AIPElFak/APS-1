@@ -31,9 +31,18 @@ public class MessageServiceImpl extends UnicastRemoteObject implements MessageSe
 		}
 	}
 
-	public void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	public void documentBroadcast(Client cl, String message) throws RemoteException {
+		try {
+			DocumentRemote doc = cl.getDocumentData();
+			if(doc == null) return;
+			for(Client c : clients) {
+				if(c.getUserData().getId() != cl.getUserData().getId()
+						&& c.getDocumentData().getId() == 
+						cl.getDocumentData().getId()) {
+					c.documentRecv(cl, message);
+				}
+			}
+		}catch(RemoteException e) {}
 	}
 
 	public boolean addClient(Client cl) throws RemoteException {

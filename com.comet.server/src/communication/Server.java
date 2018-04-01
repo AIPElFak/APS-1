@@ -10,7 +10,7 @@ public interface Server extends Remote {
 	
 	void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
-	void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException;
+	void documentBroadcast(Client cl, String message) throws RemoteException;
 	
 	boolean login (Client cl, String username, String password) throws RemoteException;
 	
@@ -38,5 +38,5 @@ public interface Server extends Remote {
 	
 	boolean createDocument(Client cl, String name, String type, String password) throws RemoteException;
 	
-	String openDocument(int documentId) throws RemoteException;
+	String openDocument(Client cl, int documentId) throws RemoteException;
 }

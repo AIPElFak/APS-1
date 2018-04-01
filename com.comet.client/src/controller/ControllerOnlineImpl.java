@@ -2,6 +2,7 @@ package controller;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.List;
 
 import communication.Client;
 import communication.Server;
@@ -56,8 +57,13 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void sendDocumentMessage(Client cl, String Message) {
-		
+	public void sendDocumentMessage(String Message) {
+		try {
+			server.documentBroadcast(client, Message);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -70,8 +76,12 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 
 	@Override
 	public void recvDocumentMessage(Client cl, String Message) {
-		// TODO Auto-generated method stub
-		
+		try {
+			getView().appendDocumentMessage(cl.getUserData().getUsername(), Message);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -103,9 +113,18 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void openDocument(Client cl, DocumentRemote doc) {
-		// TODO Auto-generated method stub
-		
+	public boolean openDocument(DocumentRemote doc) {
+		try {
+			String text = server.openDocument(client, doc.getId());
+			getView().setDocumentName(doc.getName());
+			getView().updateContent(text);
+			getModel().setContent(text);
+			return true;
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
@@ -196,6 +215,11 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public void updateCollaborators(List<UserRemote> collabs) {
+		getView().updateCollaborators(collabs);
 	}
 
 }

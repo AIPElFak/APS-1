@@ -7,20 +7,22 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.text.PlainDocument;
-import javax.swing.text.StyledEditorKit;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
 
 import controller.CommandUndoRedo;
-import controller.Controller;
+import controller.ControllerOnline;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.SymbolTable;
+import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JToolBar;
 import java.awt.Image;
 import java.awt.Insets;
@@ -29,9 +31,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
@@ -44,34 +49,24 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 
-public class EditorFrameOnline extends JFrame {
+public class EditorFrameOnline extends JFrame implements View {
 
 	private JPanel contentPane;
 	private JTextField txtEnterTextHere;
-	private Controller controller;
+	private ControllerOnline controller;
 	private JFrame self;
 	private JTextPane textPane;
+	private JList<UserRemote> collaboartorsList;
+	private DefaultListModel<UserRemote> listModel;
+	private JLabel lblDocumentName;
+	private JTextArea textArea;
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					EditorFrameOnline frame = new EditorFrameOnline();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
-	public EditorFrameOnline() {
+	public EditorFrameOnline(ControllerOnline cntrl) {
 		setTitle("Comet");
 		setIconImage(new ImageIcon(getClass()
 				.getResource("../resources/cometIconMin.png")).getImage());
+		
+		controller = cntrl;
 		
 		MouseAdapter toolBarColorChanger =  GUIFactory.createButtonColorChanger
 		(
@@ -285,7 +280,7 @@ public class EditorFrameOnline extends JFrame {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		textScroll.setRowHeaderView(tln);
+		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
@@ -297,7 +292,7 @@ public class EditorFrameOnline extends JFrame {
 		documentTitleHolder.setBackground(new Color(50, 50, 50));
 		editorHolder.add(documentTitleHolder, BorderLayout.NORTH);
 		
-		JLabel lblDocumentName = new JLabel("Document name");
+		lblDocumentName = new JLabel("Document name");
 		lblDocumentName.setFont(new Font("Courier New", Font.PLAIN, 16));
 		lblDocumentName.setForeground(new Color(230, 230, 250));
 		documentTitleHolder.add(lblDocumentName);
@@ -328,18 +323,19 @@ public class EditorFrameOnline extends JFrame {
 		panel_3.setLayout(null);
 		
 		JSeparator separator = new JSeparator();
-		separator.setBackground(new Color(180, 180, 180));
+		separator.setBackground(new Color(238, 238, 255));
 		separator.setBounds(0, 0, 143, 2);
 		panel_3.add(separator);
 		
-		JPanel collaboartorsPanel = new JPanel();
-		collaboartorsPanel.setBorder(new EmptyBorder(5, 10, 5, 10));
+		collaboartorsList = new JList<UserRemote>();
+		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer());
+		collaboartorsList.setBounds(0, 13, 143, 182);
 		JScrollPane collaboratorsHolder = new JScrollPane(
-			collaboartorsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				collaboartorsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 		);
 		collaboratorsHolder.setBorder(BorderFactory.createMatteBorder(0, 2, 0, 2, new Color(180, 180, 180)));
-		collaboartorsPanel.setBackground(new Color(60, 60, 60));
+		collaboartorsList.setBackground(new Color(60, 60, 60));
 		collaboratorsHolder.setBounds(0, 13, 143, 182);
 		panel_3.add(collaboratorsHolder);
 		
@@ -351,22 +347,23 @@ public class EditorFrameOnline extends JFrame {
 		panel_3.add(lblChat);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBackground(new Color(180, 180, 180));
+		separator_1.setBackground(new Color(238, 238, 255));
 		separator_1.setBounds(0, 235, 143, 2);
 		panel_3.add(separator_1);
 		
 		JSeparator separator_2 = new JSeparator();
 		separator_2.setBounds(0, 206, 143, 2);
-		separator_2.setBackground(new Color(180, 180, 180));
+		separator_2.setBackground(new Color(238, 238, 255));
 		panel_3.add(separator_2);
 		
-		JTextArea textArea = new JTextArea();
+		textArea = new JTextArea();
 		textArea.setForeground(Color.LIGHT_GRAY);
 		textArea.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 2, 0, 2, new Color(180, 180, 180)),
 				new EmptyBorder(5, 10, 5, 10)));
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		textArea.setFont(new Font("Courier New", Font.PLAIN, 13));
 		JScrollPane chatHolder = new JScrollPane(
 			textArea, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
@@ -377,7 +374,7 @@ public class EditorFrameOnline extends JFrame {
 		panel_3.add(chatHolder);
 		
 		JSeparator separator_3 = new JSeparator();
-		separator_3.setBackground(new Color(180, 180, 180));
+		separator_3.setBackground(new Color(238, 238, 255));
 		separator_3.setBounds(0, 461, 143, 2);
 		panel_3.add(separator_3);
 		
@@ -413,6 +410,13 @@ public class EditorFrameOnline extends JFrame {
 			new Color(112, 112, 112))
 		);
 		btnSend.setBorderPainted(false);
+		btnSend.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				textArea.append("Me: " + txtEnterTextHere.getText() + "\n\n");
+				controller.sendDocumentMessage(txtEnterTextHere.getText());
+				txtEnterTextHere.setText("Enter message here.");
+			}
+		});
 		panel_3.add(btnSend);
 		
 		JLabel lblMessageInput = new JLabel("Message input:");
@@ -423,11 +427,84 @@ public class EditorFrameOnline extends JFrame {
 		panel_3.add(lblMessageInput);
 		
 		JSeparator separator_4 = new JSeparator();
-		separator_4.setBackground(new Color(180, 180, 180));
+		separator_4.setBackground(new Color(238, 238, 255));
 		separator_4.setBounds(0, 526, 143, 2);
 		panel_3.add(separator_4);
 		
 		setLocationRelativeTo(null);
 		
+	}
+
+	@Override
+	public void appendDocumentMessage(String username, String message) {
+		textArea.append(username + ": " + message + "\n\n");
+	}
+
+	@Override
+	public void appendLobyMessage(String username, String message) {
+		return;
+	}
+
+	@Override
+	public void disposeView() {
+		this.dispose();
+	}
+
+	@Override
+	public void setCaretLocation(int x, int y) {
+		
+	}
+
+	@Override
+	public void showRowColPosition(int row, int col) {
+		
+	}
+
+	@Override
+	public void setDocumentName(String name) {
+		lblDocumentName.setText(name);
+	}
+
+	@Override
+	public void updateStatisics(String statistics) {
+		
+	}
+
+	@Override
+	public void updateContent(String content) {
+		Document doc = textPane.getDocument();
+		try {
+			doc.remove(0, textPane.getText().length());
+			doc.insertString(0, content, null);
+		} catch (BadLocationException e) {}
+	}
+
+	@Override
+	public void find(String text) {
+		
+	}
+
+	@Override
+	public void replace(String text, String replace) {
+		
+	}
+
+	@Override
+	public void showAvailableDocument(ArrayList<DocumentRemote> docLst) {
+		return;
+	}
+
+	@Override
+	public String getDocumentContent() {
+		return textPane.getText();
+	}
+
+	@Override
+	public void updateCollaborators(List<UserRemote> collabs) {
+		listModel = new DefaultListModel<UserRemote>();
+		for(UserRemote user : collabs) {
+			listModel.addElement(user);
+		}
+		collaboartorsList.setModel(listModel);
 	}
 }

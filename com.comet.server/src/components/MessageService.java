@@ -9,7 +9,7 @@ public interface MessageService extends Remote {
 	
 	void lobbyBroadcast(String message, Client cl) throws RemoteException;
 	
-	void documentBroadcast(DocumentRemote doc, Client cl, String message) throws RemoteException;
+	void documentBroadcast(Client cl, String message) throws RemoteException;
 	
 	boolean addClient (Client cl) throws RemoteException;
 	

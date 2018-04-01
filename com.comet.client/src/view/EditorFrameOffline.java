@@ -14,6 +14,7 @@ import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.SymbolTable;
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -34,6 +35,9 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Document;
 import javax.swing.text.Style;
+
+import communication.Client;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -41,6 +45,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.GridLayout;
 import javax.swing.SwingConstants;
 
@@ -439,5 +444,11 @@ public class EditorFrameOffline extends JFrame implements View {
 	@Override
 	public void showAvailableDocument(ArrayList<DocumentRemote> docLst) {
 		return;
+	}
+
+	@Override
+	public void updateCollaborators(List<UserRemote> collabs) {
+		// TODO Auto-generated method stub
+		
 	}
 }
