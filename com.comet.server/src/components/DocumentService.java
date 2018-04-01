@@ -22,5 +22,7 @@ public interface DocumentService extends Remote {
 	
 	String openDocument (Client cl, int documentId) throws RemoteException;
 	
+	boolean deleteDocument(Client cl, int documentId) throws RemoteException;
+	
 	boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException;
 }

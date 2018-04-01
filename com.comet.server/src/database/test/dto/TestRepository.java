@@ -120,5 +120,11 @@ public class TestRepository {
 //						+ "  System.out.println(\"Nova verzija\");"
 //						+ "}");
 		
+		if(dd.deleteIfOwner(31,26)) {
+			System.out.println("Obrisano");
+		}
+		else {
+			System.out.println("Nije owner!");
+		}
 	}
 }

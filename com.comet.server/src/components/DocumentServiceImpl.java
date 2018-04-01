@@ -121,4 +121,10 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		return logic.addDocumentVersion(documentId, cl.getUserData().getId(), content);
 	}
 
+	@Override
+	public boolean deleteDocument(Client cl, int documentId) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		return logic.deleteDocument(documentId, cl.getUserData().getId());	
+	}
+
 }

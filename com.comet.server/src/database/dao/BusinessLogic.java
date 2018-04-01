@@ -47,8 +47,8 @@ public class BusinessLogic {
 		return worksOnDao.addWorksOnForNewDocument(doc, id);
 	}
 		
-	public boolean deleteDocument(int id) {
-		return documentDao.deleteById(id);
+	public boolean deleteDocument(int documentId, int userId) {
+		return documentDao.deleteIfOwner(documentId, userId);
 	}
 
 	public boolean addDocumentVersion(int documentId, int userId, String content) {
