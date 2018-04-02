@@ -21,6 +21,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
@@ -33,9 +34,12 @@ import javax.swing.SwingUtilities;
 
 import java.awt.Font;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.rmi.RemoteException;
 
 import javax.swing.JPasswordField;
@@ -45,6 +49,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class LoginFrame extends JFrame {
 
@@ -193,107 +198,6 @@ public class LoginFrame extends JFrame {
 			}
 		});
 		loginInputs.add(btnContinueOffline);
-		
-		inputsHolder = new JPanel();
-		inputsHolder.setBackground(Color.DARK_GRAY);
-		inputsHolder.setBounds(10, 110, 477, 296);
-		inputsHolder.setLayout(null);
-		loginInputs.add(inputsHolder);
-		
-		txtUsername = new JTextField();
-		txtUsername.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				txtUsername.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(txtUsername.getText().equals("")) 
-					txtUsername.setText("Enter your username");
-			}
-		});
-		txtUsername.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtUsername.setForeground(Color.GRAY);
-		txtUsername.setBackground(Color.DARK_GRAY);
-		txtUsername.setText("Enter your username");
-		txtUsername.setBorder(null);
-		txtUsername.setCaretColor(Color.LIGHT_GRAY);
-		txtUsername.setBounds(31, 45, 416, 14);
-		inputsHolder.add(txtUsername);
-		txtUsername.setColumns(10);
-		
-		JSeparator logInUsernameSeparator = new JSeparator();
-		logInUsernameSeparator.setForeground(Color.LIGHT_GRAY);
-		logInUsernameSeparator.setBackground(Color.LIGHT_GRAY);
-		logInUsernameSeparator.setBounds(31, 70, 416, 2);
-		inputsHolder.add(logInUsernameSeparator);
-		
-		JSeparator logInPasswordSeparator = new JSeparator();
-		logInPasswordSeparator.setForeground(Color.LIGHT_GRAY);
-		logInPasswordSeparator.setBackground(Color.LIGHT_GRAY);
-		logInPasswordSeparator.setBounds(31, 162, 416, 2);
-		inputsHolder.add(logInPasswordSeparator);
-		
-		JLabel lblUsername = new JLabel("USERNAME:");
-		lblUsername.setForeground(Color.LIGHT_GRAY);
-		lblUsername.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblUsername.setBounds(31, 22, 143, 21);
-		inputsHolder.add(lblUsername);
-		
-		JLabel lblPassword = new JLabel("PASSWORD:");
-		lblPassword.setForeground(Color.LIGHT_GRAY);
-		lblPassword.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblPassword.setBounds(31, 114, 143, 21);
-		inputsHolder.add(lblPassword);
-		
-		JLabel lblSignIn = new JLabel("Log in with:");
-		lblSignIn.setForeground(Color.LIGHT_GRAY);
-		lblSignIn.setFont(new Font("Courier New", Font.PLAIN, 14));
-		lblSignIn.setBounds(322, 180, 125, 21);
-		inputsHolder.add(lblSignIn);
-		
-		pfPassword = new JPasswordField();
-		pfPassword.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				pfPassword.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(pfPassword.getText().equals("")) pfPassword.setText("password");
-			}
-		});
-		pfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		pfPassword.setForeground(Color.GRAY);
-		pfPassword.setBackground(Color.DARK_GRAY);
-		pfPassword.setText("password");
-		pfPassword.setBorder(null);
-		pfPassword.setCaretColor(Color.LIGHT_GRAY);
-		pfPassword.setBounds(31, 135, 416, 20);
-		inputsHolder.add(pfPassword);
-		
-		JButton btnLoginG = new JButton("");
-		btnLoginG.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnLoginG.setIcon(new ImageIcon(getClass().getResource("../resources/loginGoogle.png")));
-		btnLoginG.setBounds(388, 212, 46, 47);
-		btnLoginG.setBorder(null);
-		btnLoginG.setContentAreaFilled(false);
-		inputsHolder.add(btnLoginG);
-		
-		JButton btnLoginFb = new JButton("");
-		btnLoginFb.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnLoginFb.setIcon(new ImageIcon(getClass().getResource("../resources/loginFb.png")));
-		btnLoginFb.setSelectedIcon(null);
-		btnLoginFb.setBorder(null);
-		btnLoginFb.setContentAreaFilled(false);
-		btnLoginFb.setBounds(322, 212, 46, 47);
-		inputsHolder.add(btnLoginFb);
-		
-		JButton btnLogIn = GUIFactory.createCometFlatButton(
-				"Log in",
-				new Color(52, 52, 52),
-				Color.LIGHT_GRAY);
-		btnLogIn.addMouseListener(buttonColorChanger);
-		btnLogIn.addActionListener(new LoginListener());
-		btnLogIn.setBounds(31, 212, 253, 47);
-		btnLogIn.setBorderPainted(false);
-		inputsHolder.add(btnLogIn);
 		
 		signUpInputs = new JPanel();
 		signUpInputs.setBackground(Color.DARK_GRAY);
@@ -460,7 +364,134 @@ public class LoginFrame extends JFrame {
 		btnLoadImage.setBounds(270, 212, 172, 47);
 		btnLoadImage.setBorderPainted(false);
 		btnLoadImage.addMouseListener(buttonColorChanger);
+		
+		btnLoadImage.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg");
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(filter);
+				fc.setAcceptAllFileFilterUsed(false);
+				
+				int retVal = fc.showOpenDialog(fc);
+				if(retVal == JFileChooser.APPROVE_OPTION) {
+					String filePath = fc.getSelectedFile().getAbsolutePath();
+					BufferedImage img = null;
+					try {
+						img = ImageIO.read(new File(filePath));
+					}catch(Exception ex) {
+						ex.printStackTrace();
+					}
+					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
+					
+					lblImage.setIcon(new ImageIcon(image));
+				}
+			}
+			
+		});
+		
 		signUpInputs.add(btnLoadImage);
+		
+		inputsHolder = new JPanel();
+		inputsHolder.setBackground(Color.DARK_GRAY);
+		inputsHolder.setBounds(10, 110, 477, 296);
+		inputsHolder.setLayout(null);
+		loginInputs.add(inputsHolder);
+		
+		txtUsername = new JTextField();
+		txtUsername.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				txtUsername.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				if(txtUsername.getText().equals("")) 
+					txtUsername.setText("Enter your username");
+			}
+		});
+		txtUsername.setFont(new Font("Courier New", Font.PLAIN, 13));
+		txtUsername.setForeground(Color.GRAY);
+		txtUsername.setBackground(Color.DARK_GRAY);
+		txtUsername.setText("Enter your username");
+		txtUsername.setBorder(null);
+		txtUsername.setCaretColor(Color.LIGHT_GRAY);
+		txtUsername.setBounds(31, 45, 416, 14);
+		inputsHolder.add(txtUsername);
+		txtUsername.setColumns(10);
+		
+		JSeparator logInUsernameSeparator = new JSeparator();
+		logInUsernameSeparator.setForeground(Color.LIGHT_GRAY);
+		logInUsernameSeparator.setBackground(Color.LIGHT_GRAY);
+		logInUsernameSeparator.setBounds(31, 70, 416, 2);
+		inputsHolder.add(logInUsernameSeparator);
+		
+		JSeparator logInPasswordSeparator = new JSeparator();
+		logInPasswordSeparator.setForeground(Color.LIGHT_GRAY);
+		logInPasswordSeparator.setBackground(Color.LIGHT_GRAY);
+		logInPasswordSeparator.setBounds(31, 162, 416, 2);
+		inputsHolder.add(logInPasswordSeparator);
+		
+		JLabel lblUsername = new JLabel("USERNAME:");
+		lblUsername.setForeground(Color.LIGHT_GRAY);
+		lblUsername.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblUsername.setBounds(31, 22, 143, 21);
+		inputsHolder.add(lblUsername);
+		
+		JLabel lblPassword = new JLabel("PASSWORD:");
+		lblPassword.setForeground(Color.LIGHT_GRAY);
+		lblPassword.setFont(new Font("Courier New", Font.PLAIN, 18));
+		lblPassword.setBounds(31, 114, 143, 21);
+		inputsHolder.add(lblPassword);
+		
+		JLabel lblSignIn = new JLabel("Log in with:");
+		lblSignIn.setForeground(Color.LIGHT_GRAY);
+		lblSignIn.setFont(new Font("Courier New", Font.PLAIN, 14));
+		lblSignIn.setBounds(322, 180, 125, 21);
+		inputsHolder.add(lblSignIn);
+		
+		pfPassword = new JPasswordField();
+		pfPassword.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				pfPassword.setText("");
+			}
+			public void focusLost(FocusEvent e) {
+				if(pfPassword.getText().equals("")) pfPassword.setText("password");
+			}
+		});
+		pfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		pfPassword.setForeground(Color.GRAY);
+		pfPassword.setBackground(Color.DARK_GRAY);
+		pfPassword.setText("password");
+		pfPassword.setBorder(null);
+		pfPassword.setCaretColor(Color.LIGHT_GRAY);
+		pfPassword.setBounds(31, 135, 416, 20);
+		inputsHolder.add(pfPassword);
+		
+		JButton btnLoginG = new JButton("");
+		btnLoginG.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnLoginG.setIcon(new ImageIcon(getClass().getResource("../resources/loginGoogle.png")));
+		btnLoginG.setBounds(388, 212, 46, 47);
+		btnLoginG.setBorder(null);
+		btnLoginG.setContentAreaFilled(false);
+		inputsHolder.add(btnLoginG);
+		
+		JButton btnLoginFb = new JButton("");
+		btnLoginFb.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btnLoginFb.setIcon(new ImageIcon(getClass().getResource("../resources/loginFb.png")));
+		btnLoginFb.setSelectedIcon(null);
+		btnLoginFb.setBorder(null);
+		btnLoginFb.setContentAreaFilled(false);
+		btnLoginFb.setBounds(322, 212, 46, 47);
+		inputsHolder.add(btnLoginFb);
+		
+		JButton btnLogIn = GUIFactory.createCometFlatButton(
+				"Log in",
+				new Color(52, 52, 52),
+				Color.LIGHT_GRAY);
+		btnLogIn.addMouseListener(buttonColorChanger);
+		btnLogIn.addActionListener(new LoginListener());
+		btnLogIn.setBounds(31, 212, 253, 47);
+		btnLogIn.setBorderPainted(false);
+		inputsHolder.add(btnLogIn);
 	
 	}
 	
