@@ -4,10 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -18,6 +20,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import guicomponents.GUIFactory;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import controller.ControllerOnline;
 
@@ -28,6 +31,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.rmi.RemoteException;
 
 public class CometUserDialog extends JDialog {
@@ -154,12 +159,44 @@ public class CometUserDialog extends JDialog {
 		btnLoadImage.setBorder(new LineBorder(new Color(11, 116, 241)));
 		btnLoadImage.setBounds(217, 88, 207, 39);
 		btnLoadImage.addMouseListener(docBtnColorChanger);
+		
+		btnLoadImage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg");
+				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(filter);
+				fc.setAcceptAllFileFilterUsed(false);
+				
+				int retVal = fc.showOpenDialog(fc);
+				if(retVal == JFileChooser.APPROVE_OPTION) {
+					String filePath = fc.getSelectedFile().getAbsolutePath();
+					BufferedImage img = null;
+					try {
+						img = ImageIO.read(new File(filePath));
+					}catch(Exception ex) {
+						ex.printStackTrace();
+					}
+					Image image = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+					
+					label.setIcon(new ImageIcon(image));
+				}
+			}
+			
+		});
 		contentPanel.add(btnLoadImage);
 		
 		JButton btnSetDefault = GUIFactory.createCometFlatButton("Set default image", new Color(1, 91, 181), new Color(244, 244, 255));
 		btnSetDefault.setBorder(new LineBorder(new Color(11, 116, 241)));
 		btnSetDefault.setBounds(217, 150, 207, 39);
 		btnSetDefault.addMouseListener(docBtnColorChanger);
+		btnSetDefault.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				label.setIcon(new ImageIcon(new ImageIcon(getClass()
+						.getResource("../resources/personImage.jpg"))
+						.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
+			}
+			
+		});
 		contentPanel.add(btnSetDefault);
 		
 		JPanel dialogButtons = new JPanel();
