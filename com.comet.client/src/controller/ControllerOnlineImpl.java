@@ -222,4 +222,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		getView().updateCollaborators(collabs);
 	}
 
+	@Override
+	public boolean editUserInformations(String username, String email, String password) {
+		return server.editUserInformations(client, username, email, password);
+	}
+
 }

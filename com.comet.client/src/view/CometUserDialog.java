@@ -172,6 +172,46 @@ public class CometUserDialog extends JDialog {
 		btnSave.setBorder(new LineBorder(new Color(11, 116, 241)));
 		btnSave.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, new Color(21, 126, 251)));
 		btnSave.addMouseListener(dialogBtnColorChanger);
+
+		btnSave.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometSplashScreen cs = new CometSplashScreen("Saving changes...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {}
+						String username = txtUsername.getText();
+						String password = txtPassword.getText();
+						String email = txtEmail.getText();
+						cs.stopAnimation();
+						CometDialog cd;
+						if(controller.editUserInformations(username, email, password)) {
+							cd = new CometDialog("info", "Changes saved.");
+							cd.setVisible(true);
+							
+							try {
+								Thread.sleep(700);
+							} catch (InterruptedException e) {}
+							cd.dispose();
+							self.dispose();
+							
+						}else {
+							cd = new CometDialog("warning", "Problem with saving changes!");
+							cd.setVisible(true);
+							try {
+								Thread.sleep(700);
+							} catch (InterruptedException e) {}
+							cd.dispose();
+							//ne gasi celu formu, samo dijalog!!!
+						}
+					}
+				}).start();
+			}
+		});
+		
 		dialogButtons.add(btnSave);
 		
 		JButton btnCancel = GUIFactory.createCometFlatButton("Cancel", new Color(1, 61, 151), new Color(244, 244, 255));

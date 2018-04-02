@@ -39,5 +39,7 @@ public interface Server extends Remote {
 	boolean createDocument(Client cl, String name, String type, String password) throws RemoteException;
 	
 	String openDocument(Client cl, int documentId) throws RemoteException;
+
+	boolean editUserInformations(Client client, String username, String email, String password);
 	
 }

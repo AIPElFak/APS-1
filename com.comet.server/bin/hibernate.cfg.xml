@@ -6,9 +6,9 @@
 <hibernate-configuration>
   <session-factory>
     <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-    <property name="hibernate.connection.url">jdbc:mysql://160.99.38.140:6666/db_comet</property>
-    <property name="hibernate.connection.username">comet</property>
-    <property name="hibernate.connection.password">vranjanac!</property>
+    <property name="hibernate.connection.url">jdbc:mysql://sql11.freemysqlhosting.net:3306/sql11230215</property>
+    <property name="hibernate.connection.username">sql11230215</property>
+    <property name="hibernate.connection.password">qZFpVlXc5L</property>
     <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
     
     

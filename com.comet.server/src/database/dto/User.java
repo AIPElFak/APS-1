@@ -61,6 +61,17 @@ public class User{
 		this.email = email;
 		this.image = image;
 	}
+	public User(int id, String username,String password,String email,String image) throws RemoteException {
+		super();
+		this.documents = new ArrayList<WorksOn>();
+		this.versions = new ArrayList<DocumentVersion>();
+		this.requests = new ArrayList<JoinRequest>();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.image = image;
+	}
 //getters and setters	
 	public int getId() {
 		return id;

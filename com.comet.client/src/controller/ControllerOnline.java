@@ -51,5 +51,7 @@ public interface ControllerOnline extends Controller {
 	void updateCollaborators(List<UserRemote> collabs);
 	
 	UserRemote getUserData();
+
+	boolean editUserInformations(String username, String email, String password); 	//treba i slika
 	
 }

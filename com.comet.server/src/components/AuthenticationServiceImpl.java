@@ -96,4 +96,15 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 		return true;
 	}
 
+	@Override
+	public boolean editUserInformations(Client client, String username, String email, String password)
+			throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		User user = new User(client.getUserData().getId(),username, password, email, "bez-slike");
+		if(!logic.updateUser(user))return false;
+		UserRemote newUserData = new UserRemoteImpl(user);
+		client.setUserData(newUserData);
+		return true;
+	}
+
 }
