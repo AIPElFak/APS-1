@@ -14,7 +14,7 @@ public interface UserRemote extends Remote {
 	
 	String getEmail() throws RemoteException;
 	
-	String getImage() throws RemoteException;
+	byte[] getImageBytes() throws RemoteException;
 
 	ArrayList<? extends DocumentRemote> getCurrentDocuments() throws RemoteException;
 	

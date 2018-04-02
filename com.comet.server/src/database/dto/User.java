@@ -31,9 +31,6 @@ public class User{
 	@Column(name="EMAIL")
 	private String email;
 	
-	@Column(name="IMAGE")
-	private String image;
-	
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private Collection<WorksOn> documents;
 	
@@ -51,7 +48,7 @@ public class User{
 		this.requests = new ArrayList<JoinRequest>();
 	}
 	
-	public User(String username,String password,String email,String image) throws RemoteException {
+	public User(String username,String password,String email) throws RemoteException {
 		super();
 		this.documents = new ArrayList<WorksOn>();
 		this.versions = new ArrayList<DocumentVersion>();
@@ -59,9 +56,8 @@ public class User{
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.image = image;
 	}
-	public User(int id, String username,String password,String email,String image) throws RemoteException {
+	public User(int id, String username,String password,String email) throws RemoteException {
 		super();
 		this.documents = new ArrayList<WorksOn>();
 		this.versions = new ArrayList<DocumentVersion>();
@@ -70,7 +66,6 @@ public class User{
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.image = image;
 	}
 //getters and setters	
 	public int getId() {
@@ -102,14 +97,6 @@ public class User{
 	}
 	public void setEmail(String email) {
 		this.email = email;
-	}
-	
-	
-	public String getImage() {
-		return image;
-	}
-	public void setImage(String image) {
-		this.image = image;
 	}
 	
 	

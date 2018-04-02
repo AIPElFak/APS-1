@@ -32,7 +32,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 public class CometUserDialog extends JDialog {
@@ -45,6 +47,8 @@ public class CometUserDialog extends JDialog {
 	private ControllerOnline controller;
 	private JFrame parentFrame;
 
+	boolean imageChanged = false;
+	
 	public CometUserDialog(ControllerOnline cntrl, JFrame parent) {
 		setTitle("Comet");
 		setBounds(100, 100, 450, 515);
@@ -179,6 +183,7 @@ public class CometUserDialog extends JDialog {
 					Image image = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
 					
 					label.setIcon(new ImageIcon(image));
+					imageChanged = true;
 				}
 			}
 			
@@ -222,7 +227,7 @@ public class CometUserDialog extends JDialog {
 						} catch (InterruptedException e) {}
 						String username = txtUsername.getText();
 						String password = txtPassword.getText();
-						String email = txtEmail.getText();
+						String email 	= txtEmail.getText();
 						cs.stopAnimation();
 						CometDialog cd;
 						if(controller.editUserInformations(username, email, password)) {
@@ -360,7 +365,16 @@ public class CometUserDialog extends JDialog {
 							txtUsername.setText(controller.getUserData().getUsername());
 							txtPassword.setText(controller.getUserData().getPassword());
 							txtEmail.setText(controller.getUserData().getEmail());
+							
+							if(controller.getUserData().getImageBytes() != null) {
+								BufferedImage image;
+								image = ImageIO.read(new ByteArrayInputStream(controller.getUserData().getImageBytes()));
+								label.setIcon(new ImageIcon(image));
+							}
 						} catch (RemoteException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}

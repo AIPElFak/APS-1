@@ -39,9 +39,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public boolean signIn(String username, String password, String email) {
+	public boolean signIn(String username, String password, String email, byte[] imageBytes) {
 		try {
-			return server.signin(client, username, password, email, "http://no-image");
+			return server.signin(client, username, password, email, imageBytes);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

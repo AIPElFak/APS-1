@@ -1,8 +1,16 @@
 package components;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import database.dao.BusinessLogic;
 import database.dto.User;
@@ -28,8 +36,17 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	public boolean login(Client cl, String username, String password) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		User user = logic.login(username, password);
-		if(user == null) return false; 
-		UserRemoteImpl ur = new UserRemoteImpl(user);
+		if(user == null) return false;
+		
+		File f = new File("src/userImages/"+user.getId()+".jpg");
+		byte[] imageBytes = null;
+		try {
+			imageBytes = Files.readAllBytes(f.toPath());
+		} catch (IOException e) {
+		//	e.printStackTrace();
+		}
+		
+		UserRemoteImpl ur = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
 		cl.setUserData(ur);
 		return true;
 	}
@@ -42,13 +59,24 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	}
 
 	@Override
-	public boolean signin(Client cl, String username, String password, String email, String imageUrl) throws RemoteException {
+	public boolean signin(Client cl, String username, String password, String email, byte[] imageBytes) throws RemoteException {
+		
 		BusinessLogic logic = new BusinessLogic();
-		User user = new User(username, password, email, imageUrl);
+		User user = new User(username, password, email);
 		Info info = logic.register(user);
 		if(!info.isSuccessful()) return false;
-		UserRemoteImpl ur = new UserRemoteImpl(user);
+		UserRemoteImpl ur = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
 		cl.setUserData(ur);
+		
+		BufferedImage image;
+		try {
+			image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+			File outputFile = new File("src/userImages/"+user.getId()+".jpg");	//user ID umesto toga
+			ImageIO.write(image, "jpg", outputFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return true;
 	}
 
@@ -63,7 +91,7 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	public boolean modifyUserData(Client cl) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		UserRemoteImpl ur = (UserRemoteImpl)cl.getUserData();
-		User user = new User(ur.getUsername(), ur.getPassword(), ur.getEmail(), ur.getImage());
+		User user = new User(ur.getUsername(), ur.getPassword(), ur.getEmail());
 		user.setId(ur.getId());
 		return logic.updateUser(user);
 	}
@@ -74,7 +102,7 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 		UserRemoteImpl ur = (UserRemoteImpl)cl.getUserData();
 		PasswordReset reset = new PasswordReset(ur.getEmail(),ur.getUsername());
 		
-		User user = new User(ur.getUsername(), reset.getNewPassword(), ur.getEmail(), ur.getImage());
+		User user = new User(ur.getUsername(), reset.getNewPassword(), ur.getEmail());
 		user.setId(ur.getId());
 		
 		if(!logic.updateUser(user)) return false;
@@ -100,7 +128,7 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	public boolean editUserInformations(Client client, String username, String email, String password)
 			throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		User user = new User(client.getUserData().getId(),username, password, email, "bez-slike");
+		User user = new User(client.getUserData().getId(),username, password, email);
 		if(!logic.updateUser(user))return false;
 		UserRemote newUserData = new UserRemoteImpl(user);
 		client.setUserData(newUserData);

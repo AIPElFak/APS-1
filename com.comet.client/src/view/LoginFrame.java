@@ -33,13 +33,18 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import java.awt.Font;
+import java.awt.Graphics2D;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.rmi.RemoteException;
 
 import javax.swing.JPasswordField;
@@ -60,6 +65,9 @@ public class LoginFrame extends JFrame {
 	private JTextField txtUsernameSignUp, txtEmail;
 	private JPasswordField pfPasswordSignUp;
 	private JLabel lblImage;
+	
+	private Image userImage;
+	private String userImageExtension;
 
 	private JFrame self;
 
@@ -291,7 +299,22 @@ public class LoginFrame extends JFrame {
 							String username = txtUsernameSignUp.getText();
 							String password = pfPasswordSignUp.getText();
 							String email = txtEmail.getText();
-							if(!controller.signIn(username, password, email)) {	
+							
+							byte[] imageBytes = null;
+							if(userImage != null) {
+								//u userImage se cuva skalirana slika!!!
+								//uzimaju se bajtovi iz takve skalirane slike na sledeci nacin:
+								BufferedImage bImage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+								Graphics2D bImageGraphics = bImage.createGraphics();
+								bImageGraphics.drawImage(userImage, null, null);
+								RenderedImage rImage = (RenderedImage)bImage;
+								
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
+								ImageIO.write(rImage, userImageExtension, baos);
+								imageBytes = baos.toByteArray();
+							}
+							
+							if(!controller.signIn(username, password, email, imageBytes)) {	
 								cs.stopAnimation();
 								CometDialog cd = new CometDialog("warning", "Account already exists!");
 								cd.setVisible(true);
@@ -306,6 +329,9 @@ public class LoginFrame extends JFrame {
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						} finally {
 							cs.stopAnimation();
 						}
@@ -316,6 +342,7 @@ public class LoginFrame extends JFrame {
 			}	
 		});
 		signUpInputs.add(btnCreateAccount);
+		
 		
 		JSeparator signUpPasswordSeparator = new JSeparator();
 		signUpPasswordSeparator.setForeground(Color.LIGHT_GRAY);
@@ -376,6 +403,7 @@ public class LoginFrame extends JFrame {
 				int retVal = fc.showOpenDialog(fc);
 				if(retVal == JFileChooser.APPROVE_OPTION) {
 					String filePath = fc.getSelectedFile().getAbsolutePath();
+					userImageExtension = filePath.substring(filePath.length()-3, filePath.length());
 					BufferedImage img = null;
 					try {
 						img = ImageIO.read(new File(filePath));
@@ -383,11 +411,10 @@ public class LoginFrame extends JFrame {
 						ex.printStackTrace();
 					}
 					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
-					
+					userImage = img.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
 					lblImage.setIcon(new ImageIcon(image));
 				}
 			}
-			
 		});
 		
 		signUpInputs.add(btnLoadImage);
@@ -498,6 +525,7 @@ public class LoginFrame extends JFrame {
 	private void disposeFrame() {
 		this.dispose();
 	}
+	
 	
 	private class LoginListener implements ActionListener {
 		public void actionPerformed(ActionEvent arg0) {

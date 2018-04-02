@@ -12,17 +12,9 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String username, password, email, imageUrl;
+	private String username, password, email;
+	private byte[] imageBytes;
 	
-	
-	public UserRemoteImpl(String username, String password, String email, String imageUrl,int id) throws RemoteException {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.email = email;
-		this.imageUrl = imageUrl;
-	}
 
 	public UserRemoteImpl(User user)  throws RemoteException  {
 		super();
@@ -30,9 +22,17 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 		this.username = user.getUsername();
 		this.password = user.getPassword();
 		this.email = user.getEmail();
-		this.imageUrl = user.getImage();
 	}
 
+	public UserRemoteImpl(int id, String username, String password, String email, byte[] imageBytes) throws RemoteException {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.imageBytes = imageBytes;
+	}
+	
 	@Override
 	public String getUsername() throws RemoteException {
 		return username;
@@ -54,8 +54,8 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 	}
 
 	@Override
-	public String getImage() throws RemoteException {
-		return imageUrl;
+	public byte[] getImageBytes() throws RemoteException {
+		return this.imageBytes;
 	}
 
 }

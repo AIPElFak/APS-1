@@ -16,7 +16,7 @@ public interface Server extends Remote {
 	
 	boolean logout (Client cl) throws RemoteException;
 	
-	boolean signin (Client cl, String username, String password, String email, String imageUrl) throws RemoteException;
+	boolean signin (Client cl, String username, String password, String email, byte[] imageBytes) throws RemoteException;
 	
 	boolean deleteAccount (Client cl) throws RemoteException;
 	

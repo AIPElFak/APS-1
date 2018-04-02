@@ -65,8 +65,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public boolean signin(Client cl, String username, String password, String email, String imageUrl) throws RemoteException {
-		return facade.getAuthenticationService().signin( cl, username, password, email, imageUrl);
+	public boolean signin(Client cl, String username, String password, String email, byte[] imageBytes) throws RemoteException {
+		return facade.getAuthenticationService().signin( cl, username, password, email, imageBytes);
 	}
 
 	@Override

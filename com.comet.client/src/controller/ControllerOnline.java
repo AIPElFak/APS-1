@@ -13,7 +13,7 @@ public interface ControllerOnline extends Controller {
 	
 	boolean logOut(Client cl);
 	
-	boolean signIn(String username, String password, String email);
+	boolean signIn(String username, String password, String email, byte[] imageBytes);
 	
 	boolean modifyUserData(Client cl);
 	
