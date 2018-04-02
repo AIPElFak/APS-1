@@ -131,8 +131,10 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
 		DocumentRemote docRemote = null;
 		for(DocumentRemote d : documents)
-			if(d.getId() == cl.getDocumentData().getId())
+			if(d.getId() == cl.getDocumentData().getId()) {
 				docRemote = d;
+				break;
+			}
 		for(Client c : docRemote.getCollaborators()) {
 			try {
 				if(c.getUserData().getId() != cl.getUserData().getId()) {
