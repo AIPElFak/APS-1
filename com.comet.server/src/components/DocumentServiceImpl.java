@@ -127,4 +127,16 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		return logic.deleteDocument(documentId, cl.getUserData().getId());	
 	}
 
+	@Override
+	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
+		for(Client c : clients) {
+			try {
+				if(c.getDocumentData().getId() == cl.getDocumentData().getId() &&
+						c.getUserData().getId() != cl.getUserData().getId()) {
+					c.recvDocUpdate(type, text, length, location);
+				}
+			}catch(RemoteException e) {}
+		}
+	}
+
 }

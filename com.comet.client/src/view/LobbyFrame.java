@@ -561,4 +561,9 @@ public class LobbyFrame extends JFrame implements View {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void recvDocUpdate(String type, String text, int length, int location) {
+		return;
+	}
 }

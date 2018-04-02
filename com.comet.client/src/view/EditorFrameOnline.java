@@ -45,6 +45,8 @@ import java.awt.Font;
 import javax.swing.JMenuItem;
 import javax.swing.JTextPane;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -60,6 +62,8 @@ public class EditorFrameOnline extends JFrame implements View {
 	private DefaultListModel<UserRemote> listModel;
 	private JLabel lblDocumentName;
 	private JTextArea textArea;
+	
+	private OnlineDocumentListener docListener;
 
 	public EditorFrameOnline(ControllerOnline cntrl) {
 		setTitle("Comet");
@@ -287,6 +291,9 @@ public class EditorFrameOnline extends JFrame implements View {
 		editorHolder.add(textScroll);
 		contentPane.add(editorHolder, BorderLayout.CENTER);
 		
+		docListener = new OnlineDocumentListener();
+		textPane.getDocument().addDocumentListener(docListener);
+		
 		JPanel documentTitleHolder = new JPanel();
 		documentTitleHolder.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(35, 35, 35)));
 		documentTitleHolder.setBackground(new Color(50, 50, 50));
@@ -506,5 +513,63 @@ public class EditorFrameOnline extends JFrame implements View {
 			listModel.addElement(user);
 		}
 		collaboartorsList.setModel(listModel);
+	}
+
+	@Override
+	public void recvDocUpdate(String type, String text, int length, int location) {
+		Document document = textPane.getDocument();
+		document.removeDocumentListener(docListener);
+		if(type.toLowerCase().equals("insert")) {
+			try {
+				document.insertString(location, text, null);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} else {
+			try {
+				document.remove(location, length);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		docListener = new OnlineDocumentListener();
+		document.addDocumentListener(docListener);
+	}
+	
+	private class OnlineDocumentListener implements DocumentListener {
+
+		@Override
+		public void changedUpdate(DocumentEvent arg0) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void insertUpdate(DocumentEvent arg0) {
+			synchronized(textPane) {
+				int changeLength = arg0.getLength();
+				int offset = arg0.getOffset();
+				int insert = textPane.getCaret().getDot();
+				try {
+					String text = textPane.getText(offset, changeLength);
+					controller.sendDocUpdate("insert", text, changeLength, insert);
+				} catch (BadLocationException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+		@Override
+		public void removeUpdate(DocumentEvent arg0) {
+			synchronized(textPane) {
+				int changeLength = arg0.getLength();
+				int offset = arg0.getOffset();
+				controller.sendDocUpdate("remove", "", changeLength, offset);
+			}
+		}
+		
 	}
 }

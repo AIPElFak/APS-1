@@ -124,4 +124,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 		return facade.getAuthenticationService().editUserInformations(client, username, email, password);
 	}
 
+	@Override
+	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
+		facade.getDocumentService().sendDocUpdate(cl, type, text, length, location);
+	}
+
 }

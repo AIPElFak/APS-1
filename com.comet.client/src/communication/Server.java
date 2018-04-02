@@ -42,4 +42,6 @@ public interface Server extends Remote {
 
 	boolean editUserInformations(Client client, String username, String email, String password);
 	
+	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
+	
 }

@@ -227,4 +227,19 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		return server.editUserInformations(client, username, email, password);
 	}
 
+	@Override
+	public void recvDocUpdate(String type, String text, int length, int location) {
+		getView().recvDocUpdate(type, text, length, location);
+	}
+
+	@Override
+	public void sendDocUpdate(String type, String text, int length, int location) {
+		try {
+			server.sendDocUpdate(client, type, text, length, location);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -23,5 +23,7 @@ public interface Client extends Remote {
 	UserRemote getUserData() throws RemoteException;
 	
 	DocumentRemote getDocumentData() throws RemoteException;
+
+	void recvDocUpdate(String type, String text, int length, int location) throws RemoteException;
 	
 }

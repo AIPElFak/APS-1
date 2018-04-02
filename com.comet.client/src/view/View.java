@@ -34,5 +34,7 @@ public interface View {
 	String getDocumentContent();
 
 	void updateCollaborators(List<UserRemote> collabs);
+
+	void recvDocUpdate(String type, String text, int length, int location);
 	
 }
