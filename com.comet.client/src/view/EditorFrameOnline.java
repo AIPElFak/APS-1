@@ -534,7 +534,6 @@ public class EditorFrameOnline extends JFrame implements View {
 				e.printStackTrace();
 			}
 		}
-		docListener = new OnlineDocumentListener();
 		document.addDocumentListener(docListener);
 	}
 	
