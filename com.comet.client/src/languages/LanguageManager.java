@@ -40,6 +40,10 @@ public class LanguageManager {
 		selectedLanguage = null;
 	}
 	
+	public Language[] getAllLanguages() {
+		return languages.getLanguage();
+	}
+	
 	public SymbolTable getSymbolTable() {
 		if(selectedLanguage == null) return null;
 		return new SymbolTable(selectedLanguage.getExtension().toLowerCase());
