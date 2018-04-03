@@ -3,6 +3,5 @@
 	<language name="C#" extension="cs"></language>
 	<language name="JavaScript" extension="js"></language>
 	<language name="Python" extension="py"></language>
-	<language name="HTML" extension="html"></language>
-	<language name="CSS" extension="css"></language>
+	<language name="C++" extension="cpp"></language>
 </languages>

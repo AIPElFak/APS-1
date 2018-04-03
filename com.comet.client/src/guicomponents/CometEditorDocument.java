@@ -42,6 +42,7 @@ class CometEditorDocument extends DefaultStyledDocument  {
     
 	private String getKeyWords(SymbolTable st) {
 		String keyWords = "";
+		if(st == null) return keyWords;
 		for(int i = 0; i < st.getKeyWords().size() - 1; i++)
 			keyWords += st.getKeyWords().get(i) + "|";
 		keyWords += st.getKeyWords().get(st.getKeyWords().size() - 1);
