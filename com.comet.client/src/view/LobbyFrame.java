@@ -21,6 +21,7 @@ import utilities.DocumentRemote;
 import utilities.UserRemote;
 import view.View;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -241,7 +242,7 @@ public class LobbyFrame extends JFrame implements View {
 			public void actionPerformed(ActionEvent arg0) {
 				DocumentRemote doc = list.getSelectedValue();
 				if(doc == null) return;
-				CometSplashScreen cs = new CometSplashScreen("Opening doucment...");
+				CometSplashScreen cs = new CometSplashScreen("Opening document...");
 				cs.setVisible(true);
 				new Thread(cs).start();
 				new Thread(new Runnable() {
@@ -279,6 +280,46 @@ public class LobbyFrame extends JFrame implements View {
 				new Color(244, 244, 181));
 		btnDeleteDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnDeleteDocument.addMouseListener(docBtnColorChanger);
+		btnDeleteDocument.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				DocumentRemote doc = list.getSelectedValue();
+				if(doc == null) return;
+				int selectedOption = JOptionPane.showConfirmDialog(null, 
+			                        "Are you sure to delete this document?", 
+			                        "Choose", 
+			                        JOptionPane.YES_NO_OPTION);
+				if(selectedOption != JOptionPane.YES_OPTION) return;
+				CometSplashScreen cs = new CometSplashScreen("Deleting document...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+							try {
+								Thread.sleep(1000);
+							} catch (InterruptedException e) {}
+
+							cs.stopAnimation();
+							CometDialog cd;
+							if(controller.deleteDocument(doc)) {
+								cd = new CometDialog("info", "Document deleted.");
+								cd.setVisible(true);
+								
+								try {
+									Thread.sleep(700);
+								} catch (InterruptedException e) {}
+								cd.dispose();
+							}else {
+								cd = new CometDialog("warning", "You can not delete this document!");
+								cd.setVisible(true);
+								try {
+									Thread.sleep(1500);
+								} catch (InterruptedException e) {}
+								cd.dispose();
+							}
+					}
+				}).start();
+			}
+		});
 		docButtonsHolder.add(btnDeleteDocument);
 		
 		JSeparator botDocSeparator = new JSeparator();

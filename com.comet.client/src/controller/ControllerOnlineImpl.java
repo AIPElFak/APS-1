@@ -107,9 +107,13 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public void deleteDocument(Client cl, DocumentRemote doc) {
-		// TODO Auto-generated method stub
-		
+	public boolean deleteDocument(DocumentRemote doc) {
+		try {
+			return server.deleteDocument(client, doc.getId());
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override
