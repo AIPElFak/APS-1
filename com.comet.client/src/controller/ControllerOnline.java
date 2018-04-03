@@ -1,11 +1,13 @@
 package controller;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import communication.Client;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
+import utilities.VersionRemote;
 
 public interface ControllerOnline extends Controller {
 	
@@ -58,5 +60,7 @@ public interface ControllerOnline extends Controller {
 	void recvDocUpdate(String type, String text, int length, int location);
 	
 	void sendDocUpdate(String type, String text, int length, int location);
+	
+	ArrayList<VersionRemote> getAllDocumentVersions();	
 	
 }

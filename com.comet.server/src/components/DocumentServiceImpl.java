@@ -85,8 +85,11 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		Document doc = new Document(type, name, !password.equals(""), password);
 		BusinessLogic logic = new BusinessLogic();
 		if(!logic.createDocument(cl.getUserData().getId(), doc)) return false;
-		//DocumentRemote docRemote = new DocumentRemoteImpl(doc);
-		//documents.add(docRemote);
+		DocumentRemote docRemote = new DocumentRemoteImpl(doc);
+		documents.add(docRemote);
+		System.out.println(doc.getId());
+		for(Client c : clients)
+			c.recvAllDocuments();
 		return true;
 	}
 
@@ -126,7 +129,18 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	@Override
 	public boolean deleteDocument(Client cl, int documentId) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		return logic.deleteDocument(documentId, cl.getUserData().getId());	
+		boolean result = logic.deleteDocument(documentId, cl.getUserData().getId());
+		if(!result) return false;
+		for(DocumentRemote d : documents) {
+			if(d.getId() == documentId) {
+				documents.remove(d);
+				break;
+			}
+		}
+		for(Client c : clients) {
+			c.recvAllDocuments();
+		}
+		return result;
 	}
 
 	@Override
@@ -152,7 +166,13 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		ArrayList<VersionRemote> result = new ArrayList<VersionRemote>();
 		ArrayList<DocumentVersion> vers =  logic.getAllDocumentVersions(documentId);
 		for(DocumentVersion v : vers) {
-			VersionRemote vr = new VersionRemoteImpl(v);
+			VersionRemote vr = null;
+			try {
+				vr = new VersionRemoteImpl(v);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			result.add(vr);
 		}
 		return result;

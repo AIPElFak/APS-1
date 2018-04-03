@@ -1,21 +1,23 @@
 package utilities;
 
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.Date;
 
-public interface VersionRemote {
+public interface VersionRemote extends Remote {
 
-	public int getId() ;
+	public int getId() throws RemoteException;
 	
-	public String getContent();
+	public String getContent() throws RemoteException;
 	
-	public Date getDateTime();
+	public Date getDateTime() throws RemoteException;
 	
-	public int getDocumentId();
+	public int getDocumentId() throws RemoteException;
 	
-	public String getDocumentName();
+	public String getDocumentName() throws RemoteException;
 	
-	public int getUserId() ;
+	public int getUserId()throws RemoteException;
 	
-	public String getUserName();
+	public String getUserName() throws RemoteException;
 	
 }

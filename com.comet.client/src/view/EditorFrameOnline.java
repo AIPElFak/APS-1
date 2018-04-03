@@ -242,6 +242,12 @@ public class EditorFrameOnline extends JFrame implements View {
 		PullVersion.setToolTipText("Pull version of a document from cloud");
 		PullVersion.addMouseListener(toolBarColorChanger);
 		PullVersion.setBorderPainted(false);
+		PullVersion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometVersionDialog cv = new CometVersionDialog(controller);
+				cv.setVisible(true);
+			}
+		});
 		toolbar.add(PullVersion);
 		
 		JPanel leftSeparator = new JPanel();
@@ -290,7 +296,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		textScroll.setRowHeaderView(tln);
+		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));

@@ -2,6 +2,7 @@ package communication;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.List;
 
 import controller.ControllerOnline;
@@ -23,6 +24,8 @@ public interface Client extends Remote {
 	UserRemote getUserData() throws RemoteException;
 	
 	DocumentRemote getDocumentData() throws RemoteException;
+	
+	void recvAllDocuments() throws RemoteException;
 	
 	void recvDocUpdate(String type, String text, int length, int location) throws RemoteException;
 	

@@ -1,10 +1,12 @@
 package utilities;
 
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Date;
 
 import database.dto.DocumentVersion;
 
-public class VersionRemoteImpl implements VersionRemote{
+public class VersionRemoteImpl extends UnicastRemoteObject implements VersionRemote{
 	
 	int id;
 	String content;
@@ -18,7 +20,8 @@ public class VersionRemoteImpl implements VersionRemote{
 	
 	
 	
-	public VersionRemoteImpl(int id, String content, Date dateTime, int documentId, String documentName, int userId, String userName) {
+	public VersionRemoteImpl(int id, String content, Date dateTime, int documentId, String documentName, int userId, String userName) throws RemoteException {
+		super();
 		this.id = id;
 		this.content = content;
 		this.dateTime = dateTime;
@@ -29,7 +32,8 @@ public class VersionRemoteImpl implements VersionRemote{
 	}
 
 
-	public VersionRemoteImpl(DocumentVersion v) {
+	public VersionRemoteImpl(DocumentVersion v) throws RemoteException {
+		super();
 		this.id = v.getId();
 		this.content = v.getContent();
 		this.dateTime = v.getDateTime();
@@ -41,37 +45,37 @@ public class VersionRemoteImpl implements VersionRemote{
 	
 	
 	@Override
-	public int getId() {
+	public int getId() throws RemoteException {
 		return this.id;
 	}
 	
 	@Override
-	public String getContent() {
+	public String getContent() throws RemoteException {
 		return this.content;
 	}
 	
 	@Override
-	public Date getDateTime() {
+	public Date getDateTime() throws RemoteException {
 		return this.dateTime;
 	}
 	
 	@Override
-	public int getDocumentId() {
+	public int getDocumentId() throws RemoteException {
 		return this.documentId;
 	}
 	
 	@Override
-	public String getDocumentName() {
+	public String getDocumentName() throws RemoteException {
 		return this.documentName;
 	}
 	
 	@Override
-	public int getUserId() {
+	public int getUserId() throws RemoteException {
 		return this.userId;
 	}
 	
 	@Override
-	public String getUserName() {
+	public String getUserName() throws RemoteException {
 		return this.userName;
 	}
 }

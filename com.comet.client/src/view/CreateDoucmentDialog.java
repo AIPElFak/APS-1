@@ -167,14 +167,15 @@ public class CreateDoucmentDialog extends JDialog {
 						String name = txtDocumentName.getText();
 						String type = ((Language)cbxDocumentType.getSelectedItem()).getName();
 						String password = txtPassword.getText();
-						cs.stopAnimation();
 						CometDialog cd;
 						if(controller.createDocument(name, type, password)) {
 							cd = new CometDialog("info", "Document created.");
+							cs.stopAnimation();
 							cd.setVisible(true);
 							controller.displayAllAvailableDocuments();
 						}else {
 							cd = new CometDialog("warning", "Document creation failed.");
+							cs.stopAnimation();
 							cd.setVisible(true);
 						}
 						try {

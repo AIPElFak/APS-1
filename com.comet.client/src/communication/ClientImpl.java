@@ -72,4 +72,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 		controller.recvDocUpdate(type, text, length, location);
 	}
 
+	@Override
+	public void recvAllDocuments() throws RemoteException {
+		controller.displayAllAvailableDocuments();
+	}
+
 }

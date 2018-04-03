@@ -8,10 +8,9 @@ import communication.Client;
 import communication.Server;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
+import utilities.VersionRemote;
 
 public class ControllerOnlineImpl extends ControllerImpl implements ControllerOnline {
-	
-	private DocumentRemote document;
 	
 	private Server server;
 	private Client client;
@@ -108,11 +107,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 
 	@Override
 	public boolean deleteDocument(DocumentRemote doc) {
-		try {
-			return server.deleteDocument(client, doc.getId());
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		try { 
+		      return server.deleteDocument(client, doc.getId()); 
+		} catch (RemoteException e) {} 
 		return false;
 	}
 
@@ -244,6 +241,17 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public ArrayList<VersionRemote> getAllDocumentVersions(){
+		try {
+			return server.getAllDocumentVersions(client.getDocumentData().getId());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
