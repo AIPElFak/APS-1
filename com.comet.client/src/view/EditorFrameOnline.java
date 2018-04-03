@@ -2,6 +2,8 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -335,8 +337,9 @@ public class EditorFrameOnline extends JFrame implements View {
 		panel_3.add(separator);
 		
 		collaboartorsList = new JList<UserRemote>();
-		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer());
+		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer(collaboartorsList));
 		collaboartorsList.setBounds(0, 13, 143, 182);
+		collaboartorsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JScrollPane collaboratorsHolder = new JScrollPane(
 				collaboartorsList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER

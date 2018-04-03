@@ -411,7 +411,7 @@ public class LoginFrame extends JFrame {
 						ex.printStackTrace();
 					}
 					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
-					userImage = img.getScaledInstance(187, 187, Image.SCALE_SMOOTH);	//velicina slike za CometUserDialog jer je veca tamo
+					userImage = img.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
 					lblImage.setIcon(new ImageIcon(image));
 				}
 			}

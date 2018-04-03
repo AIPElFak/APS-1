@@ -26,8 +26,9 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 
 	private JLabel image, username;
 	private JButton btnRead, btnWrite, btnOwner, btnRemove; 
+	private JList parent;
 	
-	public CollabRenderer() {
+	public CollabRenderer(JList prnt) {
 		
 		setBackground(new Color(60, 60, 60));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(190, 190, 190)));
@@ -63,6 +64,8 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		btnRemove.setBorder(BorderFactory.createMatteBorder(1, 7, 1, 7, new Color(255, 0, 0)));
 		privilegies.add(btnRemove);
 		
+		parent = prnt;
+		
 	}
 	
 	@Override
@@ -83,12 +86,64 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 				
 			}
 			
+			if(isSelected) {
+				handleClick(index);
+			}
+			parent.clearSelection();
+			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		return this;
+	}
+
+	private void handleClick(int index) {
+		
+		if(parent.getMousePosition() == null) return;
+		
+		int btnReadX = 42;
+		int btnWriteX = 64;
+		int btnOwnerX = 88;
+		int btnRemoveX = 112;
+		
+		int btnY = 24;
+		
+		int localX = parent.getMousePosition().x;
+		int localY = parent.getMousePosition().y - index * 52;
+		
+		//Read
+		if(btnReadX <= localX && localX <= btnReadX + 24
+			&& btnY <= localY && localY <= btnY + 20) {
+			btnRead.setForeground(new Color(255, 230, 0));
+			btnWrite.setForeground(new Color(238, 238, 255));
+			btnOwner.setForeground(new Color(238, 238, 255));
+		}
+		//Write
+		else if(btnWriteX <= localX && localX <= btnWriteX + 24
+			&& btnY <= localY && localY <= btnY + 20) {
+			btnRead.setForeground(new Color(238, 238, 255));
+			btnWrite.setForeground(new Color(255, 230, 0));
+			btnOwner.setForeground(new Color(238, 238, 255));
+		}
+		//Owner
+		else if(btnOwnerX <= localX && localX <= btnOwnerX + 24
+			&& btnY <= localY && localY <= btnY + 20) {
+			btnRead.setForeground(new Color(238, 238, 255));
+			btnWrite.setForeground(new Color(238, 238, 255));
+			btnOwner.setForeground(new Color(255, 230, 0));
+		}
+		//Remove
+		else if(btnRemoveX <= localX && localX <= btnRemoveX + 24
+			&& btnY <= localY && localY <= btnY + 20) {
+			
+		}
+		else {
+			btnRead.setForeground(new Color(238, 238, 255));
+			btnWrite.setForeground(new Color(238, 238, 255));
+			btnOwner.setForeground(new Color(238, 238, 255));
+		}
 	}
 	
 }

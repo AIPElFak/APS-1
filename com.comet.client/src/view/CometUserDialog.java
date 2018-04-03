@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Graphics2D;
-
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -34,9 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -51,10 +47,8 @@ public class CometUserDialog extends JDialog {
 	
 	private ControllerOnline controller;
 	private JFrame parentFrame;
-	
-	private Image changedImage;
-	private String userImageExtension;
-	private boolean changedImgFlag = false;
+
+	boolean imageChanged = false;
 	
 	public CometUserDialog(ControllerOnline cntrl, JFrame parent) {
 		setTitle("Comet");
@@ -181,16 +175,16 @@ public class CometUserDialog extends JDialog {
 				int retVal = fc.showOpenDialog(fc);
 				if(retVal == JFileChooser.APPROVE_OPTION) {
 					String filePath = fc.getSelectedFile().getAbsolutePath();
-					userImageExtension = filePath.substring(filePath.length()-3, filePath.length());
 					BufferedImage img = null;
 					try {
 						img = ImageIO.read(new File(filePath));
 					}catch(Exception ex) {
 						ex.printStackTrace();
 					}
-					changedImage = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
-					lblImage.setIcon(new ImageIcon(changedImage));
-					changedImgFlag = true;
+					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
+					
+					lblImage.setIcon(new ImageIcon(image));
+					imageChanged = true;
 				}
 			}
 			
@@ -206,9 +200,6 @@ public class CometUserDialog extends JDialog {
 				lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
 						.getResource("../resources/personImage.jpg"))
 						.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
-				
-				changedImage = null;
-				changedImgFlag = true;
 			}
 			
 		});
@@ -238,25 +229,9 @@ public class CometUserDialog extends JDialog {
 						String username = txtUsername.getText();
 						String password = txtPassword.getText();
 						String email 	= txtEmail.getText();
-						
-						byte[] imageBytes = null;
-						if(changedImage != null) {
-							BufferedImage bImage = new BufferedImage(changedImage.getWidth(null), changedImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-							Graphics2D bImageGraphics = bImage.createGraphics();
-							bImageGraphics.drawImage(changedImage, null, null);
-							RenderedImage rImage = (RenderedImage)bImage;
-							
-							ByteArrayOutputStream baos = new ByteArrayOutputStream();
-							try {
-								ImageIO.write(rImage, userImageExtension, baos);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							imageBytes = baos.toByteArray();
-						}
 						cs.stopAnimation();
 						CometDialog cd;
-						if(controller.editUserInformations(username, email, password, imageBytes, changedImgFlag)) {
+						if(controller.editUserInformations(username, email, password)) {
 							cd = new CometDialog("info", "Changes saved.");
 							cd.setVisible(true);
 							

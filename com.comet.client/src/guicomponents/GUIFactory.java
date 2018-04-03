@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.text.DefaultStyledDocument;
@@ -52,9 +53,9 @@ public class GUIFactory {
 	
 	}
 	
-	public static ListCellRenderer<? super UserRemote> createCollabRenderer(){
+	public static ListCellRenderer<? super UserRemote> createCollabRenderer(JList prnt){
 		
-		return new CollabRenderer();
+		return new CollabRenderer(prnt);
 		
 	}
 	
