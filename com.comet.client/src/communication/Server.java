@@ -40,7 +40,7 @@ public interface Server extends Remote {
 	
 	String openDocument(Client cl, int documentId) throws RemoteException;
 
-	boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes);
+	boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes, boolean imgChangedFlag);
 	
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
 	

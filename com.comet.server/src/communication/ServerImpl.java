@@ -120,8 +120,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes) throws RemoteException {
-		return facade.getAuthenticationService().editUserInformations(client, username, email, password, imageBytes);
+	public boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes,boolean changedImgFlag) throws RemoteException {
+		return facade.getAuthenticationService().editUserInformations(client, username, email, password, imageBytes, changedImgFlag);
 	}
 
 	@Override

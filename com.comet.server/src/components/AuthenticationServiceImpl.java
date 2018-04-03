@@ -86,6 +86,9 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 
 	@Override
 	public boolean deleteAccount(Client cl) throws RemoteException {
+		File file = new File("src/userImages/"+cl.getUserData().getId()+".jpg");
+		if(file.exists()) file.delete();
+		
 		BusinessLogic logic = new BusinessLogic();
 		UserRemote ur = cl.getUserData();
 		return logic.deleteUserById(ur.getId());
@@ -129,7 +132,7 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	}
 
 	@Override
-	public boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes)
+	public boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes, boolean changedImgFlag)
 			throws RemoteException {
 
 		if(imageBytes != null) {
@@ -141,6 +144,9 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}else if(changedImgFlag) {	//imao sliku pa kliknuo na set default image i sacuvao
+			File file = new File("src/userImages/"+client.getUserData().getId()+".jpg");
+			file.delete();
 		}
 		
 		BusinessLogic logic = new BusinessLogic();

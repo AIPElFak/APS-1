@@ -54,6 +54,7 @@ public class CometUserDialog extends JDialog {
 	
 	private Image changedImage;
 	private String userImageExtension;
+	private boolean changedImgFlag = false;
 	
 	public CometUserDialog(ControllerOnline cntrl, JFrame parent) {
 		setTitle("Comet");
@@ -187,8 +188,9 @@ public class CometUserDialog extends JDialog {
 					}catch(Exception ex) {
 						ex.printStackTrace();
 					}
-					changedImage = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
-					label.setIcon(new ImageIcon(changedImage));
+					changedImage = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
+					lblImage.setIcon(new ImageIcon(changedImage));
+					changedImgFlag = true;
 				}
 			}
 			
@@ -206,6 +208,7 @@ public class CometUserDialog extends JDialog {
 						.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
 				
 				changedImage = null;
+				changedImgFlag = true;
 			}
 			
 		});
@@ -253,7 +256,7 @@ public class CometUserDialog extends JDialog {
 						}
 						cs.stopAnimation();
 						CometDialog cd;
-						if(controller.editUserInformations(username, email, password, imageBytes)) {
+						if(controller.editUserInformations(username, email, password, imageBytes, changedImgFlag)) {
 							cd = new CometDialog("info", "Changes saved.");
 							cd.setVisible(true);
 							

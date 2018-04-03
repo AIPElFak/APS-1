@@ -22,6 +22,6 @@ public interface AuthenticationService extends Remote {
 	
 	boolean removeClient (Client cl) throws RemoteException;
 
-	boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes) throws RemoteException;
+	boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes, boolean changedImgFlag) throws RemoteException;
 
 }
