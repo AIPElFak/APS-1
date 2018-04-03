@@ -137,5 +137,30 @@ public class UserDao extends Repository<User>{
 		}
 		return workings;
 	}
+
+
+	public User getUserByEmail(String email) {
+		Transaction trns = null;
+		User user = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			String query = "SELECT * FROM USER_DETAILS WHERE BINARY EMAIL = :email";
+			user = (User)s.createNativeQuery(query,User.class)
+					.setParameter("email", email)
+					.uniqueResult();
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}	
+		return user;
+	}
 	
 }

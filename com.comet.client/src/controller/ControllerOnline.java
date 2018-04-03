@@ -63,6 +63,8 @@ public interface ControllerOnline extends Controller {
 	
 	ArrayList<VersionRemote> getAllDocumentVersions();
 
-	String openDocumentVersion(int id);	
+	String openDocumentVersion(int id);
+
+	boolean resetPassword(String email);	
 	
 }

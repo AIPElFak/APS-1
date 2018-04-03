@@ -97,15 +97,17 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	}
 
 	@Override
-	public boolean resetPassword(Client cl) throws RemoteException {
+	public boolean resetPassword(String email) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
-		UserRemoteImpl ur = (UserRemoteImpl)cl.getUserData();
+		User user = logic.getUserByEmail(email);
+		if(user == null) return false;
+		
+		UserRemoteImpl ur = new UserRemoteImpl(user);
 		PasswordReset reset = new PasswordReset(ur.getEmail(),ur.getUsername());
 		
-		User user = new User(ur.getUsername(), reset.getNewPassword(), ur.getEmail());
-		user.setId(ur.getId());
-		
+		user.setEmail(reset.getNewPassword());
 		if(!logic.updateUser(user)) return false;
+		
 		reset.Send();
 		return true;
 	}

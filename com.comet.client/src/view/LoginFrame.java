@@ -207,217 +207,7 @@ public class LoginFrame extends JFrame {
 		});
 		loginInputs.add(btnContinueOffline);
 		
-		signUpInputs = new JPanel();
-		signUpInputs.setBackground(Color.DARK_GRAY);
-		signUpInputs.setBounds(10, 110, 477, 296);
-		signUpInputs.setLayout(null);
-		signUpInputs.setVisible(false);
-		loginInputs.add(signUpInputs);
-		
-		txtUsernameSignUp = new JTextField();
-		txtUsernameSignUp.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent arg0) {
-				txtUsernameSignUp.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(txtUsernameSignUp.getText().equals(""))
-					txtUsernameSignUp.setText("Enter your username");
-			}
-		});
-		txtUsernameSignUp.setText("Enter your username");
-		txtUsernameSignUp.setForeground(Color.GRAY);
-		txtUsernameSignUp.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtUsernameSignUp.setColumns(10);
-		txtUsernameSignUp.setCaretColor(Color.LIGHT_GRAY);
-		txtUsernameSignUp.setBorder(null);
-		txtUsernameSignUp.setBackground(Color.DARK_GRAY);
-		txtUsernameSignUp.setBounds(31, 45, 183, 14);
-		signUpInputs.add(txtUsernameSignUp);
-		
-		JSeparator signUpUsernameSeparator = new JSeparator();
-		signUpUsernameSeparator.setForeground(Color.LIGHT_GRAY);
-		signUpUsernameSeparator.setBackground(Color.LIGHT_GRAY);
-		signUpUsernameSeparator.setBounds(31, 70, 172, 2);
-		signUpInputs.add(signUpUsernameSeparator);
-		
-		JSeparator signUpEmailSeparator = new JSeparator();
-		signUpEmailSeparator.setForeground(Color.LIGHT_GRAY);
-		signUpEmailSeparator.setBackground(Color.LIGHT_GRAY);
-		signUpEmailSeparator.setBounds(31, 162, 172, 2);
-		signUpInputs.add(signUpEmailSeparator);
-		
-		JLabel lblUsernameSignIn = new JLabel("USERNAME:");
-		lblUsernameSignIn.setForeground(Color.LIGHT_GRAY);
-		lblUsernameSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblUsernameSignIn.setBounds(31, 22, 183, 21);
-		signUpInputs.add(lblUsernameSignIn);
-		
-		JLabel lblEmail = new JLabel("EMAIL:");
-		lblEmail.setForeground(Color.LIGHT_GRAY);
-		lblEmail.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblEmail.setBounds(31, 114, 99, 21);
-		signUpInputs.add(lblEmail);
-		
-		txtEmail = new JTextField();
-		txtEmail.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				txtEmail.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(txtEmail.getText().equals(""))
-					txtEmail.setText("password");
-			}
-		});
-		txtEmail.setText("Enter your email");
-		txtEmail.setForeground(Color.GRAY);
-		txtEmail.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtEmail.setCaretColor(Color.LIGHT_GRAY);
-		txtEmail.setBorder(null);
-		txtEmail.setBackground(Color.DARK_GRAY);
-		txtEmail.setBounds(31, 135, 172, 20);
-		signUpInputs.add(txtEmail);
-		
-		JButton btnCreateAccount = GUIFactory.createCometFlatButton(
-				"Create account",
-				new Color(52, 52, 52),
-				Color.LIGHT_GRAY);
-		btnCreateAccount.addMouseListener(buttonColorChanger);
-		btnCreateAccount.setBorderPainted(false);
-		btnCreateAccount.setBounds(31, 212, 172, 47);
-		btnCreateAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				CometSplashScreen cs = new CometSplashScreen("Creating account...");
-				Thread t1 = new Thread(cs);
-				Thread t2 = new Thread(new Runnable() {
-					@SuppressWarnings("deprecation")
-					public void run() {
-						try {
-							Server server = new ServerXMLConnector().getConnection();
-							ControllerOnline controller = new ControllerOnlineImpl(server);
-							Client client =  new ClientImpl(controller);
-							controller.setClient(client);
-							String username = txtUsernameSignUp.getText();
-							String password = pfPasswordSignUp.getText();
-							String email = txtEmail.getText();
-							
-							byte[] imageBytes = null;
-							if(userImage != null) {
-								//u userImage se cuva skalirana slika!!!
-								//uzimaju se bajtovi iz takve skalirane slike na sledeci nacin:
-								BufferedImage bImage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
-								Graphics2D bImageGraphics = bImage.createGraphics();
-								bImageGraphics.drawImage(userImage, null, null);
-								RenderedImage rImage = (RenderedImage)bImage;
-								
-								ByteArrayOutputStream baos = new ByteArrayOutputStream();
-								ImageIO.write(rImage, userImageExtension, baos);
-								imageBytes = baos.toByteArray();
-							}
-							
-							if(!controller.signIn(username, password, email, imageBytes)) {	
-								cs.stopAnimation();
-								CometDialog cd = new CometDialog("warning", "Account already exists!");
-								cd.setVisible(true);
-								return;
-							}
-							cs.stopAnimation();
-							CometDialog cd = new CometDialog("info", "Acount created succesfully!");
-							cd.setVisible(true);
-							txtUsernameSignUp.setText("Enter your username");
-							txtEmail.setText("Enter your email");
-							pfPasswordSignUp.setText("markojelep");
-						} catch (RemoteException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} finally {
-							cs.stopAnimation();
-						}
-					}
-				});
-				t1.start();
-				t2.start();
-			}	
-		});
-		signUpInputs.add(btnCreateAccount);
-		
-		
-		JSeparator signUpPasswordSeparator = new JSeparator();
-		signUpPasswordSeparator.setForeground(Color.LIGHT_GRAY);
-		signUpPasswordSeparator.setBackground(Color.LIGHT_GRAY);
-		signUpPasswordSeparator.setBounds(270, 70, 172, 2);
-		signUpInputs.add(signUpPasswordSeparator);
-		
-		JLabel lblPasswordSignIn = new JLabel("PASSWORD:");
-		lblPasswordSignIn.setForeground(Color.LIGHT_GRAY);
-		lblPasswordSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
-		lblPasswordSignIn.setBounds(270, 22, 183, 21);
-		signUpInputs.add(lblPasswordSignIn);
-		
-		pfPasswordSignUp = new JPasswordField();
-		pfPasswordSignUp.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				pfPasswordSignUp.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(pfPasswordSignUp.getText().equals(""))
-					pfPasswordSignUp.setText("password");
-			}
-		});
-		pfPasswordSignUp.setText("password");
-		pfPasswordSignUp.setForeground(Color.GRAY);
-		pfPasswordSignUp.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		pfPasswordSignUp.setCaretColor(Color.LIGHT_GRAY);
-		pfPasswordSignUp.setBorder(null);
-		pfPasswordSignUp.setBackground(Color.DARK_GRAY);
-		pfPasswordSignUp.setBounds(269, 45, 183, 20);
-		signUpInputs.add(pfPasswordSignUp);
-		
-		lblImage = new JLabel("");
-		lblImage.setHorizontalAlignment(SwingConstants.CENTER);
-		lblImage.setBounds(296, 81, 120, 120);
-		lblImage.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(52, 52, 52)));
-		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
-				.getResource("../resources/personImage.jpg"))
-				.getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT)));
-		signUpInputs.add(lblImage);
-		
-		JButton btnLoadImage = GUIFactory.createCometFlatButton(
-				"Load image",
-				new Color(52, 52, 52),
-				Color.LIGHT_GRAY);
-		btnLoadImage.setBounds(270, 212, 172, 47);
-		btnLoadImage.setBorderPainted(false);
-		btnLoadImage.addMouseListener(buttonColorChanger);
-		
-		btnLoadImage.addActionListener(new ActionListener() {
-
-			public void actionPerformed(ActionEvent e) {
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg");
-				JFileChooser fc = new JFileChooser();
-				fc.setFileFilter(filter);
-				fc.setAcceptAllFileFilterUsed(false);
-				
-				int retVal = fc.showOpenDialog(fc);
-				if(retVal == JFileChooser.APPROVE_OPTION) {
-					String filePath = fc.getSelectedFile().getAbsolutePath();
-					userImageExtension = filePath.substring(filePath.length()-3, filePath.length());
-					BufferedImage img = null;
-					try {
-						img = ImageIO.read(new File(filePath));
-					}catch(Exception ex) {
-						ex.printStackTrace();
-					}
-					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
-					userImage = img.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
-					lblImage.setIcon(new ImageIcon(image));
-				}
-			}
-		});
-		
-		signUpInputs.add(btnLoadImage);
+		Image img = new ImageIcon(getClass().getResource("../resources/password_reset.png")).getImage().getScaledInstance(64, 64,Image.SCALE_DEFAULT);
 		
 		inputsHolder = new JPanel();
 		inputsHolder.setBackground(Color.DARK_GRAY);
@@ -468,57 +258,298 @@ public class LoginFrame extends JFrame {
 		lblPassword.setFont(new Font("Courier New", Font.PLAIN, 18));
 		lblPassword.setBounds(31, 114, 143, 21);
 		inputsHolder.add(lblPassword);
-		
-		JLabel lblSignIn = new JLabel("Log in with:");
-		lblSignIn.setForeground(Color.LIGHT_GRAY);
-		lblSignIn.setFont(new Font("Courier New", Font.PLAIN, 14));
-		lblSignIn.setBounds(322, 180, 125, 21);
-		inputsHolder.add(lblSignIn);
-		
-		pfPassword = new JPasswordField();
-		pfPassword.addFocusListener(new FocusAdapter() {
-			public void focusGained(FocusEvent e) {
-				pfPassword.setText("");
-			}
-			public void focusLost(FocusEvent e) {
-				if(pfPassword.getText().equals("")) pfPassword.setText("password");
-			}
+		JLabel lblForgotPass = new JLabel(new ImageIcon(img));
+		lblForgotPass.setForeground(Color.LIGHT_GRAY);
+		lblForgotPass.setFont(new Font("Courier New", Font.PLAIN, 14));
+		lblForgotPass.setHorizontalAlignment(SwingConstants.CENTER);
+		lblForgotPass.setBounds(363, 203, 64, 64);
+		lblForgotPass.setToolTipText("Password reset");
+		lblForgotPass.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblForgotPass.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+            	String email = JOptionPane.showInputDialog("Please insert your email:");
+            	if(email != null) {
+            		CometSplashScreen cs = new CometSplashScreen("Sending recovery email...");
+        			Thread t1 = new Thread(cs);
+        			Thread t2 = new Thread(new Runnable() {
+        				@SuppressWarnings("deprecation")
+        				public void run() {
+        					try {
+        						Server server = new ServerXMLConnector().getConnection();
+        						ControllerOnline controller = new ControllerOnlineImpl(server);
+        						Client client =  new ClientImpl(controller);
+        						controller.setClient(client);
+        						if(!controller.resetPassword(email)) {	
+        							cs.stopAnimation();
+        							CometDialog cd = new CometDialog("warning", "Wrong email, try again.");
+        							cd.setVisible(true);
+            						Thread.sleep(1000);
+        							return;
+        						}
+    							cs.stopAnimation();
+    							CometDialog cd = new CometDialog("info", "Email sent.");
+    							cd.setVisible(true);
+        						Thread.sleep(1000);
+        					} 
+        					catch (RemoteException e) {
+        						// TODO Auto-generated catch block
+        						e.printStackTrace();
+        					} catch (InterruptedException e) {
+        						// TODO Auto-generated catch block
+        						e.printStackTrace();
+        					} finally {
+        						cs.stopAnimation();
+        					}
+        				}
+        			});
+        			t1.start();
+        			t2.start();
+            	}
+            }
 		});
-		pfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		pfPassword.setForeground(Color.GRAY);
-		pfPassword.setBackground(Color.DARK_GRAY);
-		pfPassword.setText("password");
-		pfPassword.setBorder(null);
-		pfPassword.setCaretColor(Color.LIGHT_GRAY);
-		pfPassword.setBounds(31, 135, 416, 20);
-		inputsHolder.add(pfPassword);
 		
-		JButton btnLoginG = new JButton("");
-		btnLoginG.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnLoginG.setIcon(new ImageIcon(getClass().getResource("../resources/loginGoogle.png")));
-		btnLoginG.setBounds(388, 212, 46, 47);
-		btnLoginG.setBorder(null);
-		btnLoginG.setContentAreaFilled(false);
-		inputsHolder.add(btnLoginG);
-		
-		JButton btnLoginFb = new JButton("");
-		btnLoginFb.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btnLoginFb.setIcon(new ImageIcon(getClass().getResource("../resources/loginFb.png")));
-		btnLoginFb.setSelectedIcon(null);
-		btnLoginFb.setBorder(null);
-		btnLoginFb.setContentAreaFilled(false);
-		btnLoginFb.setBounds(322, 212, 46, 47);
-		inputsHolder.add(btnLoginFb);
-		
-		JButton btnLogIn = GUIFactory.createCometFlatButton(
-				"Log in",
-				new Color(52, 52, 52),
-				Color.LIGHT_GRAY);
-		btnLogIn.addMouseListener(buttonColorChanger);
-		btnLogIn.addActionListener(new LoginListener());
-		btnLogIn.setBounds(31, 212, 253, 47);
-		btnLogIn.setBorderPainted(false);
-		inputsHolder.add(btnLogIn);
+				inputsHolder.add(lblForgotPass);
+				
+				pfPassword = new JPasswordField();
+				pfPassword.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						pfPassword.setText("");
+					}
+					public void focusLost(FocusEvent e) {
+						if(pfPassword.getText().equals("")) pfPassword.setText("password");
+					}
+				});
+				pfPassword.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				pfPassword.setForeground(Color.GRAY);
+				pfPassword.setBackground(Color.DARK_GRAY);
+				pfPassword.setText("password");
+				pfPassword.setBorder(null);
+				pfPassword.setCaretColor(Color.LIGHT_GRAY);
+				pfPassword.setBounds(31, 135, 416, 20);
+				inputsHolder.add(pfPassword);
+				
+				
+				JButton btnLogIn = GUIFactory.createCometFlatButton(
+						"Log in",
+						new Color(52, 52, 52),
+						Color.LIGHT_GRAY);
+				btnLogIn.addMouseListener(buttonColorChanger);
+				btnLogIn.addActionListener(new LoginListener());
+				btnLogIn.setBounds(31, 212, 317, 47);
+				btnLogIn.setBorderPainted(false);
+				inputsHolder.add(btnLogIn);
+				
+				signUpInputs = new JPanel();
+				signUpInputs.setBackground(Color.DARK_GRAY);
+				signUpInputs.setBounds(10, 110, 477, 296);
+				signUpInputs.setLayout(null);
+				signUpInputs.setVisible(false);
+				loginInputs.add(signUpInputs);
+				
+				txtUsernameSignUp = new JTextField();
+				txtUsernameSignUp.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent arg0) {
+						txtUsernameSignUp.setText("");
+					}
+					public void focusLost(FocusEvent e) {
+						if(txtUsernameSignUp.getText().equals(""))
+							txtUsernameSignUp.setText("Enter your username");
+					}
+				});
+				txtUsernameSignUp.setText("Enter your username");
+				txtUsernameSignUp.setForeground(Color.GRAY);
+				txtUsernameSignUp.setFont(new Font("Courier New", Font.PLAIN, 13));
+				txtUsernameSignUp.setColumns(10);
+				txtUsernameSignUp.setCaretColor(Color.LIGHT_GRAY);
+				txtUsernameSignUp.setBorder(null);
+				txtUsernameSignUp.setBackground(Color.DARK_GRAY);
+				txtUsernameSignUp.setBounds(31, 45, 183, 14);
+				signUpInputs.add(txtUsernameSignUp);
+				
+				JSeparator signUpUsernameSeparator = new JSeparator();
+				signUpUsernameSeparator.setForeground(Color.LIGHT_GRAY);
+				signUpUsernameSeparator.setBackground(Color.LIGHT_GRAY);
+				signUpUsernameSeparator.setBounds(31, 70, 172, 2);
+				signUpInputs.add(signUpUsernameSeparator);
+				
+				JSeparator signUpEmailSeparator = new JSeparator();
+				signUpEmailSeparator.setForeground(Color.LIGHT_GRAY);
+				signUpEmailSeparator.setBackground(Color.LIGHT_GRAY);
+				signUpEmailSeparator.setBounds(31, 162, 172, 2);
+				signUpInputs.add(signUpEmailSeparator);
+				
+				JLabel lblUsernameSignIn = new JLabel("USERNAME:");
+				lblUsernameSignIn.setForeground(Color.LIGHT_GRAY);
+				lblUsernameSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
+				lblUsernameSignIn.setBounds(31, 22, 183, 21);
+				signUpInputs.add(lblUsernameSignIn);
+				
+				JLabel lblEmail = new JLabel("EMAIL:");
+				lblEmail.setForeground(Color.LIGHT_GRAY);
+				lblEmail.setFont(new Font("Courier New", Font.PLAIN, 18));
+				lblEmail.setBounds(31, 114, 99, 21);
+				signUpInputs.add(lblEmail);
+				
+				txtEmail = new JTextField();
+				txtEmail.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						txtEmail.setText("");
+					}
+					public void focusLost(FocusEvent e) {
+						if(txtEmail.getText().equals(""))
+							txtEmail.setText("password");
+					}
+				});
+				txtEmail.setText("Enter your email");
+				txtEmail.setForeground(Color.GRAY);
+				txtEmail.setFont(new Font("Courier New", Font.PLAIN, 13));
+				txtEmail.setCaretColor(Color.LIGHT_GRAY);
+				txtEmail.setBorder(null);
+				txtEmail.setBackground(Color.DARK_GRAY);
+				txtEmail.setBounds(31, 135, 172, 20);
+				signUpInputs.add(txtEmail);
+				
+				JButton btnCreateAccount = GUIFactory.createCometFlatButton(
+						"Create account",
+						new Color(52, 52, 52),
+						Color.LIGHT_GRAY);
+				btnCreateAccount.addMouseListener(buttonColorChanger);
+				btnCreateAccount.setBorderPainted(false);
+				btnCreateAccount.setBounds(31, 212, 172, 47);
+				btnCreateAccount.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						CometSplashScreen cs = new CometSplashScreen("Creating account...");
+						Thread t1 = new Thread(cs);
+						Thread t2 = new Thread(new Runnable() {
+							@SuppressWarnings("deprecation")
+							public void run() {
+								try {
+									Server server = new ServerXMLConnector().getConnection();
+									ControllerOnline controller = new ControllerOnlineImpl(server);
+									Client client =  new ClientImpl(controller);
+									controller.setClient(client);
+									String username = txtUsernameSignUp.getText();
+									String password = pfPasswordSignUp.getText();
+									String email = txtEmail.getText();
+									
+									byte[] imageBytes = null;
+									if(userImage != null) {
+										//u userImage se cuva skalirana slika!!!
+										//uzimaju se bajtovi iz takve skalirane slike na sledeci nacin:
+										BufferedImage bImage = new BufferedImage(userImage.getWidth(null), userImage.getHeight(null), BufferedImage.TYPE_INT_RGB);
+										Graphics2D bImageGraphics = bImage.createGraphics();
+										bImageGraphics.drawImage(userImage, null, null);
+										RenderedImage rImage = (RenderedImage)bImage;
+										
+										ByteArrayOutputStream baos = new ByteArrayOutputStream();
+										ImageIO.write(rImage, userImageExtension, baos);
+										imageBytes = baos.toByteArray();
+									}
+									
+									if(!controller.signIn(username, password, email, imageBytes)) {	
+										cs.stopAnimation();
+										CometDialog cd = new CometDialog("warning", "Account already exists!");
+										cd.setVisible(true);
+										return;
+									}
+									cs.stopAnimation();
+									CometDialog cd = new CometDialog("info", "Acount created succesfully!");
+									cd.setVisible(true);
+									txtUsernameSignUp.setText("Enter your username");
+									txtEmail.setText("Enter your email");
+									pfPasswordSignUp.setText("markojelep");
+								} catch (RemoteException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} finally {
+									cs.stopAnimation();
+								}
+							}
+						});
+						t1.start();
+						t2.start();
+					}	
+				});
+				signUpInputs.add(btnCreateAccount);
+				
+				
+				JSeparator signUpPasswordSeparator = new JSeparator();
+				signUpPasswordSeparator.setForeground(Color.LIGHT_GRAY);
+				signUpPasswordSeparator.setBackground(Color.LIGHT_GRAY);
+				signUpPasswordSeparator.setBounds(270, 70, 172, 2);
+				signUpInputs.add(signUpPasswordSeparator);
+				
+				JLabel lblPasswordSignIn = new JLabel("PASSWORD:");
+				lblPasswordSignIn.setForeground(Color.LIGHT_GRAY);
+				lblPasswordSignIn.setFont(new Font("Courier New", Font.PLAIN, 18));
+				lblPasswordSignIn.setBounds(270, 22, 183, 21);
+				signUpInputs.add(lblPasswordSignIn);
+				
+				pfPasswordSignUp = new JPasswordField();
+				pfPasswordSignUp.addFocusListener(new FocusAdapter() {
+					public void focusGained(FocusEvent e) {
+						pfPasswordSignUp.setText("");
+					}
+					public void focusLost(FocusEvent e) {
+						if(pfPasswordSignUp.getText().equals(""))
+							pfPasswordSignUp.setText("password");
+					}
+				});
+				pfPasswordSignUp.setText("password");
+				pfPasswordSignUp.setForeground(Color.GRAY);
+				pfPasswordSignUp.setFont(new Font("Tahoma", Font.PLAIN, 13));
+				pfPasswordSignUp.setCaretColor(Color.LIGHT_GRAY);
+				pfPasswordSignUp.setBorder(null);
+				pfPasswordSignUp.setBackground(Color.DARK_GRAY);
+				pfPasswordSignUp.setBounds(269, 45, 183, 20);
+				signUpInputs.add(pfPasswordSignUp);
+				
+				lblImage = new JLabel("");
+				lblImage.setHorizontalAlignment(SwingConstants.CENTER);
+				lblImage.setBounds(296, 81, 120, 120);
+				lblImage.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(190, 190, 190)));
+				lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
+						.getResource("../resources/personImage.jpg"))
+						.getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT)));
+				signUpInputs.add(lblImage);
+				
+				JButton btnLoadImage = GUIFactory.createCometFlatButton(
+						"Load image",
+						new Color(52, 52, 52),
+						Color.LIGHT_GRAY);
+				btnLoadImage.setBounds(270, 212, 172, 47);
+				btnLoadImage.setBorderPainted(false);
+				btnLoadImage.addMouseListener(buttonColorChanger);
+				
+				btnLoadImage.addActionListener(new ActionListener() {
+
+					public void actionPerformed(ActionEvent e) {
+						FileNameExtensionFilter filter = new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg");
+						JFileChooser fc = new JFileChooser();
+						fc.setFileFilter(filter);
+						fc.setAcceptAllFileFilterUsed(false);
+						
+						int retVal = fc.showOpenDialog(fc);
+						if(retVal == JFileChooser.APPROVE_OPTION) {
+							String filePath = fc.getSelectedFile().getAbsolutePath();
+							userImageExtension = filePath.substring(filePath.length()-3, filePath.length());
+							BufferedImage img = null;
+							try {
+								img = ImageIO.read(new File(filePath));
+							}catch(Exception ex) {
+								ex.printStackTrace();
+							}
+							Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
+							userImage = img.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+							lblImage.setIcon(new ImageIcon(image));
+						}
+					}
+				});
+				
+				signUpInputs.add(btnLoadImage);
 	
 	}
 	

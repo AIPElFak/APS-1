@@ -23,7 +23,7 @@ public interface Server extends Remote {
 	
 	boolean modifyUserData (Client cl) throws RemoteException;
 	
-	boolean resetPassword(Client cl) throws RemoteException;
+	boolean resetPassword(String email) throws RemoteException;
 	
 	void logActivity(String message) throws RemoteException;
 	

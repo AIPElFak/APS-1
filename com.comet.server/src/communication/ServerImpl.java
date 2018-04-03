@@ -81,8 +81,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public boolean resetPassword(Client cl) throws RemoteException {
-		return facade.getAuthenticationService().resetPassword(cl);
+	public boolean resetPassword(String email) throws RemoteException {
+		return facade.getAuthenticationService().resetPassword(email);
 	}
 	
 	@Override

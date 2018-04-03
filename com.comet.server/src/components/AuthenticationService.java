@@ -16,7 +16,7 @@ public interface AuthenticationService extends Remote {
 	
 	boolean modifyUserData (Client cl) throws RemoteException;
 	
-	boolean resetPassword(Client cl) throws RemoteException;
+	boolean resetPassword(String email) throws RemoteException;
 
 	boolean addClient (Client cl) throws RemoteException;
 	

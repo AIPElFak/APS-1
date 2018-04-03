@@ -264,4 +264,14 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		return null;
 	}
 
+	@Override
+	public boolean resetPassword(String email) {
+		try {
+			return server.resetPassword(email);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }

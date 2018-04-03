@@ -62,4 +62,8 @@ public class BusinessLogic {
 	public String openDocumentVersion(int versionId) {
 		return documentVersionDao.getById(versionId).getContent();
 	}
+
+	public User getUserByEmail(String email) {
+		return userDao.getUserByEmail(email);
+	}
 }
