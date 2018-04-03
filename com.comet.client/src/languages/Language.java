@@ -33,6 +33,6 @@ public class Language {
     @Override
     public String toString()
     {
-        return "ClassPojo [extension = "+extension+", name = "+name+"]";
+        return name;
     }
 }

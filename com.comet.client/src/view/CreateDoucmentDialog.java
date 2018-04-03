@@ -5,16 +5,21 @@ import java.awt.FlowLayout;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
+
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.border.MatteBorder;
 
 import controller.ControllerOnline;
@@ -26,13 +31,16 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 
 import guicomponents.GUIFactory;
+import languages.Language;
+import languages.LanguageManager;
+
 import javax.swing.border.LineBorder;
 
 public class CreateDoucmentDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtDocumentName;
-	private JTextField txtDocumentType;
+	private JComboBox cbxDocumentType;
 	private JTextField txtPassword;
 
 	private ControllerOnline controller;
@@ -87,15 +95,16 @@ public class CreateDoucmentDialog extends JDialog {
 		separator_1.setBounds(10, 62, 414, 2);
 		contentPanel.add(separator_1);
 		
-		txtDocumentType = new JTextField();
-		txtDocumentType.setHorizontalAlignment(SwingConstants.CENTER);
-		txtDocumentType.setForeground(new Color(1, 91, 181));
-		txtDocumentType.setFont(new Font("Courier New", Font.PLAIN, 13));
-		txtDocumentType.setColumns(10);
-		txtDocumentType.setBorder(null);
-		txtDocumentType.setBackground(new Color(175, 238, 238));
-		txtDocumentType.setBounds(189, 118, 235, 32);
-		contentPanel.add(txtDocumentType);
+		cbxDocumentType = new JComboBox
+		(
+			LanguageManager.getInstance().getAllLanguages()
+		);
+		cbxDocumentType.setForeground(new Color(1, 91, 181));
+		cbxDocumentType.setFont(new Font("Courier New", Font.PLAIN, 13));
+		cbxDocumentType.setBorder(null);
+		cbxDocumentType.setBackground(new Color(175, 238, 238));
+		cbxDocumentType.setBounds(189, 118, 235, 32);
+		contentPanel.add(cbxDocumentType);
 		
 		JLabel lblDocumentName = new JLabel("Document name:");
 		lblDocumentName.setHorizontalAlignment(SwingConstants.CENTER);
@@ -156,7 +165,7 @@ public class CreateDoucmentDialog extends JDialog {
 							Thread.sleep(2000);
 						} catch (InterruptedException e) {}
 						String name = txtDocumentName.getText();
-						String type = txtDocumentType.getText();
+						String type = ((Language)cbxDocumentType.getSelectedItem()).getName();
 						String password = txtPassword.getText();
 						cs.stopAnimation();
 						CometDialog cd;
