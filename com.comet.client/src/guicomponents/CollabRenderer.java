@@ -33,9 +33,6 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(190, 190, 190)));
 		
 		image = new JLabel();
-		image.setIcon(new ImageIcon(new ImageIcon(getClass()
-					.getResource("../resources/personImage.jpg")).getImage()
-					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 		add(image, BorderLayout.WEST);
 		
 		JPanel userDataHolder = new JPanel();
@@ -44,7 +41,7 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		add(userDataHolder, BorderLayout.EAST);
 		
 		username = new JLabel();
-		username.setFont(new Font("Courier New", Font.PLAIN, 13));
+		username.setFont(new Font("Courier New", Font.BOLD, 12));
 		username.setForeground(new Color(238, 238, 255));
 		username.setHorizontalAlignment(JLabel.CENTER);
 		userDataHolder.add(username);
@@ -73,7 +70,10 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 			boolean isSelected, boolean cellHasFocus) {
 		
 		try {
-			username.setText(value.getUsername());
+			username.setText(value.getUsername().toUpperCase());
+			image.setIcon(new ImageIcon(new ImageIcon(getClass()
+					.getResource("../resources/personImage.jpg")).getImage()
+					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 			if(value.getImageBytes() != null) {
 				BufferedImage img;
 				try {
