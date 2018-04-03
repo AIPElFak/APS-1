@@ -13,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import utilities.DocumentRemote;
+import utilities.VersionRemote;
 import communication.Client;
 import communication.Server;
 import configuration.RmiConfiguration;
@@ -127,6 +128,16 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	@Override
 	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
 		facade.getDocumentService().sendDocUpdate(cl, type, text, length, location);
+	}
+
+	@Override
+	public ArrayList<VersionRemote> getAllDocumentVersions(int documentId) throws RemoteException {
+		return facade.getDocumentService().getAllDocumentVersions(documentId);
+	}
+
+	@Override
+	public String openDocumentVersion(int versionId) throws RemoteException {
+		return facade.getDocumentService().openDocumentVersion(versionId);
 	}
 
 }

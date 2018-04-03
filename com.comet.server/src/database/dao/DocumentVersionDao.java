@@ -140,4 +140,27 @@ public class DocumentVersionDao extends Repository<DocumentVersion> {
 		}
 		return list;
 	}
+	
+	public ArrayList<DocumentVersion> getAllDocumentVersions(int documentId){
+		Transaction trns = null;
+		ArrayList<DocumentVersion> list = new ArrayList<DocumentVersion>();
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			Document doc = s.load(Document.class, documentId);
+			for(DocumentVersion dv : doc.getVersions())
+				list.add(dv);
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+		return list;
+	}
 }

@@ -13,6 +13,8 @@ import database.dto.DocumentVersion;
 import database.dto.JoinRequest;
 import database.dto.User;
 import database.dto.WorksOn;
+import utilities.VersionRemote;
+import utilities.VersionRemoteImpl;
 
 public class TestRepository {
 
@@ -120,11 +122,21 @@ public class TestRepository {
 //						+ "  System.out.println(\"Nova verzija\");"
 //						+ "}");
 		
-		if(dd.deleteIfOwner(31,26)) {
-			System.out.println("Obrisano");
+//		if(dd.deleteIfOwner(31,26)) {
+//			System.out.println("Obrisano");
+//		}
+//		else {
+//			System.out.println("Nije owner!");
+//		}
+		
+		ArrayList<VersionRemote> result = new ArrayList<VersionRemote>();
+		ArrayList<DocumentVersion> vers =  dvd.getAllDocumentVersions(3);
+		for(DocumentVersion v : vers) {
+			VersionRemote vr = new VersionRemoteImpl(v);
+			result.add(vr);
 		}
-		else {
-			System.out.println("Nije owner!");
+		for(VersionRemote vr : result) {
+			System.out.println(vr.getDocumentName()+" "+vr.getUserName()+" "+vr.getDateTime());
 		}
 	}
 }

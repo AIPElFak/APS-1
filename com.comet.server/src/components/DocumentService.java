@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import communication.Client;
 import utilities.DocumentRemote;
+import utilities.VersionRemote;
 
 public interface DocumentService extends Remote {
 	
@@ -26,5 +27,10 @@ public interface DocumentService extends Remote {
 	
 	boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException;
 	
+	String openDocumentVersion(int versionId);
+
+	ArrayList<VersionRemote> getAllDocumentVersions(int documentId);
+
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
+
 }

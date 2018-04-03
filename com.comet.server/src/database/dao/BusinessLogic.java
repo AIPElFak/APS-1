@@ -6,6 +6,7 @@ import database.dto.Document;
 import database.dto.DocumentVersion;
 import database.dto.User;
 import database.test.dto.Info;
+import utilities.VersionRemote;
 
 public class BusinessLogic {
 
@@ -53,5 +54,13 @@ public class BusinessLogic {
 
 	public boolean addDocumentVersion(int documentId, int userId, String content) {
 		return documentVersionDao.add(documentId, userId, content);
+	}
+
+	public ArrayList<DocumentVersion> getAllDocumentVersions(int documentId) {
+		return documentVersionDao.getAllDocumentVersions(documentId);
+	}
+
+	public String openDocumentVersion(int versionId) {
+		return documentVersionDao.getById(versionId).getContent();
 	}
 }

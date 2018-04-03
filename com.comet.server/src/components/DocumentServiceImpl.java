@@ -11,6 +11,8 @@ import database.dto.DocumentVersion;
 import utilities.DocumentRemote;
 import utilities.DocumentRemoteImpl;
 import utilities.UserRemote;
+import utilities.VersionRemote;
+import utilities.VersionRemoteImpl;
 import communication.Client;
 
 public class DocumentServiceImpl extends UnicastRemoteObject implements DocumentService {
@@ -142,6 +144,24 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				}
 			}catch(RemoteException e) {}
 		}
+	}
+
+	@Override
+	public ArrayList<VersionRemote> getAllDocumentVersions(int documentId) {
+		BusinessLogic logic = new BusinessLogic();
+		ArrayList<VersionRemote> result = new ArrayList<VersionRemote>();
+		ArrayList<DocumentVersion> vers =  logic.getAllDocumentVersions(documentId);
+		for(DocumentVersion v : vers) {
+			VersionRemote vr = new VersionRemoteImpl(v);
+			result.add(vr);
+		}
+		return result;
+	}
+
+	@Override
+	public String openDocumentVersion(int versionId) {
+		BusinessLogic logic = new BusinessLogic();
+		return logic.openDocumentVersion(versionId);
 	}
 
 }

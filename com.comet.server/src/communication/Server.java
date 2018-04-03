@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import utilities.DocumentRemote;
+import utilities.VersionRemote;
 
 public interface Server extends Remote {
 	
@@ -45,6 +46,10 @@ public interface Server extends Remote {
 	boolean deleteDocument(Client cl, int documentId) throws RemoteException;
 	
 	boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException;
+	
+	ArrayList<VersionRemote> getAllDocumentVersions(int documentId) throws RemoteException;	
+
+	String openDocumentVersion(int versionId) throws RemoteException;
 	
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
 }
