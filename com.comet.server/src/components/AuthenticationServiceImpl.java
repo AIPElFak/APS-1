@@ -37,13 +37,15 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 		BusinessLogic logic = new BusinessLogic();
 		User user = logic.login(username, password);
 		if(user == null) return false;
-		
-		File f = new File("src/userImages/"+user.getId()+".jpg");
+
 		byte[] imageBytes = null;
-		try {
-			imageBytes = Files.readAllBytes(f.toPath());
-		} catch (IOException e) {
-		//	e.printStackTrace();
+		File f = new File("src/userImages/"+user.getId()+".jpg");
+		if(f.exists()) {
+			try {
+				imageBytes = Files.readAllBytes(f.toPath());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		UserRemoteImpl ur = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
@@ -65,18 +67,20 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 		User user = new User(username, password, email);
 		Info info = logic.register(user);
 		if(!info.isSuccessful()) return false;
-		UserRemoteImpl ur = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
-		cl.setUserData(ur);
 		
-		BufferedImage image;
-		try {
-			image = ImageIO.read(new ByteArrayInputStream(imageBytes));
-			File outputFile = new File("src/userImages/"+user.getId()+".jpg");	//user ID umesto toga
-			ImageIO.write(image, "jpg", outputFile);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(imageBytes != null) {
+			BufferedImage image;
+			try {
+				image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+				File outputFile = new File("src/userImages/"+user.getId()+".jpg");
+				ImageIO.write(image, "jpg", outputFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
+		UserRemoteImpl ur = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
+		cl.setUserData(ur);
 		return true;
 	}
 
@@ -125,12 +129,24 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	}
 
 	@Override
-	public boolean editUserInformations(Client client, String username, String email, String password)
+	public boolean editUserInformations(Client client, String username, String email, String password, byte[] imageBytes)
 			throws RemoteException {
+
+		if(imageBytes != null) {
+			BufferedImage image;
+			try {
+				image = ImageIO.read(new ByteArrayInputStream(imageBytes));
+				File outputFile = new File("src/userImages/"+client.getUserData().getId()+".jpg");
+				ImageIO.write(image, "jpg", outputFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		BusinessLogic logic = new BusinessLogic();
 		User user = new User(client.getUserData().getId(),username, password, email);
 		if(!logic.updateUser(user))return false;
-		UserRemote newUserData = new UserRemoteImpl(user);
+		UserRemoteImpl newUserData = new UserRemoteImpl(user.getId(), user.getUsername(), user.getPassword(), user.getEmail(), imageBytes);
 		client.setUserData(newUserData);
 		return true;
 	}
