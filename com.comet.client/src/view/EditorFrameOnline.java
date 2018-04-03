@@ -16,6 +16,7 @@ import controller.CommandUndoRedo;
 import controller.ControllerOnline;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
+import languages.LanguageManager;
 import languages.SymbolTable;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
@@ -33,6 +34,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -280,7 +283,8 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setForeground(Color.WHITE);
 		textPane.setCaretColor(new Color(238,238,255));
 		textPane.setDocument(
-				GUIFactory.createCometEditorDocument(new SymbolTable("Java")));
+				GUIFactory.createCometEditorDocument(
+						LanguageManager.getInstance().getSymbolTable()));
 		textPane.setFont(new Font("Courier New", Font.PLAIN, 16));
 		textPane.setSelectionColor(Color.WHITE);
 		textPane.setSelectedTextColor(Color.BLACK);

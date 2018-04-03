@@ -9,22 +9,40 @@ import javax.xml.bind.Unmarshaller;
 
 public class LanguageManager {
 
-	Languages languages;
+	private Languages languages;
 	
-	public LanguageManager() {
+	private Language selectedLanguage;
+	
+	private static LanguageManager instance;
+	
+	private LanguageManager() {
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(Languages.class);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 			URL url = getClass().getResource("../languages/languages.xml");
 			languages = (Languages) 
 					jaxbUnmarshaller.unmarshal(new File(url.getPath()));
-			System.out.println(languages.getLanguage()[0].getName());
 		} catch (JAXBException e) {System.out.println(e);}
 		
 	}
 	
-	public static void main(String[] args) {
-		LanguageManager t = new LanguageManager();
+	public static LanguageManager getInstance() {
+		if(instance == null) instance = new LanguageManager();
+		return instance;
+	}
+	
+	public  void setLanguageByType(String type) {
+		for(Language l : languages.getLanguage())
+			if(l.getName().toLowerCase().equals(type.toLowerCase())) {
+				selectedLanguage = l;
+				break;
+			}
+		selectedLanguage = null;
+	}
+	
+	public SymbolTable getSymbolTable() {
+		if(selectedLanguage == null) return null;
+		return new SymbolTable(selectedLanguage.getExtension().toLowerCase());
 	}
 	
 }

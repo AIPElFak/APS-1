@@ -15,6 +15,7 @@ import javax.swing.event.DocumentListener;
 import communication.Client;
 import controller.ControllerOnline;
 import guicomponents.GUIFactory;
+import languages.LanguageManager;
 import model.ModelImpl;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
@@ -247,6 +248,13 @@ public class LobbyFrame extends JFrame implements View {
 					public void run() {
 						try {
 							Thread.sleep(1500);
+							try {
+								LanguageManager.getInstance().setLanguageByType(
+									doc.getType().toLowerCase()
+								);
+							} catch (RemoteException e) {
+								return;
+							}
 							EditorFrameOnline editor = new EditorFrameOnline(controller);
 							controller.setView(editor);
 							controller.setModel(new ModelImpl());
