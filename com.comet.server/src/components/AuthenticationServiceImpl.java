@@ -105,7 +105,7 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 		UserRemoteImpl ur = new UserRemoteImpl(user);
 		PasswordReset reset = new PasswordReset(ur.getEmail(),ur.getUsername());
 		
-		user.setEmail(reset.getNewPassword());
+		user.setPassword(reset.getNewPassword());
 		if(!logic.updateUser(user)) return false;
 		
 		reset.Send();
