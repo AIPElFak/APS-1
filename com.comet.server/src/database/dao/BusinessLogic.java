@@ -6,7 +6,6 @@ import database.dto.Document;
 import database.dto.DocumentVersion;
 import database.dto.User;
 import database.test.dto.Info;
-import utilities.VersionRemote;
 
 public class BusinessLogic {
 

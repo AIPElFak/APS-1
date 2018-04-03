@@ -27,9 +27,9 @@ public interface DocumentService extends Remote {
 	
 	boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException;
 	
-	String openDocumentVersion(int versionId);
+	String openDocumentVersion(int versionId) throws RemoteException;
 
-	ArrayList<VersionRemote> getAllDocumentVersions(int documentId);
+	ArrayList<VersionRemote> getAllDocumentVersions(int documentId) throws RemoteException;
 
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
 
