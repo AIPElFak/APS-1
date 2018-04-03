@@ -6,8 +6,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.rmi.RemoteException;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,6 +33,9 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(190, 190, 190)));
 		
 		image = new JLabel();
+		image.setIcon(new ImageIcon(new ImageIcon(getClass()
+					.getResource("../resources/personImage.jpg")).getImage()
+					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
 		add(image, BorderLayout.WEST);
 		
 		JPanel userDataHolder = new JPanel();
@@ -67,9 +74,15 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		
 		try {
 			username.setText(value.getUsername());
-			image.setIcon(new ImageIcon(new ImageIcon(getClass()
-					.getResource("../resources/personImage.jpg")).getImage()
-					.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+			if(value.getImageBytes() != null) {
+				BufferedImage img;
+				try {
+					img = ImageIO.read(new ByteArrayInputStream(value.getImageBytes()));
+					image.setIcon(new ImageIcon(img.getScaledInstance(32, 32, Image.SCALE_DEFAULT)));
+				} catch (IOException e) {}
+				
+			}
+			
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

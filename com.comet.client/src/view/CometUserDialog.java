@@ -43,6 +43,7 @@ public class CometUserDialog extends JDialog {
 	private JTextField txtUsername;
 	private JTextField txtPassword;
 	private JTextField txtEmail;
+	private JLabel lblImage;
 	
 	private ControllerOnline controller;
 	private JFrame parentFrame;
@@ -151,13 +152,13 @@ public class CometUserDialog extends JDialog {
 		txtEmail.setBounds(217, 361, 207, 32);
 		contentPanel.add(txtEmail);
 		
-		JLabel label = new JLabel("");
-		label.setBounds(10, 75, 189, 189);
-		label.setIcon(new ImageIcon(new ImageIcon(getClass()
+		lblImage = new JLabel("");
+		lblImage.setBounds(10, 75, 189, 189);
+		lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
 				.getResource("../resources/personImage.jpg"))
 				.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
-		label.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(238, 238, 255)));
-		contentPanel.add(label);
+		lblImage.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, new Color(238, 238, 255)));
+		contentPanel.add(lblImage);
 		
 		JButton btnLoadImage = GUIFactory.createCometFlatButton("Load image", new Color(1, 91, 181), new Color(244, 244, 255));
 		btnLoadImage.setBorder(new LineBorder(new Color(11, 116, 241)));
@@ -180,9 +181,9 @@ public class CometUserDialog extends JDialog {
 					}catch(Exception ex) {
 						ex.printStackTrace();
 					}
-					Image image = img.getScaledInstance(label.getWidth(), label.getHeight(), Image.SCALE_SMOOTH);
+					Image image = img.getScaledInstance(lblImage.getWidth(), lblImage.getHeight(), Image.SCALE_SMOOTH);
 					
-					label.setIcon(new ImageIcon(image));
+					lblImage.setIcon(new ImageIcon(image));
 					imageChanged = true;
 				}
 			}
@@ -196,7 +197,7 @@ public class CometUserDialog extends JDialog {
 		btnSetDefault.addMouseListener(docBtnColorChanger);
 		btnSetDefault.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				label.setIcon(new ImageIcon(new ImageIcon(getClass()
+				lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
 						.getResource("../resources/personImage.jpg"))
 						.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
 			}
@@ -369,7 +370,7 @@ public class CometUserDialog extends JDialog {
 							if(controller.getUserData().getImageBytes() != null) {
 								BufferedImage image;
 								image = ImageIO.read(new ByteArrayInputStream(controller.getUserData().getImageBytes()));
-								label.setIcon(new ImageIcon(image));
+								lblImage.setIcon(new ImageIcon(image.getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
 							}
 						} catch (RemoteException e) {
 							// TODO Auto-generated catch block
