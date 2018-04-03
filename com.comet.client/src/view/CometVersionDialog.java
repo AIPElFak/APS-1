@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JList;
+
+import utilities.DocumentRemote;
 import utilities.VersionRemote;
 
 import javax.swing.JScrollPane;
@@ -23,9 +25,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import guicomponents.GUIFactory;
+import languages.LanguageManager;
+import model.ModelImpl;
+
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
@@ -97,9 +103,28 @@ public class CometVersionDialog extends JDialog {
 		btnLoadVersion.setBorder(new LineBorder(new Color(11, 116, 241)));
 		btnLoadVersion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//get selected..
-				//controller.updateDocumentContent(content);
-				self.dispose();
+				VersionRemote vers = list.getSelectedValue();
+				if(vers == null) return;
+				CometSplashScreen cs = new CometSplashScreen("Opening version...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(1500);
+							cs.stopAnimation();
+							String content = vers.getContent();
+							//String content = controller.openDocumentVersion(vers.getId());
+							controller.updateDocumentContent(content);
+							self.dispose();
+						} 
+						catch (InterruptedException e) 
+						{} 
+						catch (RemoteException e) {
+							e.printStackTrace();
+						}
+					}
+				}).start();
 			}
 		});
 		buttonHolder.add(btnLoadVersion);

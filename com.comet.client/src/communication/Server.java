@@ -49,4 +49,6 @@ public interface Server extends Remote {
 
 	boolean deleteDocument(Client client, int id) throws RemoteException;
 	
+	String openDocumentVersion(int versionId) throws RemoteException;
+	
 }

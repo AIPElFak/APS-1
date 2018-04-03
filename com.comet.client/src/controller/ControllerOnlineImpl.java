@@ -254,4 +254,14 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		return null;
 	}
 
+	@Override
+	public String openDocumentVersion(int id) {
+		try {
+			return server.openDocumentVersion(id);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 }

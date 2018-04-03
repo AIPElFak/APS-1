@@ -61,6 +61,8 @@ public interface ControllerOnline extends Controller {
 	
 	void sendDocUpdate(String type, String text, int length, int location);
 	
-	ArrayList<VersionRemote> getAllDocumentVersions();	
+	ArrayList<VersionRemote> getAllDocumentVersions();
+
+	String openDocumentVersion(int id);	
 	
 }
