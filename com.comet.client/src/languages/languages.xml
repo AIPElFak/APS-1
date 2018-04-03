@@ -4,5 +4,4 @@
 	<language name="JavaScript" extension="js"></language>
 	<language name="Python" extension="py"></language>
 	<language name="C++" extension="cpp"></language>
-	<language name="Plain text document" extension="txt"></language>
 </languages>

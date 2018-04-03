@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+import javax.swing.border.LineBorder;
 
 import utilities.UserRemote;
 
@@ -34,6 +35,7 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(190, 190, 190)));
 		
 		image = new JLabel();
+		image.setBorder(new LineBorder(new Color(190, 190, 190)));
 		add(image, BorderLayout.WEST);
 		
 		JPanel userDataHolder = new JPanel();

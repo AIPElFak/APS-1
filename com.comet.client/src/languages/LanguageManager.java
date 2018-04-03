@@ -37,7 +37,6 @@ public class LanguageManager {
 				selectedLanguage = l;
 				break;
 			}
-		selectedLanguage = null;
 	}
 	
 	public Language[] getAllLanguages() {
