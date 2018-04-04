@@ -33,4 +33,6 @@ public interface DocumentService extends Remote {
 
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
 
+	void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException;
+
 }

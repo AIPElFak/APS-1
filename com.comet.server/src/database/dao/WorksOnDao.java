@@ -162,4 +162,29 @@ public class WorksOnDao extends Repository<WorksOn>{
 		}	
 		return privilege;
 	}
+	
+	
+	public void changePrivilege(int userId, int documentId, String privilege) {
+		Transaction trns = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			String query = "UPDATE WORKS_ON SET PRIVILEGE = :priv WHERE USER_ID = :userId AND DOCUMENT_ID = :docId";
+			s.createNativeQuery(query, WorksOn.class)
+					.setParameter("priv", privilege)
+					.setParameter("userId", userId)
+					.setParameter("docId", documentId)
+					.executeUpdate();
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}
+	}
 }

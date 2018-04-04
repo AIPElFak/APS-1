@@ -203,4 +203,10 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		return logic.openDocumentVersion(versionId);
 	}
 
+	@Override
+	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
+		BusinessLogic logic = new BusinessLogic();
+		logic.changePrivilege(userId,documentId,privilege);
+	}
+
 }

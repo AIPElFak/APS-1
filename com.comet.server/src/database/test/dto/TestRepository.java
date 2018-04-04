@@ -139,6 +139,9 @@ public class TestRepository {
 //			System.out.println(vr.getDocumentName()+" "+vr.getUserName()+" "+vr.getDateTime());
 //		}
 		
-		System.out.println(wd.startWorkingOnDocument(1, 14));
+//		System.out.println(wd.startWorkingOnDocument(1, 14));
+		
+		
+//		wd.changePrivilege(1, 14, WorksOn.Privilege.ReadWrite.toString());
 	}
 }

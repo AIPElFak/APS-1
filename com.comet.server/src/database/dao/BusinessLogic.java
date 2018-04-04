@@ -70,4 +70,8 @@ public class BusinessLogic {
 	public String startWorkingOnDocument(int userId, int documentId) {
 		return worksOnDao.startWorkingOnDocument(userId, documentId);
 	}
+
+	public void changePrivilege(int userId, int documentId, String privilege) {
+		worksOnDao.changePrivilege(userId, documentId, privilege);
+	}
 }

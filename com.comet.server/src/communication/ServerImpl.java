@@ -139,5 +139,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	public String openDocumentVersion(int versionId) throws RemoteException {
 		return facade.getDocumentService().openDocumentVersion(versionId);
 	}
+
+	@Override
+	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
+		facade.getDocumentService().setPrivileges(cl,userId,documentId,privilege);
+	}
 	
 }
