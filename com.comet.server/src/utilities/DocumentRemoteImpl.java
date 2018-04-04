@@ -6,16 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import communication.Client;
+import database.dao.BusinessLogic;
 import database.dto.Document;
+import database.dto.DocumentVersion;
 
 public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentRemote {
 
 	private static final long serialVersionUID = 1L;
 
 	int id;
-	String name, type, privilege, password;
+	String name, type, privilege, password, content;
 	boolean passwordProtected;
 	List<Client> collaborators;
+	BusinessLogic logic;
 	
 	public DocumentRemoteImpl() throws RemoteException {
 		super();
@@ -29,6 +32,10 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.passwordProtected = passwordProtected;
 		this.privilege = privilege;
 		collaborators = new ArrayList<Client>();
+		
+		logic = new BusinessLogic();
+		DocumentVersion dv = logic.getLastDocumentVersion(id);
+		this.content = dv == null ? "" : dv.getContent();
 	}
 	
 	public DocumentRemoteImpl(Document doc)  throws RemoteException{
@@ -38,6 +45,10 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.passwordProtected = doc.isPassword_protected();
 		this.privilege = "";
 		collaborators = new ArrayList<Client>();
+		
+		logic = new BusinessLogic();
+		DocumentVersion dv = logic.getLastDocumentVersion(id);
+		this.content = dv == null ? "" : dv.getContent();
 	}
 	
 	
@@ -116,6 +127,16 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	@Override
 	public List<Client> getCollaborators() throws RemoteException {
 		return collaborators;
+	}
+
+	@Override
+	public String getCurrentContent() throws RemoteException {
+		return content;
+	}
+
+	@Override
+	public void setCurrentContent(String content) throws RemoteException {
+		this.content = content;
 	}
 
 }

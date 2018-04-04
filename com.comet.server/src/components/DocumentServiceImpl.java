@@ -5,6 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.text.BadLocationException;
+
 import database.dao.BusinessLogic;
 import database.dto.Document;
 import database.dto.DocumentVersion;
@@ -95,8 +97,6 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 
 	@Override
 	public String openDocument(Client cl, int documentId) throws RemoteException {
-		BusinessLogic logic = new BusinessLogic();
-		DocumentVersion docVer = logic.getLastDocumentVersion(documentId);
 		DocumentRemote target = null;
 		for(DocumentRemote docRem : documents)
 			if(docRem.getId() == documentId)
@@ -116,8 +116,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 			}
 			catch(RemoteException e) {}
 		}
-		if(docVer == null) return "";
-		return docVer.getContent();
+		return target.getCurrentContent();
 	}
 
 	@Override
@@ -146,11 +145,24 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	@Override
 	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
 		DocumentRemote docRemote = null;
+		int i = 0;
 		for(DocumentRemote d : documents)
 			if(d.getId() == cl.getDocumentData().getId()) {
 				docRemote = d;
+				i++;
 				break;
 			}
+		StringBuffer sb = null;
+		sb = new StringBuffer(docRemote.getCurrentContent());
+		if(type.toLowerCase().equals("insert")) 
+			sb.insert(location, text);
+		else if(type.toLowerCase().equals("remove"))
+			sb.delete(location, location+length);
+		else  if(type.toLowerCase().equals("pull"))
+			sb = new StringBuffer(text);
+			
+		documents.get(i).setCurrentContent(sb.toString());
+		
 		for(Client c : docRemote.getCollaborators()) {
 			try {
 				if(c.getUserData().getId() != cl.getUserData().getId()) {
