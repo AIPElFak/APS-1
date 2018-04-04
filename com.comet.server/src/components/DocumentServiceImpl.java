@@ -54,9 +54,11 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	@Override
 	public void addClientToDocument(Client cl, int docId) throws RemoteException {
 		for(DocumentRemote d : documents) {
-			if(d.getId() == docId)
-				cl.setWorkingDocument(d);
-				d.addClientToThisDocument(cl);
+			try {
+				if(d.getId() == docId)
+					cl.setWorkingDocument(d);
+					d.addClientToThisDocument(cl);
+			}catch(RemoteException e) {}
 		}
 	}
 	
@@ -66,7 +68,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		ArrayList<DocumentRemote> docsRemote = new ArrayList<DocumentRemote>();
 		docs = logic.getAvailableDocuments(limit);
 		for(Document d : docs) {
-			docsRemote.add(new DocumentRemoteImpl(d));
+			try {
+				docsRemote.add(new DocumentRemoteImpl(d));
+			}catch(RemoteException e) {}
 		}
 		return docsRemote;
 	}
@@ -75,9 +79,11 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public ArrayList<DocumentRemote> searchDocuments(String criteria) throws RemoteException {
 		ArrayList<DocumentRemote> resaults = new ArrayList<DocumentRemote>();
 		for(DocumentRemote doc : documents)
-			if(doc.getName().toLowerCase().contains(criteria.toLowerCase())
-				|| doc.getType().toLowerCase().contains(criteria.toLowerCase()))
-				resaults.add(doc);
+			try {
+				if(doc.getName().toLowerCase().contains(criteria.toLowerCase())
+						|| doc.getType().toLowerCase().contains(criteria.toLowerCase()))
+						resaults.add(doc);
+			}catch(RemoteException e) {}
 		return resaults;
 	}
 
@@ -91,7 +97,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		documents.add(docRemote);
 		System.out.println(doc.getId());
 		for(Client c : clients)
-			c.recvAllDocuments();
+			try {
+				c.recvAllDocuments();
+			}catch(RemoteException e) {}
 		return true;
 	}
 
@@ -100,15 +108,17 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		DocumentRemote target = null;
 		BusinessLogic logic = new BusinessLogic();
 		for(DocumentRemote docRem : documents)
-			if(docRem.getId() == documentId)
-				target = docRem;
+			try {
+				if(docRem.getId() == documentId){
+					target = docRem;
+					break;
+				}
+			}catch(RemoteException e) {}
 		
 		target.addClientToThisDocument(cl);
 		cl.setWorkingDocument(target);
 		String priv = logic.startWorkingOnDocument(cl.getUserData().getId(), documentId);
-		UserRemote ur = cl.getUserData();
-		ur.setPrivilege(priv);
-		cl.setUserData(ur);
+		cl.getUserData().setPrivilege(priv);
 		
 		List<UserRemote> users = new ArrayList<UserRemote>();
 		for(Client c : target.getCollaborators()) {
@@ -159,7 +169,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				i++;
 				break;
 			}
-		StringBuffer sb = null;
+		/*StringBuffer sb = null;
 		sb = new StringBuffer(docRemote.getCurrentContent());
 		if(type.toLowerCase().equals("insert")) 
 			sb.insert(location, text);
@@ -168,7 +178,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		else  if(type.toLowerCase().equals("pull"))
 			sb = new StringBuffer(text);
 			
-		documents.get(i).setCurrentContent(sb.toString());
+		documents.get(i).setCurrentContent(sb.toString());*/
 		
 		for(Client c : docRemote.getCollaborators()) {
 			try {
@@ -188,10 +198,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 			VersionRemote vr = null;
 			try {
 				vr = new VersionRemoteImpl(v);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (RemoteException e) {}
 			result.add(vr);
 		}
 		return result;
@@ -207,6 +214,73 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		logic.changePrivilege(userId,documentId,privilege);
+		DocumentRemote target = null;
+		for(DocumentRemote d : documents) {
+			try {
+				if(d.getId() == documentId) {
+					target = d;
+					break;
+				}
+			}catch(RemoteException e) {}
+		}
+		List<UserRemote> users = new ArrayList<UserRemote>();
+		for(Client c : target.getCollaborators()) {
+			try {
+				if(c.getUserData().getId() == userId) {
+					if(!privilege.equals("Owner"))
+						c.getUserData().setPrivilege(privilege);
+					else {
+						c.getUserData().setPrivilege(privilege);
+						cl.getUserData().setPrivilege("ReadWrite");
+					}
+					break;
+				}
+				users.add(c.getUserData());
+			}
+			catch(RemoteException e) {}
+		}
+		for(Client c : target.getCollaborators()) {
+			try {
+				c.updateCollaboratorsList(users);
+			}
+			catch(RemoteException e) {}
+		}
+	}
+
+	@Override
+	public void removeUserFromDocument(UserRemote value, Client client, int id) throws RemoteException {
+		DocumentRemote target = null;
+		for(DocumentRemote d : documents) {
+			try {
+				if(id == d.getId()) target = d;
+				break;
+			}catch(RemoteException e) {}
+		}
+		Client removed = null;
+		for(Client c : target.getCollaborators()) {
+			try {
+				if(c.getUserData().getId() == value.getId()) {
+					removed = c;
+					target.removeCollaborator(c);
+					break;
+				}
+			}catch(RemoteException e) {}
+		}
+		List<UserRemote> users = new ArrayList<UserRemote>();
+		for(Client c : target.getCollaborators()) {
+			try {
+				users.add(c.getUserData());
+			}
+			catch(RemoteException e) {}
+		}
+		for(Client c : target.getCollaborators()) {
+			try {
+				c.updateCollaboratorsList(users);
+			}
+			catch(RemoteException e) {}
+		}
+		removed.setWorkingDocument(null);
+		removed.goBackToLobby();
 	}
 
 }

@@ -258,12 +258,12 @@ public class LobbyFrame extends JFrame implements View {
 							}
 							EditorFrameOnline editor = new EditorFrameOnline(controller);
 							controller.setView(editor);
+							editor.setVisible(true);
 							controller.setModel(new ModelImpl());
 							if(!controller.openDocument(doc)) {
 								cs.stopAnimation();
 								return;
 							}
-							editor.setVisible(true);
 							documentOpened = true;
 							self.dispose();
 							cs.stopAnimation();

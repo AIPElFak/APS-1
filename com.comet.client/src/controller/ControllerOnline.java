@@ -65,6 +65,12 @@ public interface ControllerOnline extends Controller {
 
 	String openDocumentVersion(int id);
 
-	boolean resetPassword(String email);	
+	boolean resetPassword(String email);
+
+	void setPrivilegies(UserRemote value, String string);
+
+	void removeUserFromDocument(UserRemote value);
+
+	void goBackToLobby();
 	
 }

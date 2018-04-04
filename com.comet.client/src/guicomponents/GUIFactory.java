@@ -11,6 +11,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.JTextComponent;
 
+import controller.ControllerOnline;
 import languages.SymbolTable;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
@@ -54,9 +55,9 @@ public class GUIFactory {
 	
 	}
 	
-	public static ListCellRenderer<? super UserRemote> createCollabRenderer(JList prnt){
+	public static ListCellRenderer<? super UserRemote> createCollabRenderer(JList prnt, ControllerOnline cntrl){
 		
-		return new CollabRenderer(prnt);
+		return new CollabRenderer(prnt, cntrl);
 		
 	}
 	
