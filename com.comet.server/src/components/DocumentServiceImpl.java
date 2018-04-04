@@ -5,11 +5,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.BadLocationException;
 
 import database.dao.BusinessLogic;
 import database.dto.Document;
 import database.dto.DocumentVersion;
+import database.dto.WorksOn;
 import utilities.DocumentRemote;
 import utilities.DocumentRemoteImpl;
 import utilities.UserRemote;
@@ -98,11 +98,18 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	@Override
 	public String openDocument(Client cl, int documentId) throws RemoteException {
 		DocumentRemote target = null;
+		BusinessLogic logic = new BusinessLogic();
 		for(DocumentRemote docRem : documents)
 			if(docRem.getId() == documentId)
 				target = docRem;
+		
 		target.addClientToThisDocument(cl);
 		cl.setWorkingDocument(target);
+		String priv = logic.startWorkingOnDocument(cl.getUserData().getId(), documentId);
+		UserRemote ur = cl.getUserData();
+		ur.setPrivilege(priv);
+		cl.setUserData(ur);
+		
 		List<UserRemote> users = new ArrayList<UserRemote>();
 		for(Client c : target.getCollaborators()) {
 			try {

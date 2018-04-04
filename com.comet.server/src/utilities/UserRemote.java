@@ -1,6 +1,8 @@
 package utilities;
 
 import java.rmi.RemoteException;
+
+
 import java.rmi.Remote;
 
 public interface UserRemote extends Remote {
@@ -23,4 +25,7 @@ public interface UserRemote extends Remote {
 	
 	void setImage(byte[] image) throws RemoteException;
 	
+	void setPrivilege(String privilege) throws RemoteException;
+	
+	String getPrivilege() throws RemoteException;
 }

@@ -129,14 +129,16 @@ public class TestRepository {
 //			System.out.println("Nije owner!");
 //		}
 		
-		ArrayList<VersionRemote> result = new ArrayList<VersionRemote>();
-		ArrayList<DocumentVersion> vers =  dvd.getAllDocumentVersions(3);
-		for(DocumentVersion v : vers) {
-			VersionRemote vr = new VersionRemoteImpl(v);
-			result.add(vr);
-		}
-		for(VersionRemote vr : result) {
-			System.out.println(vr.getDocumentName()+" "+vr.getUserName()+" "+vr.getDateTime());
-		}
+//		ArrayList<VersionRemote> result = new ArrayList<VersionRemote>();
+//		ArrayList<DocumentVersion> vers =  dvd.getAllDocumentVersions(3);
+//		for(DocumentVersion v : vers) {
+//			VersionRemote vr = new VersionRemoteImpl(v);
+//			result.add(vr);
+//		}
+//		for(VersionRemote vr : result) {
+//			System.out.println(vr.getDocumentName()+" "+vr.getUserName()+" "+vr.getDateTime());
+//		}
+		
+		System.out.println(wd.startWorkingOnDocument(1, 14));
 	}
 }

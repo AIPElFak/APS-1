@@ -126,4 +126,40 @@ public class WorksOnDao extends Repository<WorksOn>{
 		}
 		return requests;
 	}
+	
+	//if new on document - creates new worksOn with ReadOnly privilege
+	//if already worked on document - just returns privilege
+	public String startWorkingOnDocument(int userId, int documentId) {
+		Transaction trns = null;
+		String privilege = null;
+		Session s = HibernateUtil.getSessionFactory().openSession();
+		try {
+			trns = s.beginTransaction();
+			String query = "SELECT * FROM WORKS_ON WHERE USER_ID = :userId AND DOCUMENT_ID = :docId";
+			WorksOn w = (WorksOn)s.createNativeQuery(query, WorksOn.class)
+					.setParameter("userId", userId)
+					.setParameter("docId", documentId)
+					.uniqueResult();
+			if(w != null) {
+				privilege = w.getPrivilege();
+			}else {
+				privilege = WorksOn.Privilege.ReadOnly.toString();
+				Document d = s.load(Document.class, documentId);
+				User u = s.load(User.class, userId);
+				WorksOn wo = new WorksOn(d,u,WorksOn.Privilege.ReadOnly);
+				s.save(wo);
+			}
+			s.getTransaction().commit();
+		}
+		catch(RuntimeException e) {
+			if(trns!=null) {
+				s.getTransaction().rollback();
+			}
+			e.printStackTrace();
+		}
+		finally {
+			s.close();
+		}	
+		return privilege;
+	}
 }

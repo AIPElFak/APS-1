@@ -36,6 +36,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,7 @@ import javax.swing.SwingUtilities;
 
 import java.awt.Font;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JTextPane;
 import javax.swing.border.MatteBorder;
 import javax.swing.event.DocumentEvent;
@@ -435,6 +437,15 @@ public class EditorFrameOnline extends JFrame implements View {
 				textArea.append("Me: " + txtEnterTextHere.getText() + "\n\n");
 				controller.sendDocumentMessage(txtEnterTextHere.getText());
 				txtEnterTextHere.setText("Enter message here.");
+				//test - SENTIC
+//				String s = null; 
+//				try {
+//					s = controller.getUserData().getPrivilege();
+//				} catch (RemoteException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//				JOptionPane.showMessageDialog(null, s, "Privilege", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		panel_3.add(btnSend);

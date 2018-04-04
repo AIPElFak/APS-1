@@ -12,7 +12,7 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
-	private String username, password, email;
+	private String username, password, email, privilege;
 	private byte[] imageBytes;
 	
 
@@ -76,6 +76,16 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 	@Override
 	public void setImage(byte[] image) throws RemoteException {
 		this.imageBytes = image;
+	}
+
+	@Override
+	public void setPrivilege(String privilege) throws RemoteException {
+		this.privilege = privilege;
+	}
+
+	@Override
+	public String getPrivilege() throws RemoteException {
+		return this.privilege;
 	}
 
 }

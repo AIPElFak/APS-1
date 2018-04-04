@@ -19,5 +19,6 @@ public interface UserRemote extends Remote {
 	ArrayList<? extends DocumentRemote> getCurrentDocuments() throws RemoteException;
 	
 	ArrayList<? extends DocumentRemote> getAvailableDocuments() throws RemoteException;
-	
+
+	String getPrivilege() throws RemoteException;
 }

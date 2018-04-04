@@ -66,4 +66,8 @@ public class BusinessLogic {
 	public User getUserByEmail(String email) {
 		return userDao.getUserByEmail(email);
 	}
+	
+	public String startWorkingOnDocument(int userId, int documentId) {
+		return worksOnDao.startWorkingOnDocument(userId, documentId);
+	}
 }
