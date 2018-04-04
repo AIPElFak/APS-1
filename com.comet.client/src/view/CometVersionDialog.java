@@ -152,12 +152,12 @@ public class CometVersionDialog extends JDialog {
 		label.setBorder(new MatteBorder(0, 0, 1, 1, new Color(238, 238, 255)));
 		listHeader.add(label);
 		
-		JLabel label_1 = new JLabel("Document type");
-		label_1.setHorizontalAlignment(SwingConstants.CENTER);
-		label_1.setForeground(new Color(238, 238, 255));
-		label_1.setFont(new Font("Courier New", Font.PLAIN, 13));
-		label_1.setBorder(new MatteBorder(0, 0, 1, 0, new Color(238, 238, 255)));
-		listHeader.add(label_1);
+		JLabel lblVersionDate = new JLabel("Version date");
+		lblVersionDate.setHorizontalAlignment(SwingConstants.CENTER);
+		lblVersionDate.setForeground(new Color(238, 238, 255));
+		lblVersionDate.setFont(new Font("Courier New", Font.PLAIN, 13));
+		lblVersionDate.setBorder(new MatteBorder(0, 0, 1, 0, new Color(238, 238, 255)));
+		listHeader.add(lblVersionDate);
 		
 		JLabel lblUser = new JLabel("User");
 		lblUser.setHorizontalAlignment(SwingConstants.CENTER);

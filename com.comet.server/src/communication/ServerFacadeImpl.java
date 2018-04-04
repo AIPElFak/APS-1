@@ -29,18 +29,12 @@ public class ServerFacadeImpl implements ServerFacade {
 		auth.addClient(cl);
 		msgsrv.addClient(cl);
 		docsynch.addClient(cl);
-		logActivity("Client reference: " + cl + " added.");
 	}
 	
 	public void removeClient(Client cl) throws RemoteException {
 		auth.removeClient(cl);
 		msgsrv.removeClient(cl);
 		docsynch.removeClient(cl);
-		logActivity("Client reference: " + cl + " removed.");
-	}
-
-	public void logActivity(String log) throws RemoteException {
-		System.out.println(log);
 	}
 
 	@Override

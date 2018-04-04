@@ -202,6 +202,12 @@ public class CometUserDialog extends JDialog {
 				lblImage.setIcon(new ImageIcon(new ImageIcon(getClass()
 						.getResource("../resources/personImage.jpg"))
 						.getImage().getScaledInstance(187, 187, Image.SCALE_DEFAULT)));
+				try {
+					img = ImageIO.read(getClass().getResource("../resources/personImage.jpg"));
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 		});
