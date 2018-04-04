@@ -296,7 +296,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
@@ -493,10 +493,12 @@ public class EditorFrameOnline extends JFrame implements View {
 	@Override
 	public void updateContent(String content) {
 		Document doc = textPane.getDocument();
+		doc.removeDocumentListener(docListener);
 		try {
-			doc.remove(0, textPane.getText().length());
+			doc.remove(0, doc.getLength());
 			doc.insertString(0, content, null);
 		} catch (BadLocationException e) {}
+		doc.addDocumentListener(docListener);
 	}
 
 	@Override
@@ -535,17 +537,16 @@ public class EditorFrameOnline extends JFrame implements View {
 		if(type.toLowerCase().equals("insert")) {
 			try {
 				document.insertString(location, text, null);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
+			} catch (BadLocationException e) {}
+		} else if(type.toLowerCase().equals("remove")){
 			try {
 				document.remove(location, length);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (BadLocationException e) {}
+		} else  if(type.toLowerCase().equals("pull")){
+			try {
+				document.remove(0, document.getLength());
+				document.insertString(0, text, null);
+			} catch (BadLocationException e) {}
 		}
 		document.addDocumentListener(docListener);
 	}

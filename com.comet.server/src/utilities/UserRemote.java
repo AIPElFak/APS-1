@@ -9,10 +9,18 @@ public interface UserRemote extends Remote {
 
 	String getUsername() throws RemoteException;
 	
+	void setUsername(String username) throws RemoteException;
+	
 	String getPassword() throws RemoteException;
+	
+	void setPassword(String password) throws RemoteException; 
 	
 	String getEmail() throws RemoteException;
 	
+	void setEmail(String email) throws RemoteException;
+	
 	byte[] getImageBytes() throws RemoteException;
+	
+	void setImage(byte[] image) throws RemoteException;
 	
 }

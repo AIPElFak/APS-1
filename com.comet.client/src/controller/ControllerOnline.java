@@ -55,7 +55,7 @@ public interface ControllerOnline extends Controller {
 	
 	UserRemote getUserData();
 
-	boolean editUserInformations(String username, String email, String password); 	//treba i slika
+	boolean editUserInformations(String username, String email, String password, byte[] image); 	//treba i slika
 
 	void recvDocUpdate(String type, String text, int length, int location);
 	

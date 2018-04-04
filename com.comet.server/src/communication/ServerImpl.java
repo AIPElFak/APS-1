@@ -121,8 +121,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public boolean editUserInformations(Client client, String username, String email, String password) throws RemoteException {
-		return facade.getAuthenticationService().editUserInformations(client, username, email, password);
+	public boolean editUserInformations(Client client, String username, String email, String password, byte[] image) throws RemoteException {
+		return facade.getAuthenticationService().editUserInformations(client, username, email, password, image);
 	}
 
 	@Override
@@ -139,5 +139,5 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	public String openDocumentVersion(int versionId) throws RemoteException {
 		return facade.getDocumentService().openDocumentVersion(versionId);
 	}
-
+	
 }

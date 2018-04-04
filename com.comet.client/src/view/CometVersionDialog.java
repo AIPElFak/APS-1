@@ -79,6 +79,7 @@ public class CometVersionDialog extends JDialog {
 		contentPanel.add(separator_1);
 		
 		list = new JList<VersionRemote>();
+		list.setCellRenderer(GUIFactory.createVersionRenderer());
 		list.setBackground(new Color(175, 238, 238));
 		list.setBounds(10, 122, 414, 219);
 		JScrollPane listScrollBars = new JScrollPane(
@@ -114,8 +115,8 @@ public class CometVersionDialog extends JDialog {
 							Thread.sleep(1500);
 							cs.stopAnimation();
 							String content = vers.getContent();
-							//String content = controller.openDocumentVersion(vers.getId());
 							controller.updateDocumentContent(content);
+							controller.sendDocUpdate("pull", content, content.length(), 0);
 							self.dispose();
 						} 
 						catch (InterruptedException e) 

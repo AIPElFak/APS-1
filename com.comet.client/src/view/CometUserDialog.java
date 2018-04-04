@@ -33,6 +33,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -44,6 +45,7 @@ public class CometUserDialog extends JDialog {
 	private JTextField txtPassword;
 	private JTextField txtEmail;
 	private JLabel lblImage;
+	private BufferedImage img;
 	
 	private ControllerOnline controller;
 	private JFrame parentFrame;
@@ -175,7 +177,7 @@ public class CometUserDialog extends JDialog {
 				int retVal = fc.showOpenDialog(fc);
 				if(retVal == JFileChooser.APPROVE_OPTION) {
 					String filePath = fc.getSelectedFile().getAbsolutePath();
-					BufferedImage img = null;
+					img = null;
 					try {
 						img = ImageIO.read(new File(filePath));
 					}catch(Exception ex) {
@@ -229,9 +231,17 @@ public class CometUserDialog extends JDialog {
 						String username = txtUsername.getText();
 						String password = txtPassword.getText();
 						String email 	= txtEmail.getText();
+						ByteArrayOutputStream baos = new ByteArrayOutputStream();
+						try {
+							ImageIO.write(img, "jpg", baos);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						byte[] image = baos.toByteArray();
 						cs.stopAnimation();
 						CometDialog cd;
-						if(controller.editUserInformations(username, email, password)) {
+						if(controller.editUserInformations(username, email, password, image)) {
 							cd = new CometDialog("info", "Changes saved.");
 							cd.setVisible(true);
 							

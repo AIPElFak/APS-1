@@ -14,6 +14,7 @@ import javax.swing.text.JTextComponent;
 import languages.SymbolTable;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
+import utilities.VersionRemote;
 
 public class GUIFactory {
 
@@ -56,6 +57,12 @@ public class GUIFactory {
 	public static ListCellRenderer<? super UserRemote> createCollabRenderer(JList prnt){
 		
 		return new CollabRenderer(prnt);
+		
+	}
+	
+	public static ListCellRenderer<? super VersionRemote> createVersionRenderer(){
+		
+		return new VersionListRenderer();
 		
 	}
 	

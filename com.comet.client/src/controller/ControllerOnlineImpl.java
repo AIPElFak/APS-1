@@ -224,8 +224,14 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public boolean editUserInformations(String username, String email, String password) {
-		return server.editUserInformations(client, username, email, password);
+	public boolean editUserInformations(String username, String email, String password, byte[] image) {
+		try {
+			return server.editUserInformations(client, username, email, password, image);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 	@Override

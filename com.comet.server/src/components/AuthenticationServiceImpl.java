@@ -127,12 +127,23 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 	}
 
 	@Override
-	public boolean editUserInformations(Client client, String username, String email, String password)
+	public boolean editUserInformations(Client client, String username, String email, String password, byte[] image)
 			throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		User user = new User(client.getUserData().getId(),username, password, email);
 		if(!logic.updateUser(user))return false;
 		UserRemote newUserData = new UserRemoteImpl(user);
+		newUserData.setImage(image);
+		
+		BufferedImage img;
+		try {
+			img = ImageIO.read(new ByteArrayInputStream(image));
+			File outputFile = new File("src/userImages/"+user.getId()+".jpg");	//user ID umesto toga
+			ImageIO.write(img, "jpg", outputFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		client.setUserData(newUserData);
 		return true;
 	}

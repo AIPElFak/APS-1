@@ -40,15 +40,16 @@ public interface Server extends Remote {
 	boolean createDocument(Client cl, String name, String type, String password) throws RemoteException;
 	
 	String openDocument(Client cl, int documentId) throws RemoteException;
-
-	boolean editUserInformations(Client client, String username, String email, String password);
 	
-	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
-
-	ArrayList<VersionRemote> getAllDocumentVersions(int documentId) throws RemoteException;
-
-	boolean deleteDocument(Client client, int id) throws RemoteException;
+	boolean editUserInformations(Client client, String username, String email, String password, byte[] image) throws RemoteException;
 	
+	boolean deleteDocument(Client cl, int documentId) throws RemoteException;
+	
+	boolean addDocumentVersion(Client cl, int documentId, String content) throws RemoteException;
+	
+	ArrayList<VersionRemote> getAllDocumentVersions(int documentId) throws RemoteException;	
+
 	String openDocumentVersion(int versionId) throws RemoteException;
 	
+	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
 }

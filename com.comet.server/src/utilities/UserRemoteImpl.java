@@ -58,4 +58,24 @@ public class UserRemoteImpl extends UnicastRemoteObject implements UserRemote {
 		return this.imageBytes;
 	}
 
+	@Override
+	public void setUsername(String username) throws RemoteException {
+		this.username = username;
+	}
+
+	@Override
+	public void setPassword(String password) throws RemoteException {
+		this.password = password;
+	}
+
+	@Override
+	public void setEmail(String email) throws RemoteException {
+		this.email = email;
+	}
+
+	@Override
+	public void setImage(byte[] image) throws RemoteException {
+		this.imageBytes = image;
+	}
+
 }
