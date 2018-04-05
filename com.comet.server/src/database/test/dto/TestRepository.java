@@ -143,5 +143,8 @@ public class TestRepository {
 		
 		
 //		wd.changePrivilege(1, 14, WorksOn.Privilege.ReadWrite.toString());
+		
+		Document d = dd.getById(26);
+		System.out.println(d.getPassword());
 	}
 }

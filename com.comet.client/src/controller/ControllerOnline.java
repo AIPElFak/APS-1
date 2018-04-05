@@ -45,7 +45,7 @@ public interface ControllerOnline extends Controller {
 	
 	boolean deleteDocument(DocumentRemote doc);
 	
-	boolean openDocument(DocumentRemote doc);
+	boolean openDocument(DocumentRemote doc, String password);
 	
 	void setClient(Client cl);
 	

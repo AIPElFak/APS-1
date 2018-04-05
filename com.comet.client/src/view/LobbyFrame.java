@@ -27,6 +27,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import java.awt.Image;
 import java.awt.Insets;
 
@@ -239,9 +240,20 @@ public class LobbyFrame extends JFrame implements View {
 		btnOpenDocument.addMouseListener(docBtnColorChanger);
 		btnOpenDocument.setBorder(new LineBorder(new Color(21, 126, 251)));
 		btnOpenDocument.addActionListener(new ActionListener() {
+			private String documentPassword = null;
+			
 			public void actionPerformed(ActionEvent arg0) {
 				DocumentRemote doc = list.getSelectedValue();
 				if(doc == null) return;
+				
+				try {
+					if(doc.isPasswordProtected()) {
+						documentPassword = JOptionPane.showInputDialog("Enter password:");
+						if(documentPassword == null) return;
+					}
+				} catch (HeadlessException | RemoteException e1) {
+					e1.printStackTrace();
+				}
 				CometSplashScreen cs = new CometSplashScreen("Opening document...");
 				cs.setVisible(true);
 				new Thread(cs).start();
@@ -259,14 +271,19 @@ public class LobbyFrame extends JFrame implements View {
 							EditorFrameOnline editor = new EditorFrameOnline(controller);
 							controller.setView(editor);
 							controller.setModel(new ModelImpl());
-							if(!controller.openDocument(doc)) {
+							CometDialog cd;
+							if(!controller.openDocument(doc,documentPassword)) {
 								cs.stopAnimation();
-								return;
+								cd = new CometDialog("warning", "Password incorect!");
+								cd.setVisible(true);
+								//return;
 							}
-							editor.setVisible(true);
-							documentOpened = true;
-							self.dispose();
-							cs.stopAnimation();
+							else {
+								editor.setVisible(true);
+								documentOpened = true;
+								self.dispose();
+								cs.stopAnimation();
+							}
 						} catch (InterruptedException e) {}
 					}
 				}).start();

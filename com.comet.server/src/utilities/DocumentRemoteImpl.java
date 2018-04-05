@@ -25,12 +25,17 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		collaborators = new ArrayList<Client>();
 	}
 
-	public DocumentRemoteImpl(int id,String name,String type,String privilege,boolean passwordProtected)  throws RemoteException{
+	public DocumentRemoteImpl(int id,String name,String type,String privilege,boolean passwordProtected,String password)  throws RemoteException{
 		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.passwordProtected = passwordProtected;
 		this.privilege = privilege;
+		if(!this.passwordProtected)
+			this.password = "";
+		else {
+			this.password = password;
+		}
 		collaborators = new ArrayList<Client>();
 		
 		logic = new BusinessLogic();
@@ -43,6 +48,11 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 		this.name = doc.getFilename();
 		this.type = doc.getProgramLaunguage();
 		this.passwordProtected = doc.isPassword_protected();
+		if(!this.passwordProtected)
+			this.password = "";
+		else {
+			this.password = doc.getPassword();
+		}
 		this.privilege = "";
 		collaborators = new ArrayList<Client>();
 		

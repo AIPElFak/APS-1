@@ -106,8 +106,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	}
 
 	@Override
-	public String openDocument(Client cl, int documentId) throws RemoteException {
-		return facade.getDocumentService().openDocument(cl, documentId);
+	public String openDocument(Client cl, int documentId, String passwordEntered) throws RemoteException {
+		return facade.getDocumentService().openDocument(cl, documentId, passwordEntered);
 	}
 
 	@Override

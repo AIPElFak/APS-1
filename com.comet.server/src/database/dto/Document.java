@@ -57,6 +57,7 @@ public class Document {
 		this.programLaunguage = programLanguage;
 		this.filename = filename;
 		this.password_protected = passwordProtected;
+		this.password = password;
 	}
 
 //getters and setters

@@ -119,7 +119,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	}
 
 	@Override
-	public String openDocument(Client cl, int documentId) throws RemoteException {
+	public String openDocument(Client cl, int documentId, String passwordEntered) throws RemoteException {
 		DocumentRemote target = null;
 		BusinessLogic logic = new BusinessLogic();
 		for(DocumentRemote docRem : documents){
@@ -130,6 +130,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				documents.remove(docRem);
 			}
 		}
+		if(!target.getPassword().equals("")
+				&& !target.getPassword().equals(passwordEntered))
+			return null;
 		
 		target.addClientToThisDocument(cl);
 		cl.setWorkingDocument(target);

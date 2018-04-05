@@ -114,9 +114,11 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	}
 
 	@Override
-	public boolean openDocument(DocumentRemote doc) {
+	public boolean openDocument(DocumentRemote doc, String password) {
 		try {
-			String text = server.openDocument(client, doc.getId());
+			String text = server.openDocument(client, doc.getId(), password);
+			if(text == null)
+				return false;
 			getView().setDocumentName(doc.getName());
 			getView().updateContent(text);
 			getModel().setContent(text);
