@@ -294,4 +294,29 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		return false;
 	}
 
+	@Override
+	public void setPrivilegies(UserRemote value, String string) {
+		try {
+			server.setPrivilegies(client, value, string);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void removeFromDocument(UserRemote value) {
+		try {
+			server.removeFromDocument(client, value, client.getDocumentData().getId());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void close() {
+		getView().disposeView();
+	}
+
 }

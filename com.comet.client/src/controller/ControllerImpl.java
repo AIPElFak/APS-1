@@ -3,7 +3,7 @@ package controller;
 import model.Model;
 import view.View;
 
-public class ControllerImpl implements Controller {
+public abstract class ControllerImpl implements Controller {
 
 	private Model model;
 	private View view;

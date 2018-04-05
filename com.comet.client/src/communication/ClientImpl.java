@@ -77,4 +77,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 		controller.displayAllAvailableDocuments();
 	}
 
+	@Override
+	public void removeFromDocument() throws RemoteException {
+		controller.close();
+	}
+
 }

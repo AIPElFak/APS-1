@@ -5,6 +5,7 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 import utilities.DocumentRemote;
+import utilities.UserRemote;
 import utilities.VersionRemote;
 
 public interface Server extends Remote {
@@ -52,4 +53,8 @@ public interface Server extends Remote {
 	String openDocumentVersion(int versionId) throws RemoteException;
 	
 	void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException;
+
+	void setPrivilegies(Client client, UserRemote value, String string) throws RemoteException;
+
+	void removeFromDocument(Client client, UserRemote value, int id) throws RemoteException;
 }

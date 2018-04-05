@@ -15,7 +15,10 @@ import javax.swing.text.Document;
 import controller.ClipboardManager;
 import controller.CommandUndoRedo;
 import controller.CommandUndoRedoDistributed;
+import controller.Container;
 import controller.ControllerOnline;
+import controller.FindResults;
+import controller.Iterator;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.LanguageManager;
@@ -74,6 +77,8 @@ public class EditorFrameOnline extends JFrame implements View {
 	private DefaultListModel<UserRemote> listModel;
 	private JLabel lblDocumentName;
 	private JTextArea textArea;
+	
+	private Container searchResults;
 	
 	private OnlineDocumentListener docListener;
 
@@ -394,7 +399,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		//textScroll.setRowHeaderView(tln);
+		textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
@@ -445,7 +450,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		panel_3.add(separator);
 		
 		collaboartorsList = new JList<UserRemote>();
-		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer(collaboartorsList));
+		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer(collaboartorsList, controller));
 		collaboartorsList.setBounds(0, 13, 143, 182);
 		collaboartorsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JScrollPane collaboratorsHolder = new JScrollPane(
@@ -650,11 +655,34 @@ public class EditorFrameOnline extends JFrame implements View {
 	@Override
 	public void find(String text) {
 		
+		String txt = textPane.getText();
+		Iterator iterator = null;
+		if(searchResults == null) {
+			searchResults = new FindResults(txt, text);
+		}
+		iterator = searchResults.getIterator();
+		int index = iterator.next();
+		if(index == -1) return;
+		textPane.select(index, index + text.length());
+		
 	}
 
 	@Override
 	public void replace(String text, String replace) {
-		
+		if(text.equals("")) return;
+		int index = textPane.getSelectionStart();
+		if(index < 0) return;
+		UndoRedoManager.getInstance()
+			.addUndoCommand(new CommandUndoRedoDistributed(controller, textPane.getText()));
+		Document doc = textPane.getDocument();
+		try {
+			doc.remove(index, text.length());
+			doc.insertString(index, replace, null);
+			textPane.select(index, index + replace.length());
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -670,8 +698,13 @@ public class EditorFrameOnline extends JFrame implements View {
 	@Override
 	public void updateCollaborators(List<UserRemote> collabs) {
 		listModel = new DefaultListModel<UserRemote>();
+		UserRemote ur = controller.getUserData();
 		for(UserRemote user : collabs) {
 			listModel.addElement(user);
+			try {
+				if(user.getId() == ur.getId() && user.getPrivilege().equals("X"))
+					this.dispose();
+			} catch (RemoteException e) {}
 		}
 		collaboartorsList.setModel(listModel);
 	}

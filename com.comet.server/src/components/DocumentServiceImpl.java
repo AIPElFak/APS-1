@@ -130,6 +130,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				documents.remove(docRem);
 			}
 		}
+		
+		if(target == null) return "";
+		
 		if(!target.getPassword().equals("")
 				&& !target.getPassword().equals(passwordEntered))
 			return null;
@@ -138,6 +141,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		cl.setWorkingDocument(target);
 		String priv = logic.startWorkingOnDocument(cl.getUserData().getId(), documentId);
 		UserRemote ur = cl.getUserData();
+		if(priv.equals("X")) priv = "ReadOnly";
 		ur.setPrivilege(priv);
 		cl.setUserData(ur);
 		
@@ -242,8 +246,58 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 
 	@Override
 	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
+		
 		BusinessLogic logic = new BusinessLogic();
-		logic.changePrivilege(userId,documentId,privilege);
+		if(!privilege.equals("X"))
+			logic.changePrivilege(userId, documentId, privilege);
+		
+		DocumentRemote target = null;
+		
+		for(DocumentRemote d : documents) {
+			try {
+				if(d.getId() == documentId) {
+					target = d;
+				}
+			}catch(RemoteException e) {
+				documents.remove(d);
+			}
+		}
+		
+		if(target == null) return;
+		
+		List<UserRemote> users = new ArrayList<UserRemote>();
+		for(Client c : target.getCollaborators()) {
+			try {
+				if(c.getUserData().getId() == cl.getUserData().getId() && privilege.equals("Owner")) {
+					c.getUserData().setPrivilege("ReadWrite");
+				}
+				if(c.getUserData().getId() == userId && privilege.equals("X") && 
+						cl.getUserData().getPrivilege().equals("Owner")) {
+					target.removeCollaborator(c);
+				}
+				else if(c.getUserData().getId() == userId) {
+					c.getUserData().setPrivilege(privilege);
+				}
+				users.add(c.getUserData());
+			}
+			catch(RemoteException e) {
+				target.getCollaborators().remove(c);
+			}
+		}
+		
+		for(Client c : target.getCollaborators()) {
+			try {
+				c.updateCollaboratorsList(users);
+			}
+			catch(RemoteException e) {
+				target.getCollaborators().remove(c);
+			}
+		}
+	}
+
+	@Override
+	public void removeFromDocument(Client client, UserRemote value, int id) throws RemoteException {
+		
 	}
 
 }

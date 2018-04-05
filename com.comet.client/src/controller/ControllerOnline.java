@@ -69,6 +69,12 @@ public interface ControllerOnline extends Controller {
 
 	void removeClient();
 
-	boolean saveDocumentVersion(String content);	
+	boolean saveDocumentVersion(String content);
+
+	void setPrivilegies(UserRemote value, String string);
+
+	void removeFromDocument(UserRemote value);
+
+	void close();	
 	
 }

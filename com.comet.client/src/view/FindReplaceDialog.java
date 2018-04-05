@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 import controller.Controller;
+import controller.FindResults;
 import guicomponents.GUIFactory;
 
 import javax.swing.JTextField;
@@ -33,7 +34,6 @@ public class FindReplaceDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField txtEnterTextHere;
 	private JTextField textField;
-
 	
 	public FindReplaceDialog(JFrame parent, Controller controller) {
 		
