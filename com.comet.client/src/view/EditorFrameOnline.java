@@ -20,6 +20,7 @@ import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.LanguageManager;
 import languages.SymbolTable;
+import model.ModelImpl;
 import utilities.DocumentRemote;
 import utilities.UserRemote;
 
@@ -301,6 +302,35 @@ public class EditorFrameOnline extends JFrame implements View {
 		SaveVersion.setToolTipText("Save version of a document in a cloud");
 		SaveVersion.setBorderPainted(false);
 		SaveVersion.addMouseListener(toolBarColorChanger);
+		SaveVersion.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				CometSplashScreen cs = new CometSplashScreen("Saving document version...");
+				cs.setVisible(true);
+				new Thread(cs).start();
+				new Thread(new Runnable() {
+					public void run() {
+						try {
+							Thread.sleep(1500);
+							String content = textPane.getText();
+							CometDialog cd;
+							if(controller.saveDocumentVersion(content)) {
+								cs.stopAnimation();
+								cd = new CometDialog("info", "Version saved.");
+								cd.setVisible(true);
+								try {
+									Thread.sleep(700);
+								} catch (InterruptedException e) {}
+								cd.dispose();
+							}else {
+								cs.stopAnimation();
+								cd = new CometDialog("warning", "You are not allowed to save versions!");
+								cd.setVisible(true);
+							}
+						} catch (InterruptedException e) {}
+					}
+				}).start();
+			}
+		});
 		toolbar.add(SaveVersion);
 		
 		JButton PullVersion = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);

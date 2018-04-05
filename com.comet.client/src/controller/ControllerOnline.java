@@ -67,6 +67,8 @@ public interface ControllerOnline extends Controller {
 
 	boolean resetPassword(String email);
 
-	void removeClient();	
+	void removeClient();
+
+	boolean saveDocumentVersion(String content);	
 	
 }

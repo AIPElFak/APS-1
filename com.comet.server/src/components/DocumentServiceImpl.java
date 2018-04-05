@@ -109,12 +109,12 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		DocumentRemote docRemote = new DocumentRemoteImpl(doc);
 		documents.add(docRemote);
 		System.out.println(doc.getId());
-		for(Client c : clients)
+		/*for(Client c : clients)
 			try {
 				c.recvAllDocuments();
 			}catch(RemoteException e) {
 				clients.remove(c);
-			}
+			}*/
 		return true;
 	}
 

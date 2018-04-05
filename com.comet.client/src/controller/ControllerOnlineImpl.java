@@ -280,4 +280,16 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		}
 	}
 
+	@Override
+	public boolean saveDocumentVersion(String content) {
+		try {
+			if(client.getUserData().getPrivilege().equals("ReadOnly"))
+				return false;
+			return server.addDocumentVersion(client, client.getDocumentData().getId(), content);
+		}catch(RemoteException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
 }
