@@ -92,7 +92,7 @@ public class EditorFrameOnline extends JFrame implements View {
 			new Color(60, 60, 60)
 		);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1024, 700);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -531,7 +531,13 @@ public class EditorFrameOnline extends JFrame implements View {
 
 			@Override
 			public void windowClosed(WindowEvent arg0) {
-				controller.removeClient();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						LobbyFrame lf = new LobbyFrame(controller);
+						controller.setView(lf);
+						lf.setVisible(true);
+					}
+				});
 			}
 
 			@Override
