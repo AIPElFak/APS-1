@@ -362,7 +362,6 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setFont(new Font("Courier New", Font.PLAIN, 16));
 		textPane.setSelectionColor(Color.WHITE);
 		textPane.setSelectedTextColor(Color.BLACK);
-		textPane.setEditable(false);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
 		//textScroll.setRowHeaderView(tln);
@@ -373,6 +372,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		contentPane.add(editorHolder, BorderLayout.CENTER);
 		
 		docListener = new OnlineDocumentListener();
+		textPane.getDocument().addDocumentListener(docListener);
 		
 		JPanel documentTitleHolder = new JPanel();
 		documentTitleHolder.setBorder(new MatteBorder(0, 0, 2, 0, (Color) new Color(35, 35, 35)));
@@ -415,7 +415,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		panel_3.add(separator);
 		
 		collaboartorsList = new JList<UserRemote>();
-		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer(collaboartorsList, controller));
+		collaboartorsList.setCellRenderer(GUIFactory.createCollabRenderer(collaboartorsList));
 		collaboartorsList.setBounds(0, 13, 143, 182);
 		collaboartorsList.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JScrollPane collaboratorsHolder = new JScrollPane(
@@ -583,18 +583,7 @@ public class EditorFrameOnline extends JFrame implements View {
 
 	@Override
 	public void disposeView() {
-		JFrame self = this;
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				self.dispose();
-				LobbyFrame lf = new LobbyFrame(controller);
-				controller.setView(lf);
-				lf.setVisible(true);
-			}
-			
-		}).start();
+		this.dispose();
 	}
 
 	@Override
@@ -650,17 +639,6 @@ public class EditorFrameOnline extends JFrame implements View {
 
 	@Override
 	public void updateCollaborators(List<UserRemote> collabs) {
-		UserRemote u = controller.getUserData();
-		try {
-			if(!u.getPrivilege().equals("ReadOnly")) {
-				textPane.setEditable(true);
-				textPane.getDocument().addDocumentListener(docListener);
-			}
-			else {
-				textPane.setEditable(false);
-				textPane.getDocument().removeDocumentListener(docListener);
-			}
-		} catch (RemoteException e) {}
 		listModel = new DefaultListModel<UserRemote>();
 		for(UserRemote user : collabs) {
 			listModel.addElement(user);

@@ -77,9 +77,4 @@ public class ClientImpl extends UnicastRemoteObject implements Client {
 		controller.displayAllAvailableDocuments();
 	}
 
-	@Override
-	public void goBackToLobby() throws RemoteException {
-		controller.goBackToLobby();
-	}
-
 }

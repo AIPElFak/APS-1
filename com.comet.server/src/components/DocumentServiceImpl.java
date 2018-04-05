@@ -65,13 +65,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				if(d.getId() == docId)
 					cl.setWorkingDocument(d);
 					d.addClientToThisDocument(cl);
-<<<<<<< HEAD
-			}catch(RemoteException e) {}
-=======
 			}catch(RemoteException e) {
 				documents.remove(d);
 			}
->>>>>>> Privilegies
 		}
 	}
 	
@@ -83,13 +79,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		for(Document d : docs) {
 			try {
 				docsRemote.add(new DocumentRemoteImpl(d));
-<<<<<<< HEAD
-			}catch(RemoteException e) {}
-=======
 			}catch(RemoteException e) {
 				docs.remove(d);
 			}
->>>>>>> Privilegies
 		}
 		return docsRemote;
 	}
@@ -102,13 +94,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				if(doc.getName().toLowerCase().contains(criteria.toLowerCase())
 						|| doc.getType().toLowerCase().contains(criteria.toLowerCase()))
 						resaults.add(doc);
-<<<<<<< HEAD
-			}catch(RemoteException e) {}
-=======
 			}catch(RemoteException e) {
 				documents.remove(doc);
 			}
->>>>>>> Privilegies
 		return resaults;
 	}
 
@@ -124,13 +112,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 		for(Client c : clients)
 			try {
 				c.recvAllDocuments();
-<<<<<<< HEAD
-			}catch(RemoteException e) {}
-=======
 			}catch(RemoteException e) {
 				clients.remove(c);
 			}
->>>>>>> Privilegies
 		return true;
 	}
 
@@ -138,15 +122,6 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public String openDocument(Client cl, int documentId) throws RemoteException {
 		DocumentRemote target = null;
 		BusinessLogic logic = new BusinessLogic();
-<<<<<<< HEAD
-		for(DocumentRemote docRem : documents)
-			try {
-				if(docRem.getId() == documentId){
-					target = docRem;
-					break;
-				}
-			}catch(RemoteException e) {}
-=======
 		for(DocumentRemote docRem : documents){
 			try {
 				if(docRem.getId() == documentId)
@@ -155,12 +130,13 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				documents.remove(docRem);
 			}
 		}
->>>>>>> Privilegies
 		
 		target.addClientToThisDocument(cl);
 		cl.setWorkingDocument(target);
 		String priv = logic.startWorkingOnDocument(cl.getUserData().getId(), documentId);
-		cl.getUserData().setPrivilege(priv);
+		UserRemote ur = cl.getUserData();
+		ur.setPrivilege(priv);
+		cl.setUserData(ur);
 		
 		List<UserRemote> users = new ArrayList<UserRemote>();
 		for(Client c : target.getCollaborators()) {
@@ -217,23 +193,6 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public void sendDocUpdate(Client cl, String type, String text, int length, int location) throws RemoteException {
 		DocumentRemote docRemote = null;
 		for(DocumentRemote d : documents)
-<<<<<<< HEAD
-			if(d.getId() == cl.getDocumentData().getId()) {
-				docRemote = d;
-				i++;
-				break;
-			}
-		/*StringBuffer sb = null;
-		sb = new StringBuffer(docRemote.getCurrentContent());
-		if(type.toLowerCase().equals("insert")) 
-			sb.insert(location, text);
-		else if(type.toLowerCase().equals("remove"))
-			sb.delete(location, location+length);
-		else  if(type.toLowerCase().equals("pull"))
-			sb = new StringBuffer(text);
-			
-		documents.get(i).setCurrentContent(sb.toString());*/
-=======
 			try {
 				if(d.getId() == cl.getDocumentData().getId()) {
 					docRemote = d;
@@ -242,7 +201,6 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 			}catch(RemoteException e) {
 				documents.remove(d);
 			}
->>>>>>> Privilegies
 		
 		for(Client c : docRemote.getCollaborators()) {
 			try {
@@ -265,13 +223,9 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 			VersionRemote vr = null;
 			try {
 				vr = new VersionRemoteImpl(v);
-<<<<<<< HEAD
-			} catch (RemoteException e) {}
-=======
 			} catch (RemoteException e) {
 				vers.remove(vr);
 			}
->>>>>>> Privilegies
 			result.add(vr);
 		}
 		return result;
@@ -287,73 +241,6 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
 		BusinessLogic logic = new BusinessLogic();
 		logic.changePrivilege(userId,documentId,privilege);
-		DocumentRemote target = null;
-		for(DocumentRemote d : documents) {
-			try {
-				if(d.getId() == documentId) {
-					target = d;
-					break;
-				}
-			}catch(RemoteException e) {}
-		}
-		List<UserRemote> users = new ArrayList<UserRemote>();
-		for(Client c : target.getCollaborators()) {
-			try {
-				if(c.getUserData().getId() == userId) {
-					if(!privilege.equals("Owner"))
-						c.getUserData().setPrivilege(privilege);
-					else {
-						c.getUserData().setPrivilege(privilege);
-						cl.getUserData().setPrivilege("ReadWrite");
-					}
-					break;
-				}
-				users.add(c.getUserData());
-			}
-			catch(RemoteException e) {}
-		}
-		for(Client c : target.getCollaborators()) {
-			try {
-				c.updateCollaboratorsList(users);
-			}
-			catch(RemoteException e) {}
-		}
-	}
-
-	@Override
-	public void removeUserFromDocument(UserRemote value, Client client, int id) throws RemoteException {
-		DocumentRemote target = null;
-		for(DocumentRemote d : documents) {
-			try {
-				if(id == d.getId()) target = d;
-				break;
-			}catch(RemoteException e) {}
-		}
-		Client removed = null;
-		for(Client c : target.getCollaborators()) {
-			try {
-				if(c.getUserData().getId() == value.getId()) {
-					removed = c;
-					target.removeCollaborator(c);
-					break;
-				}
-			}catch(RemoteException e) {}
-		}
-		List<UserRemote> users = new ArrayList<UserRemote>();
-		for(Client c : target.getCollaborators()) {
-			try {
-				users.add(c.getUserData());
-			}
-			catch(RemoteException e) {}
-		}
-		for(Client c : target.getCollaborators()) {
-			try {
-				c.updateCollaboratorsList(users);
-			}
-			catch(RemoteException e) {}
-		}
-		removed.setWorkingDocument(null);
-		removed.goBackToLobby();
 	}
 
 }

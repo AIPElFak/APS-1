@@ -25,8 +25,7 @@ public interface UserRemote extends Remote {
 	
 	void setImage(byte[] image) throws RemoteException;
 	
-	void setPrivilege(String priv) throws RemoteException;
+	void setPrivilege(String privilege) throws RemoteException;
 	
 	String getPrivilege() throws RemoteException;
-
 }

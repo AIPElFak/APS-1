@@ -120,15 +120,8 @@ public class DocumentRemoteImpl extends UnicastRemoteObject implements DocumentR
 	public void removeCollaborator(Client cl) throws RemoteException {
 		for(Client c : collaborators) {
 			try {
-<<<<<<< HEAD
-				if(c.getUserData().getId() == cl.getUserData().getId()) {
-					collaborators.remove(c);
-					break;
-				}
-=======
 				if(c.getUserData().getId() == cl.getUserData().getId())
 					collaborators.remove(c);
->>>>>>> Privilegies
 			}catch(RemoteException e) {}
 		}
 	}

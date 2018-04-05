@@ -26,6 +26,5 @@ public interface DocumentRemote extends Remote {
 	List<Client> getCollaborators() throws RemoteException;
 	
 	String getCurrentContent() throws RemoteException;
-	
 	void setCurrentContent(String content) throws RemoteException;
 }

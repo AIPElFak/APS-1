@@ -41,7 +41,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean signIn(String username, String password, String email, byte[] imageBytes) {
 		try {
 			return server.signin(client, username, password, email, imageBytes);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -56,7 +59,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public void sendDocumentMessage(String Message) {
 		try {
 			server.documentBroadcast(client, Message);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -71,7 +77,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public void recvDocumentMessage(Client cl, String Message) {
 		try {
 			getView().appendDocumentMessage(cl.getUserData().getUsername(), Message);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -81,6 +90,7 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 
 	@Override
 	public boolean logOut(Client cl) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -88,7 +98,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean createDocument(String name, String type, String password) {
 		try {
 			return server.createDocument(client, name, type, password);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -108,7 +121,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			getView().updateContent(text);
 			getModel().setContent(text);
 			return true;
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -146,7 +162,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public void addClientToDocument(int docId) {
 		try {
 			server.addClientToDocument(client, docId);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -154,7 +173,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		try {
 			ArrayList<DocumentRemote> docLst = server.getAllAvailableDocuments();
 			getView().showAvailableDocument(docLst);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -162,19 +184,26 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 		try {
 			ArrayList<DocumentRemote> docs = server.searchDocuments(criteria);
 			getView().showAvailableDocument(docs);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public UserRemote getUserData() {
 		try {
 			return client.getUserData();
-		} catch (RemoteException e) {};
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 		return null;
 	}
 
 	@Override
 	public boolean modifyUserData(Client cl) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -182,7 +211,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean deleteAccount() {
 		try {
 			return server.deleteAccount(client);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -195,7 +227,10 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean editUserInformations(String username, String email, String password, byte[] image) {
 		try {
 			return server.editUserInformations(client, username, email, password, image);
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return false;
 	}
 
@@ -207,7 +242,6 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public void sendDocUpdate(String type, String text, int length, int location) {
 		try {
-			if(client.getUserData().getPrivilege().equals("ReadOnly")) return;
 			server.sendDocUpdate(client, type, text, length, location);
 		} catch (RemoteException e) {}
 	}
@@ -244,25 +278,6 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public void setPrivilegies(UserRemote value, String string) {
-		try {
-			server.setPrivileges(client, value.getId(), client.getDocumentData().getId(), string);
-		} catch (RemoteException e) {}
-	}
-
-	@Override
-	public void removeUserFromDocument(UserRemote value) {
-		try {
-			server.removeUserFromDocument(value, client, client.getDocumentData().getId());
-		} catch (RemoteException e) {}
-	}
-
-	@Override
-	public void goBackToLobby() {
-		getView().disposeView();
 	}
 
 }

@@ -13,7 +13,6 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import utilities.DocumentRemote;
-import utilities.UserRemote;
 import utilities.VersionRemote;
 import communication.Client;
 import communication.Server;
@@ -144,11 +143,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 	@Override
 	public void setPrivileges(Client cl, int userId, int documentId, String privilege) throws RemoteException {
 		facade.getDocumentService().setPrivileges(cl,userId,documentId,privilege);
-	}
-
-	@Override
-	public void removeUserFromDocument(UserRemote value, Client client, int id) throws RemoteException {
-		facade.getDocumentService().removeUserFromDocument(value, client, id);
 	}
 	
 }

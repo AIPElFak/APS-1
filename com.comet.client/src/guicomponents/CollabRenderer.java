@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 import javax.swing.border.LineBorder;
 
-import controller.ControllerOnline;
 import utilities.UserRemote;
 
 class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
@@ -29,9 +28,8 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 	private JLabel image, username;
 	private JButton btnRead, btnWrite, btnOwner, btnRemove; 
 	private JList parent;
-	private ControllerOnline controller;
 	
-	public CollabRenderer(JList prnt, ControllerOnline cntrl) {
+	public CollabRenderer(JList prnt) {
 		
 		setBackground(new Color(60, 60, 60));
 		setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(190, 190, 190)));
@@ -69,7 +67,6 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 		privilegies.add(btnRemove);
 		
 		parent = prnt;
-		controller = cntrl;
 		
 	}
 	
@@ -91,33 +88,20 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 				
 			}
 			
-			if(value.getPrivilege().toLowerCase().equals("readonly")) {
-				btnRead.setForeground(new Color(255, 230, 0));
-				btnWrite.setForeground(new Color(238, 238, 255));
-				btnOwner.setForeground(new Color(238, 238, 255));
-			}
-			else if(value.getPrivilege().toLowerCase().equals("readwrite")) {
-				btnRead.setForeground(new Color(238, 238, 255));
-				btnWrite.setForeground(new Color(255, 230, 0));
-				btnOwner.setForeground(new Color(238, 238, 255));
-			}
-			else if(value.getPrivilege().toLowerCase().equals("owner")) {
-				btnRead.setForeground(new Color(238, 238, 255));
-				btnWrite.setForeground(new Color(238, 238, 238));
-				btnOwner.setForeground(new Color(255, 230, 0));
-			}
-			
 			if(isSelected) {
-				handleClick(index, value);
-				parent.clearSelection();
+				handleClick(index);
 			}
+			parent.clearSelection();
 			
-		} catch (RemoteException e) {}
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return this;
 	}
 
-	private void handleClick(int index, UserRemote value) {
+	private void handleClick(int index) {
 		
 		if(parent.getMousePosition() == null) return;
 		
@@ -137,7 +121,6 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 			btnRead.setForeground(new Color(255, 230, 0));
 			btnWrite.setForeground(new Color(238, 238, 255));
 			btnOwner.setForeground(new Color(238, 238, 255));
-			controller.setPrivilegies(value, "readonly");
 		}
 		//Write
 		else if(btnWriteX <= localX && localX <= btnWriteX + 24
@@ -145,7 +128,6 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 			btnRead.setForeground(new Color(238, 238, 255));
 			btnWrite.setForeground(new Color(255, 230, 0));
 			btnOwner.setForeground(new Color(238, 238, 255));
-			controller.setPrivilegies(value, "readwrite");
 		}
 		//Owner
 		else if(btnOwnerX <= localX && localX <= btnOwnerX + 24
@@ -153,12 +135,10 @@ class CollabRenderer extends JPanel implements ListCellRenderer<UserRemote> {
 			btnRead.setForeground(new Color(238, 238, 255));
 			btnWrite.setForeground(new Color(238, 238, 255));
 			btnOwner.setForeground(new Color(255, 230, 0));
-			controller.setPrivilegies(value, "owner");
 		}
 		//Remove
 		else if(btnRemoveX <= localX && localX <= btnRemoveX + 24
 			&& btnY <= localY && localY <= btnY + 20) {
-			controller.removeUserFromDocument(value);
 			
 		}
 		else {
