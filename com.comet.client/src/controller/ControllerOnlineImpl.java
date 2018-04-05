@@ -243,20 +243,14 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public void sendDocUpdate(String type, String text, int length, int location) {
 		try {
 			server.sendDocUpdate(client, type, text, length, location);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 	}
 
 	@Override
 	public ArrayList<VersionRemote> getAllDocumentVersions(){
 		try {
 			return server.getAllDocumentVersions(client.getDocumentData().getId());
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 		return null;
 	}
 
@@ -264,9 +258,7 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public String openDocumentVersion(int id) {
 		try {
 			return server.openDocumentVersion(id);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 		return null;
 	}
 
@@ -274,10 +266,18 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean resetPassword(String email) {
 		try {
 			return server.resetPassword(email);
+		} catch (RemoteException e) {}
+		return false;
+	}
+
+	@Override
+	public void removeClient() {
+		try {
+			server.removeClient(client);
 		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 }

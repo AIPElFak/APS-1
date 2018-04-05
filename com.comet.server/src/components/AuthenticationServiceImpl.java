@@ -121,9 +121,17 @@ public class AuthenticationServiceImpl extends UnicastRemoteObject implements Au
 
 	@Override
 	public boolean removeClient(Client cl) throws RemoteException {
-		if(!clients.contains(cl)) return false;
-		clients.remove(cl);
-		return true;
+		for(Client c : clients) {
+			try {
+				if(c.getUserData().getId() == cl.getUserData().getId()) {
+					clients.remove(c);
+					return true;
+				}
+			}catch(RemoteException e) {
+				clients.remove(c);
+			}
+		}
+		return false;
 	}
 
 	@Override

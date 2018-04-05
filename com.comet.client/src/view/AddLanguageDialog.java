@@ -195,7 +195,10 @@ public class AddLanguageDialog extends JDialog {
 				File f = new File("src/languages/", txtType.getText() + ".xml");
 				if(!f.exists())
 					jaxbMarshaller.marshal(lan, f);
-
+				
+				CometDialog cd = new CometDialog("info", "Language added successfuly!");
+				cd.setVisible(true);
+				
 				} catch (JAXBException ex) {System.out.println(ex);}
 			}
 		});

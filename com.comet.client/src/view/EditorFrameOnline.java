@@ -56,6 +56,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.GridLayout;
 
 public class EditorFrameOnline extends JFrame implements View {
@@ -79,6 +81,8 @@ public class EditorFrameOnline extends JFrame implements View {
 		
 		controller = cntrl;
 		
+		JFrame self = this;
+		
 		MouseAdapter toolBarColorChanger =  GUIFactory.createButtonColorChanger
 		(
 			new Color(60, 60, 60),
@@ -96,10 +100,28 @@ public class EditorFrameOnline extends JFrame implements View {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LobbyFrame lf = new LobbyFrame(controller);
+				controller.setView(lf);
+				self.dispose();
+				lf.setVisible(true);
+			}
+		});
 		mnFile.add(mntmOpen);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mnFile.add(mntmSave);
+		
+		mnFile.addSeparator();
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -143,16 +165,25 @@ public class EditorFrameOnline extends JFrame implements View {
 		mntmFindReplace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FindReplaceDialog frd = new FindReplaceDialog(self, controller);
+				int x = frd.getX() - 170;
+				int y = frd.getY();
+				frd.setLocation(x, y);
 				frd.setVisible(true);
 			}
 		});
 		mnEdit.add(mntmFindReplace);
 		
-		JMenu mnView = new JMenu("View");
-		menuBar.add(mnView);
+		JMenu menu = new JMenu("Settings");
+		menuBar.add(menu);
 		
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
+		JMenuItem menuItem = new JMenuItem("Add language definition");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddLanguageDialog ad = new AddLanguageDialog();
+				ad.setVisible(true);
+			}
+		});
+		menu.add(menuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -170,14 +201,8 @@ public class EditorFrameOnline extends JFrame implements View {
 		toolbar.setFloatable(false);
 		panel.add(toolbar, BorderLayout.WEST);
 		
-		JButton New = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
-		New.setIcon(new ImageIcon(new ImageIcon(getClass()
-				.getResource("../resources/documentEdit.png"))
-				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
-		New.setToolTipText("Create a new doucment");
-		New.setBorderPainted(false);
-		New.addMouseListener(toolBarColorChanger);
-		toolbar.add(New);
+		JLabel topLabelSeparator = new JLabel(" ");
+		toolbar.add(topLabelSeparator);
 		
 		JButton Open = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Open.setIcon(new ImageIcon(new ImageIcon(getClass()
@@ -186,10 +211,15 @@ public class EditorFrameOnline extends JFrame implements View {
 		Open.setToolTipText("Open a new doucment");
 		Open.addMouseListener(toolBarColorChanger);
 		Open.setBorderPainted(false);
+		Open.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LobbyFrame lf = new LobbyFrame(controller);
+				controller.setView(lf);
+				self.dispose();
+				lf.setVisible(true);
+			}
+		});
 		toolbar.add(Open);
-		
-		JLabel topLabelSeparator = new JLabel(" ");
-		toolbar.add(topLabelSeparator);
 		
 		toolbar.addSeparator();
 		toolbar.addSeparator();
@@ -298,7 +328,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		textPane.setSelectedTextColor(Color.BLACK);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		textScroll.setRowHeaderView(tln);
+		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));
@@ -437,15 +467,6 @@ public class EditorFrameOnline extends JFrame implements View {
 				textArea.append("Me: " + txtEnterTextHere.getText() + "\n\n");
 				controller.sendDocumentMessage(txtEnterTextHere.getText());
 				txtEnterTextHere.setText("Enter message here.");
-				//test - SENTIC
-//				String s = null; 
-//				try {
-//					s = controller.getUserData().getPrivilege();
-//				} catch (RemoteException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
-//				JOptionPane.showMessageDialog(null, s, "Privilege", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		panel_3.add(btnSend);
@@ -463,6 +484,48 @@ public class EditorFrameOnline extends JFrame implements View {
 		panel_3.add(separator_4);
 		
 		setLocationRelativeTo(null);
+		
+		addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				controller.removeClient();
+			}
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				UndoRedoManager.getInstance().clear();
+			}});
 		
 	}
 
@@ -508,7 +571,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		try {
 			doc.remove(0, doc.getLength());
 			doc.insertString(0, content, null);
-		} catch (BadLocationException e) {}
+		} catch (BadLocationException e) {e.printStackTrace();}
 		doc.addDocumentListener(docListener);
 	}
 
@@ -548,16 +611,16 @@ public class EditorFrameOnline extends JFrame implements View {
 		if(type.toLowerCase().equals("insert")) {
 			try {
 				document.insertString(location, text, null);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		} else if(type.toLowerCase().equals("remove")){
 			try {
 				document.remove(location, length);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		} else  if(type.toLowerCase().equals("pull")){
 			try {
 				document.remove(0, document.getLength());
 				document.insertString(0, text, null);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		}
 		document.addDocumentListener(docListener);
 	}
@@ -579,10 +642,7 @@ public class EditorFrameOnline extends JFrame implements View {
 				try {
 					String text = textPane.getText(offset, changeLength);
 					controller.sendDocUpdate("insert", text, changeLength, insert);
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} catch (BadLocationException e) {e.printStackTrace();}
 			}
 		}
 

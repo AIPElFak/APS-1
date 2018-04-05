@@ -1,8 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <languages>
-	<language name="Java" extension="java"></language>
-	<language name="C#" extension="cs"></language>
-	<language name="JavaScript" extension="js"></language>
-	<language name="Python" extension="py"></language>
-	<language name="C++" extension="cpp"></language>
-	<language name="Plain text document" extension="txt"></language>
+    <language extension="java" name="Java"/>
+    <language extension="cs" name="C#"/>
+    <language extension="js" name="JavaScript"/>
+    <language extension="py" name="Python"/>
+    <language extension="cpp" name="C++"/>
+    <language extension="txt" name="Plain text document"/>
 </languages>
