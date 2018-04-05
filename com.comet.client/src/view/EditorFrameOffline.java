@@ -8,8 +8,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import controller.ClipboardManager;
 import controller.CommandUndoRedo;
+import controller.CommandUndoRedoDistributed;
+import controller.Container;
 import controller.ControllerOffline;
+import controller.FindResults;
+import controller.Iterator;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
 import languages.SymbolTable;
@@ -59,6 +64,7 @@ public class EditorFrameOffline extends JFrame implements View {
 	private DefaultCaret caret;
 	
 	private ControllerOffline controller;
+	private Container searchResults;
 
 	public EditorFrameOffline(ControllerOffline cntrl) {
 		initialize();
@@ -154,15 +160,52 @@ public class EditorFrameOffline extends JFrame implements View {
 		mnEdit.addSeparator();
 		
 		JMenuItem mntmCut = new JMenuItem("Cut");
+		mntmCut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException e) {}
+			}
+		});
 		mnEdit.add(mntmCut);
 		
 		JMenuItem mntmCopy = new JMenuItem("Copy");
+		mntmCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+			}
+		});
 		mnEdit.add(mntmCopy);
 		
 		JMenuItem mntmPaste = new JMenuItem("Paste");
+		mntmPaste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = ClipboardManager.getInstance().getClipboardContents();
+				int i = textPane.getCaretPosition();
+				try {
+					textPane.getDocument().insertString(i, text, null);
+				} catch (BadLocationException e1) {}
+			}
+		});
 		mnEdit.add(mntmPaste);
 		
 		JMenuItem mntmDelete = new JMenuItem("Delete");
+		mntmDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException ex) {}
+				
+			}
+		});
 		mnEdit.add(mntmDelete);
 		
 		mnEdit.addSeparator();
@@ -405,15 +448,22 @@ public class EditorFrameOffline extends JFrame implements View {
 
 	@Override
 	public void find(String text) {
-		int index = textPane.getText().indexOf(text);
-		if (index < 0) return;
+		String txt = textPane.getText();
+		Iterator iterator = null;
+		if(searchResults == null) {
+			searchResults = new FindResults(txt, text);
+		}
+		iterator = searchResults.getIterator();
+		int index = iterator.next();
+		if(index == -1) return;
 		textPane.select(index, index + text.length());
 	}
 
 	@Override
 	public void replace(String text, String replace) {
-		int index = textPane.getText().indexOf(text);
-		if (index < 0) return;
+		if(text.equals("")) return;
+		int index = textPane.getSelectionStart();
+		if(index < 0) return;
 		UndoRedoManager.getInstance()
 			.addUndoCommand(new CommandUndoRedo(controller, textPane.getText()));
 		Document doc = textPane.getDocument();
