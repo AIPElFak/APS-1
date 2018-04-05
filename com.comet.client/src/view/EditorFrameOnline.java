@@ -12,7 +12,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import controller.ClipboardManager;
 import controller.CommandUndoRedo;
+import controller.CommandUndoRedoDistributed;
 import controller.ControllerOnline;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
@@ -129,9 +131,6 @@ public class EditorFrameOnline extends JFrame implements View {
 		JMenuItem mntmUndo = new JMenuItem("Undo");
 		mntmUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UndoRedoManager.getInstance()
-				.addRedoCommand(
-					new CommandUndoRedo(controller, textPane.getText()));
 				UndoRedoManager.getInstance().undo();
 			}
 		});
@@ -148,15 +147,52 @@ public class EditorFrameOnline extends JFrame implements View {
 		mnEdit.addSeparator();
 		
 		JMenuItem mntmCut = new JMenuItem("Cut");
+		mntmCut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException e) {}
+			}
+		});
 		mnEdit.add(mntmCut);
 		
 		JMenuItem mntmCopy = new JMenuItem("Copy");
+		mntmCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+			}
+		});
 		mnEdit.add(mntmCopy);
 		
 		JMenuItem mntmPaste = new JMenuItem("Paste");
+		mntmPaste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = ClipboardManager.getInstance().getClipboardContents();
+				int i = textPane.getCaretPosition();
+				try {
+					textPane.getDocument().insertString(i, text, null);
+				} catch (BadLocationException e1) {}
+			}
+		});
 		mnEdit.add(mntmPaste);
 		
 		JMenuItem mntmDelete = new JMenuItem("Delete");
+		mntmDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException ex) {}
+				
+			}
+		});
 		mnEdit.add(mntmDelete);
 		
 		mnEdit.addSeparator();
@@ -608,6 +644,9 @@ public class EditorFrameOnline extends JFrame implements View {
 	public void recvDocUpdate(String type, String text, int length, int location) {
 		Document document = textPane.getDocument();
 		document.removeDocumentListener(docListener);
+		String txt = textPane.getText().substring(0, location);
+		UndoRedoManager.getInstance()
+			.addUndoCommand(new CommandUndoRedoDistributed(controller, txt));
 		if(type.toLowerCase().equals("insert")) {
 			try {
 				document.insertString(location, text, null);
@@ -618,6 +657,9 @@ public class EditorFrameOnline extends JFrame implements View {
 			} catch (BadLocationException e) {e.printStackTrace();}
 		} else  if(type.toLowerCase().equals("pull")){
 			try {
+				UndoRedoManager.getInstance()
+				.addRedoCommand(
+					new CommandUndoRedoDistributed(controller, text));
 				document.remove(0, document.getLength());
 				document.insertString(0, text, null);
 			} catch (BadLocationException e) {e.printStackTrace();}
@@ -629,13 +671,13 @@ public class EditorFrameOnline extends JFrame implements View {
 
 		@Override
 		public void changedUpdate(DocumentEvent arg0) {
-			// TODO Auto-generated method stub
-			
+			updateText(arg0);
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent arg0) {
 			synchronized(textPane) {
+				updateText(arg0);
 				int changeLength = arg0.getLength();
 				int offset = arg0.getOffset();
 				int insert = textPane.getCaret().getDot();
@@ -649,10 +691,22 @@ public class EditorFrameOnline extends JFrame implements View {
 		@Override
 		public void removeUpdate(DocumentEvent arg0) {
 			synchronized(textPane) {
+				updateText(arg0);
 				int changeLength = arg0.getLength();
 				int offset = arg0.getOffset();
 				controller.sendDocUpdate("remove", "", changeLength, offset);
 			}
+		}
+		
+		private void updateText(DocumentEvent e) {
+			String text = textPane.getText().substring(0, e.getOffset());
+			UndoRedoManager.getInstance()
+				.addUndoCommand(new CommandUndoRedoDistributed(controller, text));
+			int x = textPane.getText().split("[\r]").length;
+			int y = e.getOffset() + e.getLength();
+			int numOfWords = textPane.getText().split("[  |(|)|]").length;
+			controller.updateCaretLocation(x, y);
+			controller.updateDocumentStatisics("Number of words: " + numOfWords);
 		}
 		
 	}

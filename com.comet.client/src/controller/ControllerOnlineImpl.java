@@ -28,9 +28,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public boolean logIn(String username, String password) {
 		try {
+			server.addClient(client);
 			boolean result = server.login(client, username, password);
 			if(!result) return false;
-			server.addClient(client);
 			return true;
 		} 
 		catch (RemoteException e) {}

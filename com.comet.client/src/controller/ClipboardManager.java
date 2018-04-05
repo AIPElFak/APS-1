@@ -15,7 +15,7 @@ public class ClipboardManager implements ClipboardOwner{
 	
 	private ClipboardManager() {}
 	
-	public ClipboardManager getInstance() {
+	public static ClipboardManager getInstance() {
 		if(instance == null) instance = new ClipboardManager();
 		return instance;
 	}

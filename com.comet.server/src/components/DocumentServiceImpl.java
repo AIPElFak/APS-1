@@ -1,6 +1,5 @@
 package components;
 
-import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 import database.dao.BusinessLogic;
 import database.dto.Document;
 import database.dto.DocumentVersion;
-import database.dto.WorksOn;
 import utilities.DocumentRemote;
 import utilities.DocumentRemoteImpl;
 import utilities.UserRemote;
