@@ -26,7 +26,7 @@ public class MessageServiceImpl extends UnicastRemoteObject implements MessageSe
 				}
 			}
 			catch(RemoteException e) {
-				/* ignoring unreachable endpoints */
+				clients.remove(c);
 			}
 		}
 	}
@@ -36,10 +36,14 @@ public class MessageServiceImpl extends UnicastRemoteObject implements MessageSe
 			DocumentRemote doc = cl.getDocumentData();
 			if(doc == null) return;
 			for(Client c : clients) {
-				if(c.getUserData().getId() != cl.getUserData().getId()
-						&& c.getDocumentData().getId() == 
-						cl.getDocumentData().getId()) {
-					c.documentRecv(cl, message);
+				try {
+					if(c.getUserData().getId() != cl.getUserData().getId()
+							&& c.getDocumentData().getId() == 
+							cl.getDocumentData().getId()) {
+						c.documentRecv(cl, message);
+					}
+				}catch(RemoteException e) {
+					clients.remove(c);
 				}
 			}
 		}catch(RemoteException e) {}
@@ -52,9 +56,17 @@ public class MessageServiceImpl extends UnicastRemoteObject implements MessageSe
 	}
 
 	public boolean removeClient(Client cl) throws RemoteException {
-		if(!clients.contains(cl)) return false;
-		clients.remove(cl);
-		return true;
+		for(Client c : clients) {
+			try {
+				if(c.getUserData().getId() == cl.getUserData().getId()) {
+					clients.remove(c);
+					return true;
+				}
+			}catch(RemoteException e) {
+				clients.remove(c);
+			}
+		}
+		return false;
 	}
 
 	

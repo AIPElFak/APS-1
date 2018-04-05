@@ -176,20 +176,11 @@ public class EditorFrameOffline extends JFrame implements View {
 		});
 		mnEdit.add(mntmFindReplace);
 		
-		JMenu mnRun = new JMenu("Run");
-		menuBar.add(mnRun);
-		
-		JMenuItem mntmOpenConsole = new JMenuItem("Open console");
-		mnRun.add(mntmOpenConsole);
-		
 		JMenu mnSettings = new JMenu("Settings");
 		menuBar.add(mnSettings);
 		
 		JMenuItem mntmAddLanguageDefinition = new JMenuItem("Add language definition");
 		mnSettings.add(mntmAddLanguageDefinition);
-		
-		JMenuItem mntmManageLanguageDefinitions = new JMenuItem("Manage language definitions");
-		mnSettings.add(mntmManageLanguageDefinitions);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
@@ -322,7 +313,7 @@ public class EditorFrameOffline extends JFrame implements View {
 		cometStyle = textPane.addStyle("CometStyle", null);
 		JScrollPane textScroll = new JScrollPane(textPane);
 		JPanel tln = GUIFactory.createTextLineNumber(textPane);
-		textScroll.setRowHeaderView(tln);
+		//textScroll.setRowHeaderView(tln);
 		textScroll.setBorder(null);
 		textPane.setMargin(new Insets(10, 10, 10, 10));
 		textPane.setBackground(new Color(90, 90, 90));

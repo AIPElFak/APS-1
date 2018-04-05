@@ -1,6 +1,9 @@
-/javax.mail.jar
-/database/
-/utilities/
+/application/
 /communication/
 /components/
+/configuration/
+/database/
+/hibernate.cfg.xml
+/javax.mail.jar
 /userImages/
+/utilities/

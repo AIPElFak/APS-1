@@ -12,7 +12,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
+import controller.ClipboardManager;
 import controller.CommandUndoRedo;
+import controller.CommandUndoRedoDistributed;
 import controller.ControllerOnline;
 import controller.UndoRedoManager;
 import guicomponents.GUIFactory;
@@ -56,6 +58,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.GridLayout;
 
 public class EditorFrameOnline extends JFrame implements View {
@@ -79,6 +83,8 @@ public class EditorFrameOnline extends JFrame implements View {
 		
 		controller = cntrl;
 		
+		JFrame self = this;
+		
 		MouseAdapter toolBarColorChanger =  GUIFactory.createButtonColorChanger
 		(
 			new Color(60, 60, 60),
@@ -86,7 +92,7 @@ public class EditorFrameOnline extends JFrame implements View {
 			new Color(60, 60, 60)
 		);
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 1024, 700);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -96,10 +102,28 @@ public class EditorFrameOnline extends JFrame implements View {
 		menuBar.add(mnFile);
 		
 		JMenuItem mntmOpen = new JMenuItem("Open");
+		mntmOpen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LobbyFrame lf = new LobbyFrame(controller);
+				controller.setView(lf);
+				self.dispose();
+				lf.setVisible(true);
+			}
+		});
 		mnFile.add(mntmOpen);
 		
 		JMenuItem mntmSave = new JMenuItem("Save");
 		mnFile.add(mntmSave);
+		
+		mnFile.addSeparator();
+		
+		JMenuItem mntmExit = new JMenuItem("Exit");
+		mntmExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
+		mnFile.add(mntmExit);
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -107,9 +131,6 @@ public class EditorFrameOnline extends JFrame implements View {
 		JMenuItem mntmUndo = new JMenuItem("Undo");
 		mntmUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				UndoRedoManager.getInstance()
-				.addRedoCommand(
-					new CommandUndoRedo(controller, textPane.getText()));
 				UndoRedoManager.getInstance().undo();
 			}
 		});
@@ -126,15 +147,52 @@ public class EditorFrameOnline extends JFrame implements View {
 		mnEdit.addSeparator();
 		
 		JMenuItem mntmCut = new JMenuItem("Cut");
+		mntmCut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException e) {}
+			}
+		});
 		mnEdit.add(mntmCut);
 		
 		JMenuItem mntmCopy = new JMenuItem("Copy");
+		mntmCopy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				ClipboardManager.getInstance().setClipboardContents(textPane.getSelectedText());
+			}
+		});
 		mnEdit.add(mntmCopy);
 		
 		JMenuItem mntmPaste = new JMenuItem("Paste");
+		mntmPaste.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = ClipboardManager.getInstance().getClipboardContents();
+				int i = textPane.getCaretPosition();
+				try {
+					textPane.getDocument().insertString(i, text, null);
+				} catch (BadLocationException e1) {}
+			}
+		});
 		mnEdit.add(mntmPaste);
 		
 		JMenuItem mntmDelete = new JMenuItem("Delete");
+		mntmDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(textPane.getSelectedText() == null) return;
+				int i = textPane.getSelectionStart();
+				int j = textPane.getSelectionEnd();
+				try {
+					textPane.getDocument().remove(i, j - i);
+				} catch (BadLocationException ex) {}
+				
+			}
+		});
 		mnEdit.add(mntmDelete);
 		
 		mnEdit.addSeparator();
@@ -143,16 +201,25 @@ public class EditorFrameOnline extends JFrame implements View {
 		mntmFindReplace.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				FindReplaceDialog frd = new FindReplaceDialog(self, controller);
+				int x = frd.getX() - 170;
+				int y = frd.getY();
+				frd.setLocation(x, y);
 				frd.setVisible(true);
 			}
 		});
 		mnEdit.add(mntmFindReplace);
 		
-		JMenu mnView = new JMenu("View");
-		menuBar.add(mnView);
+		JMenu menu = new JMenu("Settings");
+		menuBar.add(menu);
 		
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
+		JMenuItem menuItem = new JMenuItem("Add language definition");
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddLanguageDialog ad = new AddLanguageDialog();
+				ad.setVisible(true);
+			}
+		});
+		menu.add(menuItem);
 		contentPane = new JPanel();
 		contentPane.setBorder(null);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -170,14 +237,8 @@ public class EditorFrameOnline extends JFrame implements View {
 		toolbar.setFloatable(false);
 		panel.add(toolbar, BorderLayout.WEST);
 		
-		JButton New = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
-		New.setIcon(new ImageIcon(new ImageIcon(getClass()
-				.getResource("../resources/documentEdit.png"))
-				.getImage().getScaledInstance(48, 48, Image.SCALE_DEFAULT)));
-		New.setToolTipText("Create a new doucment");
-		New.setBorderPainted(false);
-		New.addMouseListener(toolBarColorChanger);
-		toolbar.add(New);
+		JLabel topLabelSeparator = new JLabel(" ");
+		toolbar.add(topLabelSeparator);
 		
 		JButton Open = GUIFactory.createCometFlatButton("", new Color(60,60,60), Color.WHITE);
 		Open.setIcon(new ImageIcon(new ImageIcon(getClass()
@@ -186,10 +247,15 @@ public class EditorFrameOnline extends JFrame implements View {
 		Open.setToolTipText("Open a new doucment");
 		Open.addMouseListener(toolBarColorChanger);
 		Open.setBorderPainted(false);
+		Open.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				LobbyFrame lf = new LobbyFrame(controller);
+				controller.setView(lf);
+				self.dispose();
+				lf.setVisible(true);
+			}
+		});
 		toolbar.add(Open);
-		
-		JLabel topLabelSeparator = new JLabel(" ");
-		toolbar.add(topLabelSeparator);
 		
 		toolbar.addSeparator();
 		toolbar.addSeparator();
@@ -455,6 +521,54 @@ public class EditorFrameOnline extends JFrame implements View {
 		
 		setLocationRelativeTo(null);
 		
+		addWindowListener(new WindowListener() {
+
+			@Override
+			public void windowActivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowClosed(WindowEvent arg0) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						LobbyFrame lf = new LobbyFrame(controller);
+						controller.setView(lf);
+						lf.setVisible(true);
+					}
+				});
+			}
+
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				UndoRedoManager.getInstance().clear();
+			}});
+		
 	}
 
 	@Override
@@ -510,7 +624,7 @@ public class EditorFrameOnline extends JFrame implements View {
 		try {
 			doc.remove(0, doc.getLength());
 			doc.insertString(0, content, null);
-		} catch (BadLocationException e) {}
+		} catch (BadLocationException e) {e.printStackTrace();}
 		doc.addDocumentListener(docListener);
 	}
 
@@ -558,19 +672,25 @@ public class EditorFrameOnline extends JFrame implements View {
 	public void recvDocUpdate(String type, String text, int length, int location) {
 		Document document = textPane.getDocument();
 		document.removeDocumentListener(docListener);
+		String txt = textPane.getText().substring(0, location);
+		UndoRedoManager.getInstance()
+			.addUndoCommand(new CommandUndoRedoDistributed(controller, txt));
 		if(type.toLowerCase().equals("insert")) {
 			try {
 				document.insertString(location, text, null);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		} else if(type.toLowerCase().equals("remove")){
 			try {
 				document.remove(location, length);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		} else  if(type.toLowerCase().equals("pull")){
 			try {
+				UndoRedoManager.getInstance()
+				.addRedoCommand(
+					new CommandUndoRedoDistributed(controller, text));
 				document.remove(0, document.getLength());
 				document.insertString(0, text, null);
-			} catch (BadLocationException e) {}
+			} catch (BadLocationException e) {e.printStackTrace();}
 		}
 		document.addDocumentListener(docListener);
 	}
@@ -579,33 +699,42 @@ public class EditorFrameOnline extends JFrame implements View {
 
 		@Override
 		public void changedUpdate(DocumentEvent arg0) {
-			// TODO Auto-generated method stub
-			
+			updateText(arg0);
 		}
 
 		@Override
 		public void insertUpdate(DocumentEvent arg0) {
 			synchronized(textPane) {
+				updateText(arg0);
 				int changeLength = arg0.getLength();
 				int offset = arg0.getOffset();
 				int insert = textPane.getCaret().getDot();
 				try {
 					String text = textPane.getText(offset, changeLength);
 					controller.sendDocUpdate("insert", text, changeLength, insert);
-				} catch (BadLocationException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				} catch (BadLocationException e) {e.printStackTrace();}
 			}
 		}
 
 		@Override
 		public void removeUpdate(DocumentEvent arg0) {
 			synchronized(textPane) {
+				updateText(arg0);
 				int changeLength = arg0.getLength();
 				int offset = arg0.getOffset();
 				controller.sendDocUpdate("remove", "", changeLength, offset);
 			}
+		}
+		
+		private void updateText(DocumentEvent e) {
+			String text = textPane.getText().substring(0, e.getOffset());
+			UndoRedoManager.getInstance()
+				.addUndoCommand(new CommandUndoRedoDistributed(controller, text));
+			int x = textPane.getText().split("[\r]").length;
+			int y = e.getOffset() + e.getLength();
+			int numOfWords = textPane.getText().split("[  |(|)|]").length;
+			controller.updateCaretLocation(x, y);
+			controller.updateDocumentStatisics("Number of words: " + numOfWords);
 		}
 		
 	}

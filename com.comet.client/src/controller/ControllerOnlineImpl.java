@@ -28,9 +28,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public boolean logIn(String username, String password) {
 		try {
+			server.addClient(client);
 			boolean result = server.login(client, username, password);
 			if(!result) return false;
-			server.addClient(client);
 			return true;
 		} 
 		catch (RemoteException e) {}
@@ -224,9 +224,7 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public String openDocumentVersion(int id) {
 		try {
 			return server.openDocumentVersion(id);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
+		} catch (RemoteException e) {}
 		return null;
 	}
 
@@ -234,10 +232,18 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	public boolean resetPassword(String email) {
 		try {
 			return server.resetPassword(email);
+		} catch (RemoteException e) {}
+		return false;
+	}
+
+	@Override
+	public void removeClient() {
+		try {
+			server.removeClient(client);
 		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 	@Override

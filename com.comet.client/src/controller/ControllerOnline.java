@@ -67,10 +67,14 @@ public interface ControllerOnline extends Controller {
 
 	boolean resetPassword(String email);
 
+<<<<<<< HEAD
 	void setPrivilegies(UserRemote value, String string);
 
 	void removeUserFromDocument(UserRemote value);
 
 	void goBackToLobby();
+=======
+	void removeClient();	
+>>>>>>> Privilegies
 	
 }
