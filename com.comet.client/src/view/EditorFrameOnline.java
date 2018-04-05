@@ -779,4 +779,26 @@ public class EditorFrameOnline extends JFrame implements View {
 		}
 		
 	}
+
+	@Override
+	public void disableEditor() {
+		textPane.setEnabled(false);
+	}
+
+	@Override
+	public void enableEditor() {
+		textPane.setEnabled(true);
+	}
+
+	@Override
+	public void clear(int length, int location) {
+		textPane.getDocument().removeDocumentListener(docListener);
+		try {
+			textPane.getDocument().remove(location, length);
+		} catch (BadLocationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		textPane.getDocument().addDocumentListener(docListener);
+	}
 }

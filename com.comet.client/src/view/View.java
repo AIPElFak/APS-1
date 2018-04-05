@@ -36,5 +36,11 @@ public interface View {
 	void updateCollaborators(List<UserRemote> collabs);
 
 	void recvDocUpdate(String type, String text, int length, int location);
+
+	void disableEditor();
+
+	void enableEditor();
+
+	void clear(int length, int location);
 	
 }

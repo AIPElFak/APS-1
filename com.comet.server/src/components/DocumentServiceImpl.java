@@ -271,7 +271,7 @@ public class DocumentServiceImpl extends UnicastRemoteObject implements Document
 				if(c.getUserData().getId() == cl.getUserData().getId() && privilege.equals("Owner")) {
 					c.getUserData().setPrivilege("ReadWrite");
 				}
-				if(c.getUserData().getId() == userId && privilege.equals("X") && 
+				else if(c.getUserData().getId() == userId && privilege.equals("X") && 
 						cl.getUserData().getPrivilege().equals("Owner")) {
 					target.removeCollaborator(c);
 				}

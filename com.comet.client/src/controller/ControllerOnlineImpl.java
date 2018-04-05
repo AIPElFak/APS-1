@@ -244,6 +244,9 @@ public class ControllerOnlineImpl extends ControllerImpl implements ControllerOn
 	@Override
 	public void sendDocUpdate(String type, String text, int length, int location) {
 		try {
+			if(client.getUserData().getPrivilege().toLowerCase().equals("readonly")) {
+				return;
+			}
 			server.sendDocUpdate(client, type, text, length, location);
 		} catch (RemoteException e) {}
 	}

@@ -448,4 +448,22 @@ public class EditorFrameOffline extends JFrame implements View {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void disableEditor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enableEditor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clear(int length, int location) {
+		// TODO Auto-generated method stub
+		
+	}
 }

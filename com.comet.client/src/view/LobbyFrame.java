@@ -632,4 +632,22 @@ public class LobbyFrame extends JFrame implements View {
 	public void recvDocUpdate(String type, String text, int length, int location) {
 		return;
 	}
+
+	@Override
+	public void disableEditor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enableEditor() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clear(int length, int location) {
+		// TODO Auto-generated method stub
+		
+	}
 }
